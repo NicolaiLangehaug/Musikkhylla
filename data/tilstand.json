@@ -1,5 +1,31 @@
 {
- "extra": [],
+ "extra": [
+  {
+   "a": "sd",
+   "c": "",
+   "cat": "",
+   "cv": null,
+   "fmt": "Vinyl LP",
+   "g": 16,
+   "homed": false,
+   "id": "",
+   "kj": "Ny i hus 30. oktober 2026",
+   "lb": "",
+   "n": 1,
+   "nid": 1793391397771,
+   "ny": true,
+   "nyImg": "",
+   "r": "",
+   "re": false,
+   "s": "LP",
+   "sc": "#8A7F72",
+   "st": 0,
+   "t": "sd",
+   "url": "df",
+   "w": "",
+   "y": 0
+  }
+ ],
  "gone": {},
  "moved": {
   "770": 4
