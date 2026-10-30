@@ -1,0 +1,23 @@
+.gh-status{position:fixed;left:max(12px,env(safe-area-inset-left,0px));top:var(--topp,64px);z-index:90;height:30px;padding:0 12px;border-radius:9999px;border:1px solid #3A322A;background:rgba(20,17,14,0.82);color:#BFB2A3;font:600 11px 'IBM Plex Mono',ui-monospace,monospace;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer}
+.gh-status.gh-lagret{color:#9FD39A}
+.gh-status.gh-lagrer,.gh-status.gh-venter{color:#F1E9DF}
+.gh-status.gh-feil,.gh-status.gh-nøkkel,.gh-status.gh-ulokal{color:#FF7A59;border-color:#FF7A59}
+#gh-dialog{position:fixed;inset:0;z-index:120;background:rgba(10,8,6,0.62);display:flex;align-items:flex-start;justify-content:center;padding:max(40px,env(safe-area-inset-top,0px)) 16px 24px;box-sizing:border-box}
+#gh-dialog[hidden]{display:none}
+.gh-kort{width:100%;max-width:520px;background:#211C17;color:#F1E9DF;border:1px solid #3A322A;border-radius:8px;padding:22px 26px;font-size:15px;line-height:1.5;box-shadow:0 20px 60px rgba(0,0,0,0.5)}
+.gh-kort h2{margin:0 0 8px;font-size:26px;font-weight:800;font-stretch:75%}
+.gh-mono{font:12px 'IBM Plex Mono',monospace;letter-spacing:0.06em;color:#BFB2A3}
+.gh-felt{display:flex;flex-direction:column;gap:6px;font-weight:700;font-size:14px;margin-top:12px}
+.gh-felt input{height:42px;border-radius:4px;border:1px solid #574B3F;background:#151310;color:#F1E9DF;padding:0 10px;font:14px 'IBM Plex Mono',monospace}
+.gh-knapper{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:18px}
+.gh-prim,.gh-sek{height:42px;padding:0 16px;border-radius:4px;font:700 14px 'Archivo',sans-serif;cursor:pointer}
+.gh-prim{background:#FF7A59;color:#2A0F07;border:0}
+.gh-sek{background:transparent;color:#F1E9DF;border:1px solid #574B3F}
+.spiller{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:max(16px,env(safe-area-inset-bottom,0px));z-index:80;width:340px;max-width:calc(100vw - 32px);border-radius:8px;overflow:hidden;background:#0E0C0A;border:1px solid #3A322A;box-shadow:0 14px 40px rgba(0,0,0,0.55);transition:opacity 250ms,transform 250ms}
+.spiller.skjult{opacity:0;pointer-events:none;transform:translateY(12px)}
+.spiller-topp{display:flex;align-items:center;gap:6px;height:30px;padding:0 6px 0 12px;background:#211C17}
+.spiller-tittel{flex:1;font:600 11px 'IBM Plex Mono',monospace;letter-spacing:0.08em;text-transform:uppercase;color:#FF7A59}
+.spiller-knapp{width:26px;height:24px;border-radius:4px;border:1px solid #3A322A;background:transparent;color:#F1E9DF;font-size:15px;line-height:1;cursor:pointer}
+#spiller-yt{display:block;width:100%;aspect-ratio:16/9;height:auto}
+.spiller.liten{width:220px}
+#spiller iframe{display:block;width:100%;height:auto;aspect-ratio:16/9;border:0}

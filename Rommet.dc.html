@@ -1,0 +1,1424 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<title>Rommet</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0}
+.hot{background:transparent}
+.hot:hover{background:rgba(255,255,255,0.16) !important}
+@keyframes spinn{to{transform:rotate(360deg)}}
+@keyframes puls-knapp{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+@keyframes puls{0%{transform:scale(0.7);opacity:0.7}100%{transform:scale(1.9);opacity:0}}
+@media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important}}
+</style>
+</helmet>
+<div style="width: {{appW}}px; height: 1024px; position: relative; overflow: hidden; display: flex; flex-direction: column; font-family: 'Archivo', sans-serif; {{T.root}}">
+
+<header style="height: 56px; flex: none; box-sizing: border-box; padding: 0 32px; display: flex; align-items: center; gap: 18px; {{T.headerCss}}">
+<h1 style="margin: 0; font-size: 30px; line-height: 1; font-weight: 800; font-stretch: 62%; letter-spacing: 0.02em; text-transform: uppercase">Rommet</h1>
+<span style="flex: none; white-space: nowrap; font-family: 'IBM Plex Mono', monospace; font-size: 12px; {{T.mutedC}}">{{styleName}}</span>
+<!-- fotovisningen er tatt ut -->
+<sc-if value="{{playing}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; align-items: center; gap: 10px; margin-left: 12px; min-width: 0">
+<span style="width: 22px; height: 22px; flex: none; border-radius: 9999px; background: repeating-radial-gradient(circle, #0E0E0E 0 1.5px, #2A2A2A 1.5px 2.5px); display: flex; align-items: center; justify-content: center; animation: spinn 1.8s linear infinite"><span style="width: 8px; height: 8px; border-radius: 9999px; {{tt.label}}"></span></span>
+<span style="font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 240px"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; {{T.accentC}}">SPILLER NÅ </span>{{nowText}}</span>
+<button type="button" onClick="{{stop}}" style="flex: none; white-space: nowrap; height: 32px; padding: 0 10px; border-radius: 4px; background: transparent; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 12px; {{T.btn}}">Løft armen</button>
+<a href="{{listenMain}}" target="_blank" rel="noopener" aria-label="Spill {{nowText}} (åpnes i ny fane)" style="flex: none; white-space: nowrap; height: 32px; padding: 0 12px; border-radius: 4px; display: flex; align-items: center; gap: 6px; text-decoration: none; font-family: 'Archivo', sans-serif; font-size: 13px; font-weight: 700; {{T.primary}} {{listenPulse}}"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z" fill="currentColor"></path></svg>{{listenLabel}}</a>
+<sc-if value="{{listenDc}}" hint-placeholder-val="{{ false }}"><a href="{{listenDc}}" target="_blank" rel="noopener" aria-label="Åpne {{nowText}} på Discogs (åpnes i ny fane)" style="flex: none; white-space: nowrap; height: 32px; padding: 0 10px; border-radius: 4px; display: flex; align-items: center; text-decoration: none; font-family: 'Archivo', sans-serif; font-size: 12px; {{T.btn}}">Discogs</a></sc-if>
+<a href="{{listenSp}}" target="_blank" rel="noopener" aria-label="Hør {{nowText}} på Spotify (åpnes i ny fane)" style="flex: none; white-space: nowrap; height: 32px; padding: 0 10px; border-radius: 4px; display: flex; align-items: center; text-decoration: none; font-family: 'Archivo', sans-serif; font-size: 12px; {{T.btn}}">Spotify</a>
+</div>
+</sc-if>
+<div style="flex: 1"></div>
+<button type="button" onClick="{{openForm}}" style="flex: none; white-space: nowrap; height: 40px; padding: 0 14px; border-radius: 4px; border: 0; cursor: pointer; display: flex; align-items: center; gap: 6px; font-family: 'Archivo', sans-serif; font-size: 14px; font-weight: 700; {{T.primary}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Ny plate</button>
+<label style="display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 12px; border-radius: 4px; width: 250px; box-sizing: border-box; {{T.inputBox}}">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
+<span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Søk</span>
+<input type="search" placeholder="Hvor står den?" onInput="{{onSearch}}" style="flex: 1; min-width: 0; border: 0; outline: none; background: transparent; color: inherit; font-family: 'Archivo', sans-serif; font-size: 15px">
+</label>
+</header>
+
+<!-- ============ ROMMET ============ -->
+<div style="flex: none; position: relative; height: {{roomH}}px; transition: height 300ms ease">
+<div id="romboks" style="position: absolute; inset: 0; overflow-x: {{roomOverflow}}; overflow-y: hidden; {{roomBox}}">
+<div style="position: relative; width: {{trackW}}px; height: 100%">
+<div style="position: sticky; left: 0; width: {{stageW}}px; height: 100%; overflow: hidden; display: flex; flex-direction: column">
+<div style="flex: 0.3 0 0; min-width: {{sceneW}}px; {{T.ceil}} {{bigFill}}"></div>
+<div style="flex: none; position: relative; margin: 0 auto; width: {{sceneW}}px; height: {{sceneH}}px">
+<!-- sjangerkartet på gulvet, under hylla -->
+<div style="position: absolute; left: 0; top: {{sceneH}}px; width: {{sceneW}}px; height: 230px; z-index: 1">
+<div style="position: absolute; inset: 0; transition: opacity 200ms; {{mapL}}">
+<sc-for list="{{floorMapL}}" as="fm" hint-placeholder-count="0">
+<span aria-hidden="true" style="position: absolute; height: 8px; box-sizing: border-box; border: 2px solid; border-top: 0; border-radius: 0 0 3px 3px; pointer-events: none; {{fm.bcss}}"></span>
+<span aria-hidden="true" style="position: absolute; width: 1.5px; pointer-events: none; {{fm.lcss}}"></span>
+<button type="button" onClick="{{fm.pick}}" aria-label="{{fm.aria}}" style="position: absolute; padding: 2px 6px; border: 0; border-radius: 3px; z-index: 1; cursor: pointer; white-space: nowrap; font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; {{fm.tcss}}">{{fm.name}}</button>
+</sc-for>
+</div>
+<div style="position: absolute; inset: 0; transition: opacity 200ms; {{mapE}}">
+<sc-for list="{{floorMapE}}" as="fm" hint-placeholder-count="0">
+<span aria-hidden="true" style="position: absolute; height: 8px; box-sizing: border-box; border: 2px solid; border-top: 0; border-radius: 0 0 3px 3px; pointer-events: none; {{fm.bcss}}"></span>
+<span aria-hidden="true" style="position: absolute; width: 1.5px; pointer-events: none; {{fm.lcss}}"></span>
+<button type="button" onClick="{{fm.pick}}" aria-label="{{fm.aria}}" style="position: absolute; padding: 2px 6px; border: 0; border-radius: 3px; z-index: 1; cursor: pointer; white-space: nowrap; font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; {{fm.tcss}}">{{fm.name}}</button>
+</sc-for>
+</div>
+</div>
+<div style="position: absolute; left: 0; top: {{sceneTop}}px; width: {{sceneLW}}px; height: 730px; overflow: hidden; transform-origin: 0 0; transform: scale({{sceneS}}); {{scenePersp}} {{roomBg}}">
+<sc-if value="{{notFoto}}" hint-placeholder-val="{{ true }}">
+<sc-if value="{{isCorner}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; left: 0; top: 0; width: 1366px; height: 730px; {{cornerFloor}} {{T.floor}}"></div>
+<div style="position: absolute; left: 0; top: 0; width: 1366px; height: 730px; {{cornerCeil}} {{T.ceil}}"></div>
+</sc-if>
+<!-- langveggen: brettes inn i perspektiv i hjørnevisningen -->
+<div style="position: absolute; left: 0; top: 0; width: 1340px; height: 730px; {{T.wallBg}} {{longTf}}">
+<div style="position: absolute; left: 0; width: 1340px; top: 680px; bottom: 0; {{T.floor}}"></div>
+<div style="position: absolute; left: 0; width: 1340px; top: 0; height: 104px; {{T.ceil}}"></div>
+<div style="position: absolute; left: 0; width: 1340px; top: 104px; height: 3px; background: rgba(0,0,0,0.12)"></div>
+<!-- trestolpen og gitaren i venstre ende -->
+<div style="position: absolute; left: 38px; top: 104px; width: 22px; bottom: 50px; background: linear-gradient(90deg, #5A3418, #7A4A26 45%, #5A3418); box-shadow: 2px 0 4px rgba(0,0,0,0.3)"></div>
+<div aria-hidden="true" style="position: absolute; left: 4px; top: 250px; width: 30px; height: 150px; pointer-events: none"><span style="position: absolute; left: 13px; top: 0; width: 5px; height: 84px; background: #2A1C12"></span><span style="position: absolute; left: 10px; top: -8px; width: 11px; height: 14px; border-radius: 2px; background: #1B1310"></span><span style="position: absolute; left: 0; top: 76px; width: 30px; height: 72px; border-radius: 45% 45% 48% 48%; background: #141414; box-shadow: inset 0 0 0 2px #E9E2D6"></span><span style="position: absolute; left: 9px; top: 100px; width: 12px; height: 18px; border-radius: 3px; background: #E9E2D6"></span></div>
+<div style="position: absolute; left: 32px; top: 300px; width: 1308px; height: 430px">
+
+<!-- lysbryter -->
+<div style="position: absolute; left: 70px; top: 30px; width: 14px; height: 14px; border-radius: 2px; {{T.switchCss}}"></div>
+
+<!-- tigerbildet -->
+<div style="position: absolute; left: 300px; top: -50px; transform: scale(1.05); transform-origin: 0 0; width: 168px; height: 104px; box-sizing: border-box; padding: 6px; {{T.frameDark}}">
+<div style="width: 100%; height: 100%; position: relative; overflow: hidden; {{T.tigerBg}}">
+<span style="position: absolute; left: 0; right: 0; top: 18px; height: 6px; transform: rotate(-8deg); {{T.stripe}}"></span>
+<span style="position: absolute; left: 0; right: 0; top: 70px; height: 6px; transform: rotate(6deg); {{T.stripe}}"></span>
+<span style="position: absolute; left: 34px; top: 40px; width: 22px; height: 14px; border-radius: 9999px; {{T.eye}}"></span>
+<span style="position: absolute; left: 100px; top: 40px; width: 22px; height: 14px; border-radius: 9999px; {{T.eye}}"></span>
+</div>
+</div>
+
+<!-- Lars Fiske-trykket i eikeramme -->
+<div style="position: absolute; left: 650px; top: 60px; transform: scale(1.15); transform-origin: 0 100%; width: 224px; height: 170px; box-sizing: border-box; padding: 6px; {{T.frameOak}}">
+<div style="width: 100%; height: 100%; box-sizing: border-box; padding: 12px; {{T.mat}}">
+<div style="width: 100%; height: 100%; position: relative; overflow: hidden; {{T.printBg}}">
+<span style="position: absolute; left: 0; top: 10px; width: 40px; height: 100px; {{T.printInk}}"></span>
+<span style="position: absolute; left: 112px; top: 30px; width: 46px; height: 84px; {{T.printInk}}"></span>
+<span style="position: absolute; left: 160px; top: 12px; width: 18px; height: 40px; {{T.printInk2}}"></span>
+<span style="position: absolute; left: 50px; top: 60px; width: 70px; height: 50px; transform: skewX(-30deg); {{T.printInk2}}"></span>
+</div>
+</div>
+</div>
+
+<!-- PÅ TOPPEN av hylla, fra venstre -->
+<button type="button" onClick="{{pickBoxes}}" aria-label="Boksene" style="position: absolute; left: 42px; top: 120px; transform: scale(1.3); transform-origin: 0 100%; width: 72px; height: 110px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: flex-end; gap: 1px; {{sel.boxes}}">
+<sc-for list="{{boxSpines}}" as="b" hint-placeholder-count="7"><span style="flex: none; {{b.css}}"></span></sc-for>
+</button>
+<button type="button" onClick="{{pickCD}}" aria-label="CD-mappene" style="position: absolute; left: 140px; top: 162px; transform: scale(1.2); transform-origin: 0 100%; width: 40px; height: 68px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: flex-end; gap: 1px; {{sel.cd}}">
+<sc-for list="{{cdSpines}}" as="b" hint-placeholder-count="17"><span style="flex: none; {{b.css}}"></span></sc-for>
+</button>
+<div style="position: absolute; left: 192px; top: 120px; width: 60px; height: 110px; border-radius: 2px; {{T.speaker}}"><span style="position: absolute; right: 6px; bottom: 6px; width: 6px; height: 6px; {{T.speakerBadge}}"></span></div>
+<div style="position: absolute; left: 225px; top: 112px; width: 96px; height: 118px; border-radius: 4px 4px 8px 8px; {{T.pot}}"></div>
+<button type="button" onClick="{{pickRack}}" aria-label="Avisstativet med 7- og 10-tommere" style="position: absolute; left: 372px; top: 150px; transform: scale(1.3); transform-origin: 0 100%; width: 92px; height: 80px; padding: 0; border: 0; background: transparent; cursor: pointer; {{sel.rack}}">
+<sc-for list="{{rackSpines}}" as="b" hint-placeholder-count="10"><span style="position: absolute; {{b.css}}"></span></sc-for>
+<span style="position: absolute; left: 4px; top: 22px; width: 84px; height: 40px; border-radius: 4px 4px 0 0; {{T.teak}}"></span>
+<span style="position: absolute; left: 14px; top: 62px; width: 2px; height: 18px; transform: rotate(14deg); {{T.wire}}"></span>
+<span style="position: absolute; left: 30px; top: 62px; width: 2px; height: 18px; transform: rotate(-14deg); {{T.wire}}"></span>
+<span style="position: absolute; left: 60px; top: 62px; width: 2px; height: 18px; transform: rotate(14deg); {{T.wire}}"></span>
+<span style="position: absolute; left: 76px; top: 62px; width: 2px; height: 18px; transform: rotate(-14deg); {{T.wire}}"></span>
+</button>
+
+<!-- lampen over stereocellen -->
+<sc-if value="{{T.glow}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; left: 430px; top: -40px; width: 320px; height: 320px; border-radius: 9999px; pointer-events: none; {{T.glowCss}}"></div>
+</sc-if>
+<div style="position: absolute; left: 559px; top: 150px; transform: scale(1.4); transform-origin: 50% 100%; z-index: 1; width: 62px; height: 80px">
+<span style="position: absolute; left: 0; top: 0; width: 62px; height: 56px; border-radius: 46% 46% 40% 40%; box-sizing: border-box; {{T.lampShade}}"></span>
+<span style="position: absolute; left: 4px; right: 4px; top: 6px; bottom: 34px; border-radius: 40%; pointer-events: none; {{T.lampRibs}}"></span>
+<span style="position: absolute; left: 20px; top: 56px; width: 22px; height: 24px; border-radius: 3px; box-sizing: border-box; {{T.lampBase}}"></span>
+</div>
+
+<!-- monsteraen, over potta og tigeren -->
+<svg width="330" height="210" viewBox="0 0 330 210" aria-hidden="true" style="position: absolute; left: 123px; top: -58px; transform: scale(1.6); transform-origin: 150px 170px; overflow: visible; pointer-events: none">
+<defs><path id="mleaf" d="M0 -4 C-8 -2 -20 0 -30 -8 C-44 -20 -44 -46 -26 -62 C-16 -71 -6 -74 0 -76 C6 -74 16 -71 26 -62 C44 -46 44 -20 30 -8 C20 0 8 -2 0 -4 Z"></path><path id="mslits" d="M-4 -22 L-30 -30 M-4 -38 L-34 -48 M-3 -54 L-22 -64 M4 -24 L32 -28 M4 -40 L34 -46 M3 -56 L24 -66"></path></defs>
+<g fill="none" stroke-width="2" style="{{T.stemCss}}">
+<path d="M150 170 C140 120 110 90 80 70"></path><path d="M152 170 C160 120 190 70 220 40"></path><path d="M150 170 C130 130 70 150 40 160"></path><path d="M154 170 C190 140 240 120 290 110"></path><path d="M151 170 C150 110 160 60 170 20"></path>
+</g>
+<g style="{{T.leafCss}}"><g transform="translate(80 70) rotate(-40) scale(0.95)"><use href="#mleaf"></use></g><g transform="translate(220 40) rotate(30) scale(1)"><use href="#mleaf"></use></g><g transform="translate(40 160) rotate(-95) scale(0.85)"><use href="#mleaf"></use></g><g transform="translate(290 110) rotate(75) scale(0.9)"><use href="#mleaf"></use></g><g transform="translate(170 20) rotate(5) scale(0.8)"><use href="#mleaf"></use></g><g transform="translate(255 175) rotate(150) scale(0.75)"><use href="#mleaf"></use></g></g>
+<g fill="none" stroke-width="3.5" stroke-linecap="round" style="{{T.slitCss}}"><g transform="translate(80 70) rotate(-40) scale(0.95)"><use href="#mslits"></use></g><g transform="translate(220 40) rotate(30) scale(1)"><use href="#mslits"></use></g><g transform="translate(40 160) rotate(-95) scale(0.85)"><use href="#mslits"></use></g><g transform="translate(290 110) rotate(75) scale(0.9)"><use href="#mslits"></use></g><g transform="translate(170 20) rotate(5) scale(0.8)"><use href="#mslits"></use></g><g transform="translate(255 175) rotate(150) scale(0.75)"><use href="#mslits"></use></g></g>
+</svg>
+
+<!-- platespilleren -->
+<button type="button" onClick="{{pickNow}}" aria-label="Platespilleren" style="position: absolute; left: 650px; top: 168px; transform: scale(1.25); transform-origin: 50% 100%; width: 140px; height: 62px; padding: 0; border: 0; background: transparent; cursor: pointer">
+<span style="position: absolute; left: 4px; right: 4px; top: 0; height: 42px; border-radius: 3px 3px 0 0; {{T.lid}}"></span>
+<span style="position: absolute; left: 14px; top: 32px; width: 104px; height: 8px; border-radius: 9999px; {{T.platter}}"></span>
+<span style="position: absolute; left: 16px; top: -14px; width: 100px; height: 100px; transform: scaleY(0.28); pointer-events: none">
+<span style="position: absolute; inset: 0; border-radius: 9999px; background: repeating-radial-gradient(circle, #0E0E0E 0 2px, #222 2px 3px); {{tt.disc}}">
+<span style="position: absolute; left: 33px; top: 33px; width: 34px; height: 34px; border-radius: 9999px; {{tt.label}}"></span>
+<span style="position: absolute; left: 48px; top: 36px; width: 5px; height: 5px; border-radius: 9999px; background: #F4EEE6"></span>
+</span>
+</span>
+<span style="position: absolute; left: 118px; top: 10px; width: 3px; height: 34px; border-radius: 2px; transform-origin: 50% 2px; transition: transform 700ms ease-in-out; {{tt.arm}} {{T.wire}}"></span>
+<span style="position: absolute; left: 114px; top: 6px; width: 10px; height: 10px; border-radius: 9999px; {{T.feet}}"></span>
+<span style="position: absolute; left: 0; right: 0; top: 40px; height: 14px; border-radius: 2px; {{T.plinth}}"></span>
+<span style="position: absolute; left: 10px; top: 54px; width: 12px; height: 8px; {{T.feet}}"></span><span style="position: absolute; right: 10px; top: 54px; width: 12px; height: 8px; {{T.feet}}"></span>
+</button>
+
+<!-- lydbølger fra høyttalerne når noe spiller -->
+<sc-if value="{{playing}}" hint-placeholder-val="{{ false }}">
+<span style="position: absolute; left: 192px; top: 145px; width: 60px; height: 60px; border-radius: 9999px; pointer-events: none; animation: puls 1.6s ease-out infinite; {{T.pulse}}"></span>
+<span style="position: absolute; left: 192px; top: 145px; width: 60px; height: 60px; border-radius: 9999px; pointer-events: none; animation: puls 1.6s ease-out 0.8s infinite; {{T.pulse}}"></span>
+<span style="position: absolute; left: 990px; top: 145px; width: 60px; height: 60px; border-radius: 9999px; pointer-events: none; animation: puls 1.6s ease-out 0.4s infinite; {{T.pulse}}"></span>
+<span style="position: absolute; left: 990px; top: 145px; width: 60px; height: 60px; border-radius: 9999px; pointer-events: none; animation: puls 1.6s ease-out 1.2s infinite; {{T.pulse}}"></span>
+</sc-if>
+
+
+<div style="position: absolute; left: 990px; top: 120px; z-index: 1; width: 60px; height: 110px; border-radius: 2px; {{T.speaker}}"><span style="position: absolute; right: 6px; bottom: 6px; width: 6px; height: 6px; {{T.speakerBadge}}"></span></div>
+<div style="position: absolute; left: 1030px; top: 71px; width: 78px; height: 118px; overflow: hidden; transform: scale(1.35); transform-origin: 0 0; {{T.coverWrap}}">
+<sc-if value="{{posters.betty.hasCover}}" hint-placeholder-val="{{ false }}"><img src="{{posters.betty.src}}" alt="" style="position: absolute; max-width: none; {{posters.betty.imgCss}} {{T.coverImg}}"></sc-if>
+</div>
+<div style="position: absolute; left: 1110px; top: 162px; z-index: 1; transform: scale(1.25); transform-origin: 100% 100%; width: 74px; height: 68px; box-sizing: border-box; border-radius: 4px; padding: 7px; {{T.amp}}"><div style="width: 100%; height: 100%; {{T.ampGrill}}"></div></div>
+
+<!-- hylla: rutene og stereoruta -->
+<sc-for list="{{cellsLong}}" as="c" hint-placeholder-count="6">
+<button type="button" onClick="{{c.pick}}" aria-label="{{c.name}}" style="position: absolute; top: 230px; height: 150px; padding: 0; box-sizing: border-box; cursor: pointer; overflow: hidden; display: flex; align-items: flex-end; {{c.css}}">
+<sc-for list="{{c.spines}}" as="sp" hint-placeholder-count="0"><span style="flex: none; {{sp.css}}"></span></sc-for>
+<sc-if value="{{c.hit}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; right: 4px; top: 4px; min-width: 22px; height: 22px; padding: 0 5px; box-sizing: border-box; border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; {{T.badge}}">{{c.hits}}</span></sc-if>
+</button>
+<span style="position: absolute; top: 417px; font-family: 'IBM Plex Mono', monospace; font-size: 9px; white-space: nowrap; pointer-events: none; {{c.lcss}}">{{c.label}}</span>
+</sc-for>
+<sc-for list="{{genreRowL}}" as="gr" hint-placeholder-count="0"><button type="button" onClick="{{gr.pick}}" aria-label="{{gr.aria}}" title="{{gr.name}}" style="position: absolute; padding: 3px 3px 0; box-sizing: border-box; border: 0; background: transparent; cursor: pointer; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: left; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.04em; text-transform: uppercase; line-height: 11px; {{gr.css}}">{{gr.label}}</button></sc-for>
+<div style="position: absolute; left: 602px; top: 230px; width: 100px; height: 150px; box-sizing: border-box; {{T.cellFrame}}">
+<span style="position: absolute; left: 6px; right: 6px; top: 20px; height: 20px; {{T.sony}}"></span>
+<span style="position: absolute; left: 0; right: 0; top: 70px; height: 6px; {{T.shelfBoard}}"></span>
+<span style="position: absolute; left: 4px; right: 4px; bottom: 4px; height: 56px; {{T.yamaha}}"></span>
+<span style="position: absolute; right: 12px; bottom: 22px; width: 16px; height: 16px; border-radius: 9999px; {{T.knob}}"></span>
+</div>
+</div>
+</div>
+<!-- kortveggen: i hjørnevisningen vinkles den innover fra hjørnet, slik den står på bildene -->
+<div style="position: absolute; left: 428px; top: 0; width: 2512px; height: 730px; pointer-events: none; {{endTf}}">
+<div style="position: absolute; left: 912px; width: 1600px; top: 680px; bottom: 0; {{T.floor}}"></div>
+<!-- hjørnet: langveggen brettes ut, kortveggen med stolen, celle 7–8 og Super Ape står vinkelrett -->
+<div style="position: absolute; left: 912px; width: 1600px; top: 0; height: 680px; {{T.wallEnd}}"></div>
+<div style="position: absolute; left: 912px; width: 124px; top: 0; height: 104px; clip-path: polygon(0 0, 100% 0, 0 100%); {{T.ceil}}"></div>
+<div style="position: absolute; left: 912px; width: 124px; top: 0; height: 104px; clip-path: polygon(0 100%, 100% 0, 100% 2%, 0 102%); background: rgba(0,0,0,0.12)"></div>
+<!-- vinduet på gavlveggen -->
+<div aria-hidden="true" style="position: absolute; left: 1384px; top: 132px; width: 264px; height: 354px; box-sizing: border-box; border: 9px solid #ECE7DE; background: linear-gradient(160deg, #3C5468, #22313F 70%); box-shadow: 0 0 0 1px rgba(0,0,0,0.15)"><span style="position: absolute; left: 50%; top: 0; bottom: 0; width: 6px; margin-left: -3px; background: #ECE7DE"></span><span style="position: absolute; left: 20px; top: 24px; width: 60px; height: 150px; transform: skewX(-12deg); background: rgba(255,255,255,0.07)"></span></div>
+<div aria-hidden="true" style="position: absolute; left: 1370px; top: 484px; width: 292px; height: 14px; background: #B5824F; box-shadow: 0 3px 4px rgba(0,0,0,0.25)"></div>
+<div aria-hidden="true" style="position: absolute; left: 1576px; top: 440px; width: 34px; height: 44px; border-radius: 3px 3px 6px 6px; background: #C9B796"></div>
+<svg aria-hidden="true" width="80" height="80" viewBox="0 0 80 80" style="position: absolute; left: 1554px; top: 362px; overflow: visible; pointer-events: none"><g fill="#3E6A3A"><ellipse cx="40" cy="60" rx="9" ry="17" transform="rotate(-30 40 60)"></ellipse><ellipse cx="52" cy="48" rx="8" ry="16" transform="rotate(25 52 48)"></ellipse><ellipse cx="34" cy="34" rx="8" ry="15" transform="rotate(-15 34 34)"></ellipse><ellipse cx="50" cy="20" rx="7" ry="13" transform="rotate(20 50 20)"></ellipse></g></svg>
+<div style="position: absolute; left: 912px; top: 0; width: 0; height: 680px; {{T.corner}}"></div>
+<span style="position: absolute; left: 920px; top: 660px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.08em; pointer-events: none; {{T.mutedC}}">HJØRNET</span>
+<div style="position: absolute; left: 32px; top: 300px; width: 1302px; height: 430px; pointer-events: none">
+<div style="pointer-events: auto">
+<!-- veggen til høyre: «spiller nå»-hylla og Super Ape -->
+<button type="button" onClick="{{pickNow}}" aria-label="Spiller nå" style="position: absolute; left: 958px; top: -40px; transform: scale(1.15); transform-origin: 0 0; width: 92px; height: 100px; padding: 0; border: 0; background: transparent; cursor: pointer">
+<div style="position: absolute; left: 6px; top: 0; width: 80px; height: 80px; overflow: hidden; {{nowSleeve}}">
+<sc-if value="{{now.hasCover}}" hint-placeholder-val="{{ false }}"><img src="{{now.src}}" alt="" style="position: absolute; max-width: none; {{now.imgCss}} {{T.coverImg}}"></sc-if>
+<sc-if value="{{now.noCover}}" hint-placeholder-val="{{ true }}"><span style="position: absolute; left: 6px; right: 6px; top: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 9px; line-height: 12px; color: #1A0E06">{{now.a}}</span></sc-if>
+</div>
+<div style="position: absolute; left: 0; top: 80px; width: 92px; height: 8px; {{T.oakShelf}}"></div>
+</button>
+<span style="position: absolute; left: 964px; top: -58px; width: 120px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.08em; {{T.accentC}}">SPILLER NÅ</span>
+<div style="position: absolute; left: 1110px; top: -150px; transform: scale(1.3); transform-origin: 0 0; width: 150px; height: 150px; box-sizing: border-box; padding: 7px; {{T.frameOakLight}}">
+<div style="width: 100%; height: 100%; position: relative; overflow: hidden; {{T.coverWrap}}">
+<sc-if value="{{posters.ape.hasCover}}" hint-placeholder-val="{{ false }}"><img src="{{posters.ape.src}}" alt="Super Ape" style="position: absolute; max-width: none; {{posters.ape.imgCss}} {{T.coverImg}}"></sc-if>
+</div>
+</div>
+
+<!-- den oransje stolen -->
+<div style="position: absolute; left: 888px; top: 262px; transform: scale(1.25, 1.75); transform-origin: 50% 100%; width: 118px; height: 118px">
+<span style="position: absolute; left: 10px; top: 0; width: 98px; height: 70px; border-radius: 26px 26px 10px 10px; {{T.chair}}"></span>
+<span style="position: absolute; left: 0; top: 56px; width: 118px; height: 34px; border-radius: 14px; {{T.chair}}"></span>
+<span style="position: absolute; left: 56px; top: 90px; width: 6px; height: 22px; {{T.chrome}}"></span>
+<span style="position: absolute; left: 24px; top: 110px; width: 70px; height: 4px; {{T.chrome}}"></span>
+</div>
+
+<!-- ønskelista: en lapp på kortveggen -->
+<button type="button" onClick="{{pickWish}}" aria-label="Ønskelista, {{wishCount}} artister" style="position: absolute; left: 898px; top: 66px; transform: scale(1.3); transform-origin: 0 0; width: 60px; height: 76px; padding: 7px 6px; box-sizing: border-box; border: 0; cursor: pointer; text-align: left; display: flex; flex-direction: column; gap: 4px; transform: rotate(-4deg); background: #F4EEE2; box-shadow: 0 3px 8px rgba(0,0,0,0.35); {{sel.wish}}">
+<span style="position: absolute; left: 25px; top: -4px; width: 10px; height: 10px; border-radius: 9999px; background: #E8692E"></span>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 8px; font-weight: 600; letter-spacing: 0.06em; color: #2A2016">ØNSKER</span>
+<span style="height: 1px; background: #2A201640"></span><span style="height: 1px; background: #2A201640"></span><span style="height: 1px; background: #2A201640"></span><span style="height: 1px; background: #2A201640"></span>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: #2A2016">{{wishCount}}</span>
+</button>
+
+<!-- nye plater, lent mot stolen til de får plass -->
+<sc-if value="{{nyHar}}" hint-placeholder-val="{{ false }}">
+<button type="button" onClick="{{pickNy}}" aria-label="Ny i hus: {{nyAntall}} plater som venter på plass" style="position: absolute; left: 898px; top: 290px; transform: scale(1.5); transform-origin: 0 100%; width: 96px; height: 92px; padding: 0; border: 0; background: transparent; cursor: pointer; {{sel.ny}}">
+<sc-for list="{{nyStabel}}" as="ns" hint-placeholder-count="2">
+<span style="position: absolute; bottom: 0; width: 70px; height: 70px; overflow: hidden; transform-origin: bottom left; box-shadow: 0 4px 10px rgba(0,0,0,0.4); {{ns.css}} {{T.coverWrap}}">
+<sc-if value="{{ns.hasCover}}" hint-placeholder-val="{{ false }}"><img src="{{ns.src}}" alt="" style="position: absolute; max-width: none; {{ns.imgCss}} {{T.coverImg}}"></sc-if>
+<sc-if value="{{ns.noCover}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; left: 6px; right: 6px; top: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 9px; line-height: 11px; {{T.textC}}">{{ns.a}}</span></sc-if>
+</span>
+</sc-for>
+</button>
+<span style="position: absolute; left: 898px; top: 386px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; white-space: nowrap; pointer-events: none; {{T.cellLabel}}">NY I HUS · {{nyAntall}}</span>
+</sc-if>
+
+<!-- puta oppå celle 7 -->
+<div style="position: absolute; left: 1024px; top: 204px; width: 90px; height: 30px; border-radius: 12px 12px 6px 6px; {{T.boucle}}"></div>
+<sc-for list="{{cellsEnd}}" as="c" hint-placeholder-count="6">
+<button type="button" onClick="{{c.pick}}" aria-label="{{c.name}}" style="position: absolute; top: 230px; height: 150px; padding: 0; box-sizing: border-box; cursor: pointer; overflow: hidden; display: flex; align-items: flex-end; {{c.css}}">
+<sc-for list="{{c.spines}}" as="sp" hint-placeholder-count="0"><span style="flex: none; {{sp.css}}"></span></sc-for>
+<sc-if value="{{c.hit}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; right: 4px; top: 4px; min-width: 22px; height: 22px; padding: 0 5px; box-sizing: border-box; border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; {{T.badge}}">{{c.hits}}</span></sc-if>
+</button>
+<span style="position: absolute; top: 417px; font-family: 'IBM Plex Mono', monospace; font-size: 9px; white-space: nowrap; pointer-events: none; {{c.lcss}}">{{c.label}}</span>
+</sc-for>
+<sc-for list="{{genreRowE}}" as="gr" hint-placeholder-count="0"><button type="button" onClick="{{gr.pick}}" aria-label="{{gr.aria}}" title="{{gr.name}}" style="position: absolute; padding: 3px 3px 0; box-sizing: border-box; border: 0; background: transparent; cursor: pointer; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: left; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.04em; text-transform: uppercase; line-height: 11px; {{gr.css}}">{{gr.label}}</button></sc-for>
+</div>
+</div>
+</div>
+<div style="position: absolute; left: 32px; top: 300px; width: 1302px; height: 430px; pointer-events: none; {{flyTf}}">
+<!-- plata på vei fra cellen til platespilleren og «spiller nå»-hylla -->
+<sc-if value="{{fly.show}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; z-index: 30; border-radius: 9999px; pointer-events: none; background: repeating-radial-gradient(circle, #0E0E0E 0 2px, #222 2px 3px); {{fly.disc}}"><span style="position: absolute; left: 33%; top: 33%; width: 34%; height: 34%; border-radius: 9999px; {{tt.label}}"></span></div>
+<div style="position: absolute; z-index: 31; overflow: hidden; pointer-events: none; box-shadow: 0 10px 24px rgba(0,0,0,0.45); {{fly.cover}} {{T.coverWrap}}">
+<sc-if value="{{fly.hasCover}}" hint-placeholder-val="{{ false }}"><img src="{{fly.src}}" alt="" style="position: absolute; max-width: none; {{fly.imgCss}} {{T.coverImg}}"></sc-if>
+</div>
+</sc-if>
+</div>
+
+<sc-if value="{{T.dims}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; left: 72px; top: 704px; width: 1162px; height: 1px; pointer-events: none; {{T.dimLine}}"></div>
+<sc-for list="{{ticks}}" as="tk" hint-placeholder-count="9"><span style="position: absolute; top: 698px; width: 1px; height: 13px; pointer-events: none; {{tk.css}}"></span></sc-for>
+<span style="position: absolute; left: 72px; top: 710px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; pointer-events: none; {{T.mutedC}}">OPPRISS · VEGG MOT NORD · CA. 1:20</span>
+</sc-if>
+<sc-if value="{{T.grain}}" hint-placeholder-val="{{ false }}">
+<svg width="1366" height="730" aria-hidden="true" style="position: absolute; left: 0; top: 0; pointer-events: none; mix-blend-mode: multiply; opacity: 0.35">
+<filter id="korn"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"></feTurbulence><feColorMatrix values="0 0 0 0 0.1  0 0 0 0 0.1  0 0 0 0 0.1  0 0 0 0.55 0"></feColorMatrix></filter>
+<rect width="1366" height="730" filter="url(#korn)"></rect>
+</svg>
+</sc-if>
+</sc-if>
+<!-- FOTO: rommet ditt, med trykkbare celler lagt over bildet -->
+<sc-if value="{{isFoto}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; left: 0; top: 0; width: 1366px; height: 550px; transition: transform 500ms ease-in-out, opacity 400ms ease-in-out; {{pano.css}}">
+<img src="{{fotoSrc}}" alt="Platerommet" style="position: absolute; left: 0; top: -65px; width: 1366px; height: 804px; max-width: none; pointer-events: none; filter: brightness(1.35) saturate(1.05)">
+<sc-for list="{{hots}}" as="h" hint-placeholder-count="0">
+<button type="button" class="hot" onClick="{{h.pick}}" aria-label="{{h.name}}" title="{{h.name}}" style="position: absolute; padding: 0; border: 0; cursor: pointer; {{h.css}}"></button>
+</sc-for>
+<sc-for list="{{hotLabels}}" as="hl" hint-placeholder-count="0">
+<span style="position: absolute; transform: translate(-50%, 0); padding: 2px 6px; border-radius: 9999px; white-space: nowrap; pointer-events: none; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; {{hl.css}}">{{hl.t}}</span>
+</sc-for>
+<sc-if value="{{fotoNow.show}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.45); {{fotoNow.css}} {{T.coverWrap}}"><img src="{{fotoNow.src}}" alt="" style="position: absolute; max-width: none; {{fotoNow.imgCss}}"></div>
+</sc-if>
+<button type="button" onClick="{{pickWish}}" aria-label="Ønskelista, {{wishCount}} artister" style="position: absolute; left: 1046px; top: 96px; width: 46px; height: 58px; padding: 5px; box-sizing: border-box; border: 0; cursor: pointer; text-align: left; display: flex; flex-direction: column; gap: 3px; transform: rotate(-4deg); background: #F4EEE2; box-shadow: 0 3px 8px rgba(0,0,0,0.45); {{sel.wish}}">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 7px; font-weight: 600; color: #2A2016">ØNSKER</span><span style="height: 1px; background: #2A201640"></span><span style="height: 1px; background: #2A201640"></span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 8px; color: #2A2016">{{wishCount}}</span>
+</button>
+</div>
+<!-- detaljbildet av cellen du trykket på -->
+<div style="position: absolute; left: 0; top: 0; width: 1366px; height: 550px; overflow: hidden; background: #14110E; transition: opacity 400ms ease-in-out 120ms; {{detail.css}}">
+<img src="{{detail.src}}" alt="{{detail.alt}}" style="position: absolute; max-width: none; pointer-events: none; transition: left 450ms ease-in-out, top 450ms ease-in-out, width 450ms ease-in-out, height 450ms ease-in-out; filter: brightness(1.08); {{detail.imgCss}}">
+<sc-for list="{{detail.hots}}" as="dh" hint-placeholder-count="0">
+<button type="button" class="hot" onClick="{{dh.pick}}" aria-label="{{dh.name}}" style="position: absolute; padding: 0; border-radius: 4px; cursor: pointer; transition: left 450ms ease-in-out, top 450ms ease-in-out, width 450ms ease-in-out, height 450ms ease-in-out; {{dh.css}}">
+<span style="position: absolute; left: 8px; top: 8px; padding: 3px 8px; border-radius: 9999px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; white-space: nowrap; {{dh.lcss}}">{{dh.label}}</span>
+</button>
+</sc-for>
+<sc-if value="{{detail.now.show}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; overflow: hidden; box-shadow: 0 6px 16px rgba(0,0,0,0.5); transition: left 450ms ease-in-out, top 450ms ease-in-out, width 450ms ease-in-out, height 450ms ease-in-out; {{detail.now.css}} {{T.coverWrap}}"><img src="{{detail.now.src}}" alt="Spiller nå" style="position: absolute; max-width: none; {{detail.now.imgCss}}"></div>
+</sc-if>
+<button type="button" onClick="{{detail.back}}" style="position: absolute; left: 24px; bottom: 20px; height: 44px; padding: 0 16px; border-radius: 9999px; border: 0; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.4); font-family: 'Archivo', sans-serif; font-size: 14px; font-weight: 700; background: rgba(20,17,14,0.82); color: #F1E9DF"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>Hele rommet</button>
+</div>
+<sc-if value="{{nyHar}}" hint-placeholder-val="{{ false }}">
+<button type="button" onClick="{{pickNy}}" aria-label="Ny i hus: {{nyAntall}}" style="position: absolute; left: 960px; top: 400px; height: 28px; padding: 0 10px; border-radius: 9999px; border: 0; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; {{T.primary}}">NY I HUS · {{nyAntall}}</button>
+</sc-if>
+</sc-if>
+</div>
+</div>
+<div style="flex: 1.6 0 0; min-width: {{sceneW}}px; {{T.floor}} {{bigFill}}"></div>
+</div>
+</div>
+</div>
+<sc-if value="{{big}}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{panL}}" aria-label="Se mot venstre" style="position: absolute; left: 16px; top: 50%; width: 52px; height: 52px; margin-top: -26px; border-radius: 9999px; border: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; background: rgba(20,17,14,0.72); color: #F1E9DF"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg></button>
+<button type="button" onClick="{{panR}}" aria-label="Se mot høyre" style="position: absolute; right: 16px; top: 50%; width: 52px; height: 52px; margin-top: -26px; border-radius: 9999px; border: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; background: rgba(20,17,14,0.72); color: #F1E9DF"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg></button>
+<p style="position: absolute; left: 50%; top: 14px; transform: translateX(-50%); margin: 0; padding: 6px 14px; border-radius: 9999px; font-size: 13px; pointer-events: none; background: rgba(20,17,14,0.72); color: #F1E9DF">Trykk på en celle, en plate eller lappen for å åpne</p>
+</sc-if>
+</div>
+
+<!-- ============ PANELET ============ -->
+<sc-if value="{{panelOpen}}" hint-placeholder-val="{{ false }}">
+<section style="flex: 1; min-height: 0; display: flex; flex-direction: column; {{T.panel}}">
+<div style="height: 54px; flex: none; box-sizing: border-box; padding: 0 32px; display: flex; align-items: flex-end; gap: 6px; {{T.tabsBar}}">
+<sc-for list="{{tabs}}" as="tb" hint-placeholder-count="3">
+<button type="button" onClick="{{tb.pick}}" style="height: 36px; padding: 0 12px; border-radius: 4px 4px 0 0; cursor: pointer; white-space: nowrap; font-weight: 800; font-stretch: 62%; font-size: 15px; letter-spacing: 0.04em; text-transform: uppercase; {{tb.css}}">{{tb.name}}</button>
+</sc-for>
+<div style="flex: 1"></div>
+<button type="button" onClick="{{closePanel}}" aria-label="Lukk og vis hele hylla" style="order: 99; width: 40px; height: 40px; margin-bottom: 6px; margin-left: 8px; border-radius: 4px; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; {{T.btn}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+<sc-if value="{{notWish}}" hint-placeholder-val="{{ true }}">
+<div role="group" aria-label="Visning" style="display: flex; gap: 4px; margin-bottom: 8px">
+<button type="button" onClick="{{setBla}}" style="height: 34px; padding: 0 12px; border-radius: 9999px; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 13px; {{modeBla}}">Bla</button>
+<button type="button" onClick="{{setKort}}" style="height: 34px; padding: 0 12px; border-radius: 9999px; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 13px; {{modeKort}}">Kartotek</button>
+</div>
+</sc-if>
+</div>
+
+<sc-if value="{{loading}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 24px 32px; font-family: 'IBM Plex Mono', monospace; font-size: 13px">{{loadText}}</p>
+</sc-if>
+
+<!-- BLA: én plate fremme, resten står bak -->
+<sc-if value="{{isBla}}" hint-placeholder-val="{{ true }}">
+<div style="flex: 1; min-height: 0; position: relative">
+<div style="position: absolute; left: 40px; top: 46px; width: 420px; height: 330px">
+<sc-for list="{{stack}}" as="sk" hint-placeholder-count="6">
+<button type="button" onClick="{{sk.pick}}" aria-label="{{sk.label}}" style="position: absolute; padding: 0; border: 0; overflow: hidden; cursor: pointer; {{sk.css}}">
+<sc-if value="{{sk.hasCover}}" hint-placeholder-val="{{ false }}"><img src="{{sk.src}}" alt="" style="position: absolute; max-width: none; pointer-events: none; {{sk.imgCss}} {{T.coverImg}}"></sc-if>
+<sc-if value="{{sk.noCover}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; left: 12px; right: 12px; top: 12px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 18px; text-align: left; {{T.textC}}">{{sk.a}} – {{sk.t}}</span></sc-if>
+</button>
+</sc-for>
+</div>
+<div style="position: absolute; left: 500px; top: 52px; right: 40px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; {{T.mutedC}}">{{front.pos}}</span>
+<h2 style="margin: 0; font-size: 34px; line-height: 38px; font-weight: 800; font-stretch: 75%">{{front.t}}</h2>
+<span style="font-size: 18px">{{front.a}}</span>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; {{T.mutedC}}">{{front.meta}}</span>
+<div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px">
+<sc-if value="{{front.aplus}}" hint-placeholder-val="{{ false }}"><span style="height: 28px; padding: 0 10px; border-radius: 9999px; display: flex; align-items: center; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; {{T.stamp}}">A+</span></sc-if>
+<sc-if value="{{front.forslag}}" hint-placeholder-val="{{ false }}"><span style="height: 28px; padding: 0 10px; display: flex; align-items: center; background: #E6D36C; color: #262105; font-family: 'IBM Plex Mono', monospace; font-size: 12px">forslag?</span></sc-if>
+</div>
+<div style="display: flex; gap: 10px; margin-top: 18px">
+<button type="button" onClick="{{prev}}" aria-label="Forrige plate" style="width: 48px; height: 48px; border-radius: 4px; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; {{T.btn}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg></button>
+<button type="button" onClick="{{next}}" aria-label="Neste plate" style="width: 48px; height: 48px; border-radius: 4px; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; {{T.btn}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg></button>
+<button type="button" onClick="{{front.open}}" style="height: 48px; padding: 0 16px; border-radius: 4px; background: transparent; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 15px; {{T.btn}}">Åpne kortet</button>
+<button type="button" onClick="{{front.play}}" style="height: 48px; padding: 0 16px; border-radius: 4px; border: 0; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 15px; font-weight: 700; {{T.primary}}">Sett på platespilleren</button>
+</div>
+</div>
+<div style="position: absolute; left: 40px; right: 40px; bottom: 26px; display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; {{T.mutedC}}">{{margin.label}}</span>
+<div style="height: 40px; display: flex; align-items: flex-end; gap: 1px; overflow: hidden">
+<sc-for list="{{margin.spines}}" as="m" hint-placeholder-count="0">
+<button type="button" onClick="{{m.pick}}" aria-label="{{m.label}}" style="flex: 1 1 0; min-width: 1px; padding: 0; border: 0; cursor: pointer; {{m.css}}"></button>
+</sc-for>
+</div>
+</div>
+</div>
+</sc-if>
+
+<!-- KARTOTEK: kort for kort -->
+<sc-if value="{{isKort}}" hint-placeholder-val="{{ false }}">
+<div style="flex: 1; min-height: 0; overflow-y: auto; box-sizing: border-box; padding: 20px 32px 40px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; align-content: start">
+<sc-for list="{{cards}}" as="k" hint-placeholder-count="8">
+<button type="button" onClick="{{k.open}}" aria-label="{{k.label}}" style="display: flex; gap: 12px; padding: 10px; border-radius: 3px; cursor: pointer; text-align: left; font-family: 'IBM Plex Mono', monospace; {{T.indexCard}}">
+<span style="width: 64px; height: 64px; flex: none; position: relative; overflow: hidden; {{T.coverWrap}}">
+<sc-if value="{{k.hasCover}}" hint-placeholder-val="{{ false }}"><img src="{{k.src}}" alt="" style="position: absolute; max-width: none; {{k.imgCss}} {{T.coverImg}}"></sc-if>
+</span>
+<span style="display: flex; flex-direction: column; gap: 2px; min-width: 0; font-size: 12px; line-height: 16px">
+<span style="font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{k.a}}</span>
+<span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{k.t}}</span>
+<span style="{{T.mutedC}}">{{k.meta}}</span>
+<span style="{{k.stampCss}}">{{k.stamp}}</span>
+</span>
+</button>
+</sc-for>
+</div>
+</sc-if>
+
+<!-- ØNSKELISTA -->
+<sc-if value="{{isWish}}" hint-placeholder-val="{{ false }}">
+<div style="flex: 1; min-height: 0; overflow-y: auto; box-sizing: border-box; padding: 18px 32px 40px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap">
+<div role="group" aria-label="Filter" style="display: flex; gap: 4px; flex-wrap: wrap">
+<sc-for list="{{wishFilters}}" as="wf" hint-placeholder-count="5">
+<button type="button" onClick="{{wf.pick}}" style="height: 34px; padding: 0 12px; border-radius: 9999px; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 13px; {{wf.css}}">{{wf.name}} <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; opacity: 0.75">{{wf.n}}</span></button>
+</sc-for>
+</div>
+<div role="group" aria-label="Rekkefølge" style="display: flex; gap: 4px; margin-left: 12px">
+<button type="button" onClick="{{wishSort.prio}}" style="height: 34px; padding: 0 12px; border-radius: 9999px; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 13px; {{wishSort.prioCss}}">Prioritet</button>
+<button type="button" onClick="{{wishSort.az}}" style="height: 34px; padding: 0 12px; border-radius: 9999px; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 13px; {{wishSort.azCss}}">A–Å</button>
+</div>
+<div style="flex: 1"></div>
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px">Artist
+<input type="text" list="artistliste" autocomplete="off" onInput="{{wishAdd.setA}}" style="width: 200px; height: 40px; padding: 0 10px; border-radius: 4px; font-family: 'Archivo', sans-serif; font-size: 14px; {{T.select}}">
+</label>
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px">Hva
+<select value="{{wishAdd.type}}" onChange="{{wishAdd.setType}}" style="height: 40px; padding: 0 8px; border-radius: 4px; font-family: 'Archivo', sans-serif; font-size: 14px; {{T.select}}"><option value="Mer">Mer</option><option value="Original">Original</option><option value="Vil ha">Vil ha</option><option value="Selge">Selge</option></select>
+</label>
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px">Tittel (valgfritt)
+<input type="text" autocomplete="off" onInput="{{wishAdd.setT}}" style="width: 200px; height: 40px; padding: 0 10px; border-radius: 4px; font-family: 'Archivo', sans-serif; font-size: 14px; {{T.select}}">
+</label>
+<button type="button" onClick="{{wishAdd.save}}" style="height: 40px; padding: 0 14px; border-radius: 4px; border: 0; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 14px; font-weight: 700; {{T.primary}}">Legg til ønske</button>
+</div>
+<sc-if value="{{wishAdd.hasErr}}" hint-placeholder-val="{{ false }}"><p role="alert" style="margin: 0; font-size: 13px; {{T.accentC}}">{{wishAdd.err}}</p></sc-if>
+<!-- prioritert liste: dra radene, eller bruk pilene -->
+<sc-if value="{{wishSort.isPrio}}" hint-placeholder-val="{{ true }}">
+<p style="margin: 0; font-size: 13px; {{T.mutedC}}">Øverst er det du ønsker deg mest. Dra en rad, eller bruk pilene.</p>
+<ol style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{wishItems}}" as="wi" hint-placeholder-count="8">
+<li draggable="true" onDragStart="{{wi.dragStart}}" onDragOver="{{wi.dragOver}}" onDrop="{{wi.drop}}" style="display: flex; align-items: center; gap: 14px; padding: 8px 12px; border-radius: 3px; cursor: grab; {{T.indexCard}} {{wi.rowCss}}">
+<span aria-hidden="true" style="display: flex; flex-direction: column; gap: 3px; opacity: 0.5"><span style="width: 14px; height: 2px; background: currentColor"></span><span style="width: 14px; height: 2px; background: currentColor"></span><span style="width: 14px; height: 2px; background: currentColor"></span></span>
+<span style="width: 40px; flex: none; font-family: 'IBM Plex Mono', monospace; font-size: 20px; font-weight: 600; {{wi.rankCss}}">{{wi.rank}}</span>
+<span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+<strong style="font-size: 15px">{{wi.a}}</strong>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px"><span style="{{T.accentC}}">{{wi.tags}}</span><span style="{{T.mutedC}}"> · {{wi.have}}</span></span>
+</span>
+<button type="button" onClick="{{wi.top}}" aria-label="Flytt {{wi.a}} til toppen" style="height: 36px; padding: 0 10px; border-radius: 4px; cursor: pointer; background: transparent; font-family: 'Archivo', sans-serif; font-size: 13px; {{T.btn}}">Topp</button>
+<button type="button" onClick="{{wi.up}}" aria-label="Flytt {{wi.a}} opp" style="width: 36px; height: 36px; border-radius: 4px; cursor: pointer; background: transparent; display: flex; align-items: center; justify-content: center; {{T.btn}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 15l7-7 7 7"></path></svg></button>
+<button type="button" onClick="{{wi.down}}" aria-label="Flytt {{wi.a}} ned" style="width: 36px; height: 36px; border-radius: 4px; cursor: pointer; background: transparent; display: flex; align-items: center; justify-content: center; {{T.btn}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 9l7 7 7-7"></path></svg></button>
+<button type="button" onClick="{{wi.got}}" style="height: 36px; padding: 0 10px; border-radius: 4px; cursor: pointer; background: transparent; font-family: 'Archivo', sans-serif; font-size: 13px; {{T.btn}}">Fått den</button>
+<button type="button" onClick="{{wi.remove}}" aria-label="Fjern {{wi.a}} fra ønskelista" style="height: 36px; padding: 0 10px; border-radius: 4px; cursor: pointer; background: transparent; font-family: 'Archivo', sans-serif; font-size: 13px; {{T.btn}}">Fjern</button>
+</li>
+</sc-for>
+</ol>
+</sc-if>
+<sc-if value="{{wishSort.isAz}}" hint-placeholder-val="{{ false }}">
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; align-content: start">
+<sc-for list="{{wishItems}}" as="wi" hint-placeholder-count="8">
+<div style="display: flex; flex-direction: column; gap: 6px; padding: 12px; border-radius: 3px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; line-height: 16px; {{T.indexCard}}">
+<strong style="font-family: 'Archivo', sans-serif; font-size: 15px; line-height: 19px">{{wi.a}}</strong>
+<span style="{{T.accentC}}">{{wi.tags}}</span>
+<span style="{{T.mutedC}}">{{wi.have}} · nr. {{wi.rank}}</span>
+<div style="display: flex; gap: 6px; margin-top: 4px">
+<button type="button" onClick="{{wi.got}}" style="height: 36px; padding: 0 10px; border-radius: 4px; cursor: pointer; background: transparent; font-family: 'Archivo', sans-serif; font-size: 13px; {{T.btn}}">Fått den</button>
+<button type="button" onClick="{{wi.remove}}" aria-label="Fjern {{wi.a}} fra ønskelista" style="height: 36px; padding: 0 10px; border-radius: 4px; cursor: pointer; background: transparent; font-family: 'Archivo', sans-serif; font-size: 13px; {{T.btn}}">Fjern</button>
+</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+</div>
+</sc-if>
+</section>
+</sc-if>
+
+<!-- NY PLATE -->
+<sc-if value="{{formOpen}}" hint-placeholder-val="{{ false }}">
+<aside aria-label="Ny plate" style="position: absolute; right: 0; top: 56px; bottom: 0; width: 448px; box-sizing: border-box; overflow-y: auto; padding: 20px 30px 40px; display: flex; flex-direction: column; gap: 14px; z-index: 40; {{T.aside}}">
+<div style="display: flex; justify-content: space-between; align-items: center">
+<h2 style="margin: 0; font-size: 26px; font-weight: 800; font-stretch: 75%">Ny plate</h2>
+<button type="button" onClick="{{closeForm}}" aria-label="Lukk" style="width: 44px; height: 44px; border-radius: 4px; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; {{T.btn}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+</div>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px">Artist
+<input type="text" list="artistliste" autocomplete="off" value="{{form.aVal}}" onInput="{{form.setA}}" style="height: 44px; padding: 0 10px; border-radius: 4px; font-family: 'Archivo', sans-serif; font-size: 15px; {{T.select}}">
+</label>
+<datalist id="artistliste"><sc-for list="{{artistOptions}}" as="ao" hint-placeholder-count="0"><option value="{{ao.v}}">{{ao.note}}</option></sc-for></datalist>
+<sc-if value="{{form.hasWish}}" hint-placeholder-val="{{ false }}"><p style="margin: 0; padding: 8px 10px; border-radius: 4px; font-size: 13px; line-height: 18px; {{T.indexCard}}">På ønskelista: {{form.wish}}</p></sc-if>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px">Tittel
+<input type="text" autocomplete="off" onInput="{{form.setT}}" style="height: 44px; padding: 0 10px; border-radius: 4px; font-family: 'Archivo', sans-serif; font-size: 15px; {{T.select}}">
+</label>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px">
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px">Format
+<select value="{{form.s}}" onChange="{{form.setS}}" style="height: 44px; padding: 0 8px; border-radius: 4px; font-family: 'Archivo', sans-serif; font-size: 15px; {{T.select}}"><option value="LP">LP</option><option value="10&quot;">10"</option><option value="7&quot;">7"</option><option value="CD">CD</option></select>
+</label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px">Antall
+<select value="{{form.n}}" onChange="{{form.setN}}" style="height: 44px; padding: 0 8px; border-radius: 4px; font-family: 'Archivo', sans-serif; font-size: 15px; {{T.select}}"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+</label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px">År
+<input type="text" inputmode="numeric" maxlength="4" onInput="{{form.setY}}" style="height: 44px; padding: 0 10px; border-radius: 4px; font-family: 'Archivo', sans-serif; font-size: 15px; {{T.select}}">
+</label>
+</div>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px">Sjanger <span style="{{T.mutedC}}">{{form.gHint}}</span>
+<select value="{{form.g}}" onChange="{{form.setG}}" style="height: 44px; padding: 0 10px; border-radius: 4px; font-family: 'Archivo', sans-serif; font-size: 15px; {{T.select}}">
+<sc-for list="{{gOptions}}" as="o" hint-placeholder-count="17"><option value="{{o.v}}">{{o.name}}</option></sc-for>
+</select>
+</label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px">Discogs-lenke (valgfritt)
+<input type="url" autocomplete="off" onInput="{{form.setU}}" style="height: 44px; padding: 0 10px; border-radius: 4px; font-family: 'Archivo', sans-serif; font-size: 15px; {{T.select}}">
+</label>
+<div style="display: flex; gap: 14px; align-items: center">
+<span style="width: 96px; height: 96px; flex: none; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-align: center; {{T.coverWrap}} {{T.mutedC}}">
+<sc-if value="{{form.hasImg}}" hint-placeholder-val="{{ false }}"><img src="{{form.img}}" alt="Valgt cover" style="position: absolute; left: 0; top: 0; width: 96px; height: 96px"></sc-if>
+<sc-if value="{{form.noImg}}" hint-placeholder-val="{{ true }}">ingen cover</sc-if>
+</span>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px">Cover (bilde eller foto av plata)
+<input type="file" accept="image/*" onChange="{{form.pickImg}}" style="font-family: 'Archivo', sans-serif; font-size: 13px">
+</label>
+</div>
+<sc-if value="{{form.hasErr}}" hint-placeholder-val="{{ false }}"><p role="alert" style="margin: 0; font-size: 13px; {{T.accentC}}">{{form.err}}</p></sc-if>
+<button type="button" onClick="{{form.save}}" style="flex: none; height: 48px; border-radius: 4px; border: 0; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 15px; font-weight: 700; {{T.primary}}">Legg til – lenes mot stolen</button>
+<p style="margin: 0; font-size: 12px; line-height: 18px; {{T.mutedC}}">Plata står i «Ny i hus» til du åpner kortet og velger «Sett inn i hylla». Da havner den i riktig celle etter sjangeren.</p>
+</aside>
+</sc-if>
+
+<!-- KARTOTEKKORTET -->
+<sc-if value="{{hasSel}}" hint-placeholder-val="{{ false }}">
+<aside aria-label="Kartotekkort" style="position: absolute; right: 0; top: 56px; bottom: 0; width: 448px; box-sizing: border-box; overflow-y: auto; padding: 20px 30px 40px; display: flex; flex-direction: column; gap: 16px; {{T.aside}}">
+<div style="display: flex; justify-content: space-between; align-items: center">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; {{T.mutedC}}">KORT {{card.no}} · {{card.place}}</span>
+<button type="button" onClick="{{closeCard}}" aria-label="Lukk kortet" style="width: 44px; height: 44px; border-radius: 4px; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; {{T.btn}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+</div>
+<div style="position: relative; width: 388px; height: 388px; flex: none; overflow: hidden; {{T.coverWrap}}">
+<sc-if value="{{card.hasCover}}" hint-placeholder-val="{{ false }}"><img src="{{card.src}}" alt="Omslaget til {{card.t}}" style="position: absolute; max-width: none; {{card.imgCss}} {{T.coverImg}}"></sc-if>
+<sc-if value="{{card.noCover}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; left: 18px; right: 18px; top: 18px; font-family: 'IBM Plex Mono', monospace; font-size: 15px; line-height: 20px; {{T.textC}}">{{card.a}} – {{card.t}}</span></sc-if>
+</div>
+<button type="button" onClick="{{card.play}}" style="flex: none; height: 48px; border-radius: 4px; border: 0; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 15px; font-weight: 700; {{T.primary}}">Sett på platespilleren</button>
+<div style="position: relative; box-sizing: border-box; padding: 4px 20px 20px; border-radius: 3px; {{T.ruled}}">
+<sc-if value="{{card.aplus}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; right: 18px; top: 14px; width: 60px; height: 60px; box-sizing: border-box; border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; transform: rotate(-14deg); {{T.stampRing}}">A+</span></sc-if>
+<dl style="margin: 0; display: grid; grid-template-columns: 100px minmax(0, 1fr); column-gap: 12px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 28px">
+<dt style="{{T.mutedC}}">artist</dt><dd style="margin: 0; padding-right: 64px; font-weight: 600">{{card.a}}</dd>
+<dt style="{{T.mutedC}}">tittel</dt><dd style="margin: 0; padding-right: 64px">{{card.t}}</dd>
+<dt style="{{T.mutedC}}">følelse</dt><dd style="margin: 0">{{card.genre}} ({{card.status}})</dd>
+<dt style="{{T.mutedC}}">plass</dt><dd style="margin: 0">{{card.placeLong}}</dd>
+<dt style="{{T.mutedC}}">format</dt><dd style="margin: 0">{{card.fmt}}</dd>
+<dt style="{{T.mutedC}}">utgave</dt><dd style="margin: 0">{{card.y}}</dd>
+<dt style="{{T.mutedC}}">label</dt><dd style="margin: 0">{{card.lb}}</dd>
+<dt style="{{T.mutedC}}">kat.nr.</dt><dd style="margin: 0">{{card.cat}}</dd>
+<dt style="{{T.mutedC}}">tilstand</dt><dd style="margin: 0">{{card.c}}</dd>
+<dt style="{{T.mutedC}}">vurdering</dt><dd style="margin: 0">{{card.r}}</dd>
+<dt style="{{T.mutedC}}">ønskeliste</dt><dd style="margin: 0">{{card.w}}</dd>
+</dl>
+</div>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px">Flytt til sjanger
+<select value="{{card.gval}}" onChange="{{card.moveG}}" style="height: 44px; padding: 0 10px; border-radius: 4px; font-family: 'Archivo', sans-serif; font-size: 15px; {{T.select}}">
+<sc-for list="{{gOptions}}" as="o" hint-placeholder-count="17"><option value="{{o.v}}">{{o.name}}</option></sc-for>
+</select>
+</label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px">Flytt til plass
+<select value="{{card.pval}}" onChange="{{card.moveP}}" style="height: 44px; padding: 0 10px; border-radius: 4px; font-family: 'Archivo', sans-serif; font-size: 15px; {{T.select}}">
+<sc-for list="{{pOptions}}" as="o" hint-placeholder-count="11"><option value="{{o.v}}">{{o.name}}</option></sc-for>
+</select>
+</label>
+<sc-if value="{{card.waiting}}" hint-placeholder-val="{{ false }}">
+<button type="button" onClick="{{card.home}}" style="flex: none; height: 48px; border-radius: 4px; cursor: pointer; background: transparent; font-family: 'Archivo', sans-serif; font-size: 15px; font-weight: 700; {{T.btn}}">Sett inn i hylla · {{card.target}}</button>
+</sc-if>
+<sc-if value="{{card.hasUrl}}" hint-placeholder-val="{{ true }}"><a href="{{card.url}}" target="_blank" rel="noopener" style="color: inherit; font-size: 14px">Åpne på Discogs</a></sc-if>
+<sc-if value="{{card.canGone}}" hint-placeholder-val="{{ false }}">
+<button type="button" onClick="{{card.gone}}" style="flex: none; align-self: flex-start; height: 40px; padding: 0 12px; border-radius: 4px; cursor: pointer; background: transparent; font-family: 'Archivo', sans-serif; font-size: 13px; {{T.btn}}">{{card.goneText}}</button>
+</sc-if>
+<sc-if value="{{card.isNy}}" hint-placeholder-val="{{ false }}">
+<button type="button" onClick="{{card.remove}}" style="flex: none; align-self: flex-start; height: 40px; padding: 0 12px; border-radius: 4px; cursor: pointer; background: transparent; font-family: 'Archivo', sans-serif; font-size: 13px; {{T.btn}}">Fjern plata</button>
+</sc-if>
+</aside>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"stil":{"editor":"enum","options":["flat","riso","strek","zine","oppriss","kveld"],"default":"flat"},"visning":{"editor":"enum","options":["flat","corner"],"default":"flat"},"$preview":{"width":1366,"height":1024}}'>
+class Component extends DCLogic {
+  // «Snu hodet»: rullingen styrer hvor du ser. Først langs langveggen, så dreier rommet rundt hjørnet
+  // til kortveggen står rett foran deg. Verdiene settes som CSS-variabler, så rullingen ikke tegner alt på nytt.
+  turnSetup(V, S2) {
+    const L = 1340, E = 760;
+    const p1 = Math.max(0, L - 0.8 * V), xc1 = L - p1, T = 0.75 * V;
+    const x3 = E < 0.9 * V ? (V - E) / 2 : 0.05 * V, p3 = Math.max(0, E - 0.9 * V);
+    this.turnGeo = { V, S2, p1, T, p3, xc1, x3 };
+    requestAnimationFrame(() => this.syncTurn());
+    return p1 + T + p3;
+  }
+  syncPanel(cont, S2) {
+    const el = document.getElementById('romboks'), P = this.PL[cont];
+    if (!el || !P || P.x === undefined || this._panelCont === cont) return;
+    this._panelCont = cont;
+    el.scrollTo({ left: Math.max(0, (P.x + 32 + P.w / 2) * S2 - el.clientWidth / 2), behavior: 'smooth' });
+  }
+  syncTurn() {
+    const el = document.getElementById('romboks'), g = this.turnGeo, root = document.documentElement;
+    if (!el || !g) return;
+    if (!el._snu) { el._snu = true; el.addEventListener('scroll', () => this.syncTurn(), { passive: true }); }
+    if (this.state && this.state.panel) return;
+    const sc = el.scrollLeft / g.S2;
+    let t = 0, xc;
+    if (sc <= g.p1) xc = 1340 - sc;
+    else if (sc <= g.p1 + g.T) { const u = (sc - g.p1) / g.T; t = u * u * (3 - 2 * u); xc = g.xc1 + (g.x3 - g.xc1) * t; }
+    else { t = 1; xc = g.x3 - (sc - g.p1 - g.T); }
+    root.style.setProperty('--rom-xc', xc + 'px');
+    root.style.setProperty('--rom-t', String(t));
+    root.style.setProperty('--rom-po', (g.V / 2) + 'px');
+  }
+  componentDidMount() {
+    fetch('/_blob/ac2b314853e73e52fd0eec9c06087790')
+      .then((r) => r.json())
+      .then((d) => { this.d = d; this.prep(); this.setState({ ready: true }); })
+      .catch(() => this.setState({ failed: true }));
+  }
+
+  // ---------- tre stiler, samme rom ----------
+  tokens(stil) {
+    const S = {
+      flat: {
+        name: 'Stil A · flat', grain: false,
+        root: 'background:#20251F;color:#EEEAE2;', headerCss: 'border-bottom:1px solid #3B4339;', mutedC: 'color:#B4B0A5;', textC: 'color:#EEEAE2;', accentC: 'color:#E8692E;',
+        btn: 'border:1px solid #4A5347;color:#EEEAE2;', primary: 'background:#E8692E;color:#1A0E06;', inputBox: 'border:1px solid #4A5347;background:#1B1F1A;color:#B4B0A5;',
+        wallBg: 'background:#4A5446;', floor: 'background:#A07A4F;', ceil: 'background:#CFC8BA;', switchCss: 'background:#E7E4DC;',
+        frameDark: 'background:#111;', tigerBg: 'background:#C98A3E;', stripe: 'background:#1B1B1B;', eye: 'background:#E3B04B;box-shadow:inset 0 0 0 4px #2A1C0C;',
+        frameOak: 'background:#C9763C;', mat: 'background:#F1EEE6;', printBg: 'background:#E9E4DA;', printInk: 'background:#3A3A3A;', printInk2: 'background:#8C8C8C;',
+        oakShelf: 'background:#9C6B3E;', frameOakLight: 'background:#C8A77C;', coverWrap: 'background:#151814;', coverImg: '',
+        speaker: 'background:#141414;', speakerBadge: 'border:1px solid #9A9A9A;', pot: 'background:#B8743E;', teak: 'background:#8A5530;', wire: 'background:#C9B48A;',
+        stemCss: 'stroke:#3E5E40;', leafCss: 'fill:#335C3C;stroke:none;', slitCss: 'stroke:#4A5446;',
+        lid: 'background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.35);border-bottom:0;', platter: 'background:#111;', plinth: 'background:#9C7046;', feet: 'background:#1B1B1B;',
+        amp: 'background:#E8692E;', ampGrill: 'background:#D9C9A8;', chair: 'background:#E8692E;', chrome: 'background:#BDBDBD;', boucle: 'background:#E6DFCF;', stoolLeg: 'background:#7A4A2A;',
+        cellFrame: 'border:6px solid #ECEAE4;background:#151814;', cellIn: '#151814', shelfBoard: 'background:#ECEAE4;', crateFrame: 'border:6px solid #C9A574;background:#151814;',
+        sony: 'background:#1B1B1B;', yamaha: 'background:#B9B6AE;', knob: 'background:#8E8B83;', badge: 'background:#E8692E;color:#1A0E06;', selOutline: 'outline:3px solid #E8692E;outline-offset:3px;',
+        cellLabel: 'color:#2A1D10;', panel: 'background:#20251F;', tabsBar: 'border-bottom:1px solid #3B4339;',
+        tabOn: 'background:#C9AE84;color:#17120A;border:0;', tabOff: 'background:transparent;color:#EEEAE2;border:1px solid #4A5347;border-bottom:0;',
+        pillOn: 'background:#EEEAE2;color:#20251F;border:1px solid #EEEAE2;', pillOff: 'background:transparent;color:#EEEAE2;border:1px solid #4A5347;',
+        stamp: 'border:2px solid #E8692E;color:#E8692E;', stampRing: 'border:3px solid #E8692E;color:#E8692E;',
+        indexCard: 'background:#262B25;border:0;border-top:3px solid #E8692E;color:#EEEAE2;', aside: 'background:#1B1F1A;border-left:1px solid #3B4339;box-shadow:-24px 0 48px rgba(0,0,0,0.45);color:#EEEAE2;',
+        ruled: 'background-color:#242923;background-image:repeating-linear-gradient(to bottom, transparent 0, transparent 27px, #343B32 27px, #343B32 28px);border-top:3px solid #E8692E;',
+        select: 'border:1px solid #5E6759;background:#242923;color:#EEEAE2;', marginOn: '#E8692E', stackEdge: 'box-shadow:0 1px 0 rgba(255,255,255,0.15), 0 10px 24px rgba(0,0,0,0.45);',
+      },
+      riso: {
+        name: 'Stil B · riso', grain: true,
+        root: 'background:#F2ECDF;color:#1E1E1E;', headerCss: 'border-bottom:2px solid #1E1E1E;', mutedC: 'color:#55504A;', textC: 'color:#1E1E1E;', accentC: 'color:#E0531F;',
+        btn: 'border:2px solid #1E1E1E;color:#1E1E1E;', primary: 'background:#FF6C2F;color:#1E1E1E;box-shadow:3px 3px 0 #1E1E1E;', inputBox: 'border:2px solid #1E1E1E;background:#F2ECDF;color:#1E1E1E;',
+        wallBg: 'background:#8CCBA6;', floor: 'background:#FFB08A;border-top:2px solid #1E1E1E;', ceil: 'background:#F2ECDF;', switchCss: 'background:#F2ECDF;border:2px solid #1E1E1E;',
+        frameDark: 'background:#1E1E1E;', tigerBg: 'background:#FF8B57;', stripe: 'background:#1E1E1E;', eye: 'background:#F2ECDF;box-shadow:inset 0 0 0 4px #1E1E1E;',
+        frameOak: 'background:#FF6C2F;box-shadow:3px 2px 0 #1E1E1E;', mat: 'background:#F2ECDF;', printBg: 'background:#F2ECDF;', printInk: 'background:#1E1E1E;', printInk2: 'background:#00A95C;',
+        oakShelf: 'background:#FF6C2F;', frameOakLight: 'background:#FF8B57;box-shadow:3px 2px 0 #1E1E1E;', coverWrap: 'background:#00A95C;', coverImg: 'filter:grayscale(1) contrast(1.35);mix-blend-mode:multiply;',
+        speaker: 'background:#1E1E1E;box-shadow:3px 2px 0 #00A95C;', speakerBadge: 'border:1px solid #F2ECDF;', pot: 'background:#FF6C2F;box-shadow:3px 2px 0 #1E1E1E;', teak: 'background:#FF8B57;border:2px solid #1E1E1E;', wire: 'background:#1E1E1E;',
+        stemCss: 'stroke:#1E1E1E;', leafCss: 'fill:#00A95C;stroke:#1E1E1E;stroke-width:2;', slitCss: 'stroke:#8CCBA6;',
+        lid: 'background:transparent;border:2px solid #1E1E1E;border-bottom:0;', platter: 'background:#1E1E1E;', plinth: 'background:#FF8B57;border:2px solid #1E1E1E;', feet: 'background:#1E1E1E;',
+        amp: 'background:#FF6C2F;border:2px solid #1E1E1E;', ampGrill: 'background:#F2ECDF;border:2px solid #1E1E1E;', chair: 'background:#FF6C2F;border:2px solid #1E1E1E;', chrome: 'background:#1E1E1E;', boucle: 'background:#F2ECDF;border:2px solid #1E1E1E;', stoolLeg: 'background:#1E1E1E;',
+        cellFrame: 'border:6px solid #F2ECDF;outline:2px solid #1E1E1E;background:#1E1E1E;', cellIn: '#1E1E1E', shelfBoard: 'background:#F2ECDF;', crateFrame: 'border:6px solid #FF8B57;outline:2px solid #1E1E1E;background:#1E1E1E;',
+        sony: 'background:#F2ECDF;', yamaha: 'background:#FFB08A;', knob: 'background:#1E1E1E;', badge: 'background:#FF6C2F;color:#1E1E1E;border:2px solid #1E1E1E;', selOutline: 'outline:3px solid #FF6C2F;outline-offset:4px;',
+        cellLabel: 'color:#1E1E1E;', panel: 'background:#F2ECDF;', tabsBar: 'border-bottom:2px solid #1E1E1E;',
+        tabOn: 'background:#1E1E1E;color:#F2ECDF;border:0;', tabOff: 'background:transparent;color:#1E1E1E;border:2px solid #1E1E1E;border-bottom:0;',
+        pillOn: 'background:#1E1E1E;color:#F2ECDF;border:2px solid #1E1E1E;', pillOff: 'background:transparent;color:#1E1E1E;border:2px solid #1E1E1E;',
+        stamp: 'border:2px solid #E0531F;color:#E0531F;', stampRing: 'border:3px solid #E0531F;color:#E0531F;',
+        indexCard: 'background:#FBF7EE;border:2px solid #1E1E1E;color:#1E1E1E;box-shadow:3px 3px 0 #00A95C;', aside: 'background:#F2ECDF;border-left:2px solid #1E1E1E;color:#1E1E1E;',
+        ruled: 'background-color:#FBF7EE;background-image:repeating-linear-gradient(to bottom, transparent 0, transparent 27px, #8CCBA6 27px, #8CCBA6 28px);border:2px solid #1E1E1E;border-top:4px solid #FF6C2F;',
+        select: 'border:2px solid #1E1E1E;background:#FBF7EE;color:#1E1E1E;', marginOn: '#FF6C2F', stackEdge: 'border:2px solid #1E1E1E;box-shadow:4px 4px 0 #1E1E1E;',
+      },
+      strek: {
+        name: 'Stil C · strek', grain: false,
+        root: 'background:#1A1C19;color:#EDE8DD;', headerCss: 'border-bottom:1px solid #EDE8DD33;', mutedC: 'color:#A9A498;', textC: 'color:#EDE8DD;', accentC: 'color:#F07A3E;',
+        btn: 'border:1.5px solid #EDE8DD;color:#EDE8DD;', primary: 'background:transparent;color:#F07A3E;border:1.5px solid #F07A3E;', inputBox: 'border:1.5px solid #EDE8DD66;background:transparent;color:#A9A498;',
+        wallBg: 'background:#1A1C19;', floor: 'border-top:1.5px solid #EDE8DD;', ceil: 'background:transparent;border-bottom:1.5px solid #EDE8DD;', switchCss: 'border:1.5px solid #EDE8DD;',
+        frameDark: 'border:1.5px solid #EDE8DD;', tigerBg: 'border:1px solid #EDE8DD88;', stripe: 'border-top:1.5px solid #EDE8DD;', eye: 'border:1.5px solid #F07A3E;',
+        frameOak: 'border:1.5px solid #F07A3E;', mat: 'border:1px solid #EDE8DD55;', printBg: '', printInk: 'border:1.5px solid #EDE8DD;', printInk2: 'border:1px dashed #EDE8DD;',
+        oakShelf: 'border-top:1.5px solid #EDE8DD;', frameOakLight: 'border:1.5px solid #EDE8DD;', coverWrap: 'background:#1A1C19;', coverImg: 'filter:grayscale(0.9) contrast(1.15) brightness(0.9);',
+        speaker: 'border:1.5px solid #EDE8DD;', speakerBadge: 'border:1px solid #EDE8DD;', pot: 'border:1.5px solid #F07A3E;', teak: 'border:1.5px solid #EDE8DD;background:#1A1C19;', wire: 'background:#EDE8DD;',
+        stemCss: 'stroke:#EDE8DD;stroke-width:1.5;', leafCss: 'fill:#1A1C19;stroke:#EDE8DD;stroke-width:1.5;', slitCss: 'stroke:#1A1C19;',
+        lid: 'border:1.5px solid #EDE8DD;border-bottom:0;', platter: 'border:1.5px solid #EDE8DD;', plinth: 'border:1.5px solid #EDE8DD;', feet: 'background:#EDE8DD;',
+        amp: 'border:1.5px solid #F07A3E;', ampGrill: 'border:1px dashed #F07A3E;', chair: 'border:1.5px solid #F07A3E;', chrome: 'background:#EDE8DD;', boucle: 'border:1.5px dashed #EDE8DD;', stoolLeg: 'background:#EDE8DD;',
+        cellFrame: 'border:1.5px solid #EDE8DD;background:transparent;', cellIn: 'transparent', shelfBoard: 'border-top:1.5px solid #EDE8DD;', crateFrame: 'border:1.5px solid #EDE8DD;background:transparent;',
+        sony: 'border:1.5px solid #EDE8DD;', yamaha: 'border:1.5px solid #EDE8DD;', knob: 'border:1.5px solid #EDE8DD;', badge: 'background:#F07A3E;color:#1A1C19;', selOutline: 'outline:2px dashed #F07A3E;outline-offset:5px;',
+        cellLabel: 'color:#A9A498;', panel: 'background:#1A1C19;', tabsBar: 'border-bottom:1.5px solid #EDE8DD;',
+        tabOn: 'background:transparent;color:#F07A3E;border:1.5px solid #F07A3E;border-bottom:0;', tabOff: 'background:transparent;color:#EDE8DD;border:1px solid #EDE8DD55;border-bottom:0;',
+        pillOn: 'background:#EDE8DD;color:#1A1C19;border:1.5px solid #EDE8DD;', pillOff: 'background:transparent;color:#EDE8DD;border:1.5px solid #EDE8DD66;',
+        stamp: 'border:1.5px solid #F07A3E;color:#F07A3E;', stampRing: 'border:2px solid #F07A3E;color:#F07A3E;',
+        indexCard: 'background:transparent;border:1.5px solid #EDE8DD55;color:#EDE8DD;', aside: 'background:#1A1C19;border-left:1.5px solid #EDE8DD;color:#EDE8DD;',
+        ruled: 'background-color:transparent;background-image:repeating-linear-gradient(to bottom, transparent 0, transparent 27px, #EDE8DD22 27px, #EDE8DD22 28px);border:1.5px solid #EDE8DD;',
+        select: 'border:1.5px solid #EDE8DD;background:#1A1C19;color:#EDE8DD;', marginOn: '#F07A3E', stackEdge: 'border:1.5px solid #EDE8DD;',
+      },
+    };
+    S.flat.lampShade = 'background:#E8604A;';
+    S.flat.mapInk = '#2A2016'; S.flat.mapBg = 'transparent';
+    S.flat.lampRibs = 'background:repeating-linear-gradient(115deg, transparent 0 5px, rgba(0,0,0,0.12) 5px 6px);';
+    S.flat.lampBase = 'background:#D0503C;';
+    S.flat.glow = false; S.flat.dims = false; S.flat.glowCss = ''; S.flat.dimLine = '';
+    S.flat.pulse = 'border:2px solid rgba(232,105,46,0.6);';
+    S.flat.wallEnd = 'background:#56614F;'; S.flat.corner = 'border-left:2px solid rgba(0,0,0,0.35);';
+    S.riso.wallEnd = 'background:#A9DBBC;'; S.riso.corner = 'border-left:2px solid #1E1E1E;';
+    S.strek.wallEnd = ''; S.strek.corner = 'border-left:1.5px solid #EDE8DD;';
+    S.riso.lampShade = 'background:#FF6C2F;border:2px solid #1E1E1E;'; S.riso.lampBase = 'background:#FF6C2F;border:2px solid #1E1E1E;'; S.riso.lampRibs = 'background:repeating-linear-gradient(115deg, transparent 0 5px, #1E1E1E 5px 6px);opacity:0.5;';
+    S.strek.lampShade = 'border:1.5px solid #F07A3E;'; S.strek.lampBase = 'border:1.5px solid #F07A3E;'; S.strek.lampRibs = 'background:repeating-linear-gradient(115deg, transparent 0 6px, #F07A3E 6px 7px);opacity:0.6;';
+
+    // D · fotokopi: zine fra scenen, svart på grått papir med én rød dekorfarge
+    S.zine = Object.assign({}, S.riso, {
+      name: 'Stil D · fotokopi', grain: true,
+      wallEnd: 'background-color:#DAD6CE;background-image:radial-gradient(#11111140 1px, transparent 1.5px);background-size:5px 5px;', corner: 'border-left:3px solid #111;',
+      root: 'background:#E6E3DC;color:#111;', headerCss: 'border-bottom:3px solid #111;', mutedC: 'color:#4A4742;', textC: 'color:#111;', accentC: 'color:#C8231B;',
+      btn: 'border:2px solid #111;color:#111;', primary: 'background:#111;color:#E6E3DC;', inputBox: 'border:2px solid #111;background:#E6E3DC;color:#111;',
+      wallBg: 'background-color:#CFCBC2;background-image:radial-gradient(#11111155 1px, transparent 1.5px);background-size:5px 5px;',
+      floor: 'background:#111;', ceil: 'background:#E6E3DC;', switchCss: 'background:#E6E3DC;border:2px solid #111;',
+      frameDark: 'background:#111;', tigerBg: 'background:#E6E3DC;', stripe: 'background:#111;', eye: 'background:#111;',
+      frameOak: 'background:#111;', mat: 'background:#E6E3DC;', printBg: 'background:#E6E3DC;', printInk: 'background:#111;', printInk2: 'background:#8A8780;',
+      oakShelf: 'background:#111;', frameOakLight: 'background:#111;', coverWrap: 'background:#E6E3DC;', coverImg: 'filter:grayscale(1) contrast(2.2) brightness(1.1);',
+      speaker: 'background:#111;', speakerBadge: 'border:1px solid #E6E3DC;', pot: 'background:#111;', teak: 'background:#E6E3DC;border:2px solid #111;', wire: 'background:#111;',
+      stemCss: 'stroke:#111;', leafCss: 'fill:#111;stroke:none;', slitCss: 'stroke:#CFCBC2;',
+      lid: 'border:2px solid #111;border-bottom:0;', platter: 'background:#111;', plinth: 'background:#E6E3DC;border:2px solid #111;', feet: 'background:#111;',
+      amp: 'background:#C8231B;border:2px solid #111;', ampGrill: 'background:#E6E3DC;border:2px solid #111;', chair: 'background:#C8231B;border:2px solid #111;', chrome: 'background:#111;', boucle: 'background:#E6E3DC;border:2px dashed #111;', stoolLeg: 'background:#111;',
+      cellFrame: 'border:6px solid #E6E3DC;outline:2px solid #111;background:#111;', cellIn: '#111', shelfBoard: 'background:#E6E3DC;', crateFrame: 'border:6px solid #8A8780;outline:2px solid #111;background:#111;',
+      sony: 'background:#111;', yamaha: 'background:#E6E3DC;border:2px solid #111;', knob: 'background:#111;', badge: 'background:#C8231B;color:#E6E3DC;', selOutline: 'outline:4px solid #C8231B;outline-offset:3px;',
+      cellLabel: 'color:#E6E3DC;', panel: 'background:#E6E3DC;', tabsBar: 'border-bottom:3px solid #111;',
+      tabOn: 'background:#111;color:#E6E3DC;border:0;', tabOff: 'background:transparent;color:#111;border:2px solid #111;border-bottom:0;',
+      pillOn: 'background:#111;color:#E6E3DC;border:2px solid #111;', pillOff: 'background:transparent;color:#111;border:2px solid #111;',
+      stamp: 'border:2px solid #C8231B;color:#C8231B;', stampRing: 'border:3px solid #C8231B;color:#C8231B;',
+      indexCard: 'background:#F2F0EA;border:2px solid #111;color:#111;', aside: 'background:#E6E3DC;border-left:3px solid #111;color:#111;',
+      ruled: 'background-color:#F2F0EA;background-image:repeating-linear-gradient(to bottom, transparent 0, transparent 27px, #11111133 27px, #11111133 28px);border:2px solid #111;',
+      select: 'border:2px solid #111;background:#F2F0EA;color:#111;', marginOn: '#C8231B', stackEdge: 'border:2px solid #111;',
+      lampShade: 'background:#C8231B;border:2px solid #111;', lampBase: 'background:#C8231B;border:2px solid #111;', lampRibs: 'background:repeating-linear-gradient(115deg, transparent 0 5px, #111 5px 6px);opacity:0.5;',
+    });
+
+    // E · oppriss: teknisk tegning, lys strek på blåkopi
+    S.oppriss = Object.assign({}, S.strek, {
+      name: 'Stil E · oppriss', dims: true,
+      wallEnd: 'background-color:#173957;background-image:linear-gradient(#DCE8F212 1px, transparent 1px), linear-gradient(90deg, #DCE8F212 1px, transparent 1px);background-size:20px 20px;', corner: 'border-left:1px dashed #DCE8F2;',
+      root: 'background:#14324F;color:#DCE8F2;', headerCss: 'border-bottom:1px solid #DCE8F244;', mutedC: 'color:#9FB6CB;', textC: 'color:#DCE8F2;', accentC: 'color:#FFB547;',
+      btn: 'border:1px solid #DCE8F2;color:#DCE8F2;', primary: 'background:#FFB547;color:#14324F;', inputBox: 'border:1px solid #DCE8F266;background:transparent;color:#9FB6CB;',
+      wallBg: 'background-color:#14324F;background-image:linear-gradient(#DCE8F212 1px, transparent 1px), linear-gradient(90deg, #DCE8F212 1px, transparent 1px);background-size:20px 20px;',
+      floor: 'border-top:1px solid #DCE8F2;', ceil: 'border-bottom:1px dashed #DCE8F2;', switchCss: 'border:1px solid #DCE8F2;',
+      frameDark: 'border:1px solid #DCE8F2;', tigerBg: 'border:1px dashed #DCE8F288;', stripe: 'border-top:1px dashed #DCE8F2;', eye: 'border:1px solid #DCE8F2;',
+      frameOak: 'border:1px solid #DCE8F2;', mat: 'border:1px dashed #DCE8F255;', printInk: 'border:1px solid #DCE8F2;', printInk2: 'border:1px dashed #DCE8F2;',
+      oakShelf: 'border-top:1px solid #DCE8F2;', frameOakLight: 'border:1px solid #DCE8F2;', coverWrap: 'background:#14324F;', coverImg: 'filter:grayscale(1) contrast(1.1);mix-blend-mode:screen;opacity:0.85;',
+      speaker: 'border:1px solid #DCE8F2;', speakerBadge: 'border:1px solid #DCE8F2;', pot: 'border:1px solid #DCE8F2;', teak: 'border:1px solid #DCE8F2;background:#14324F;', wire: 'background:#DCE8F2;',
+      stemCss: 'stroke:#DCE8F2;stroke-width:1;', leafCss: 'fill:#14324F;stroke:#DCE8F2;stroke-width:1;stroke-dasharray:4 3;', slitCss: 'stroke:#14324F;',
+      lid: 'border:1px solid #DCE8F2;border-bottom:0;', platter: 'border:1px solid #DCE8F2;', plinth: 'border:1px solid #DCE8F2;', feet: 'background:#DCE8F2;',
+      amp: 'border:1px solid #FFB547;', ampGrill: 'border:1px dashed #FFB547;', chair: 'border:1px solid #DCE8F2;', chrome: 'background:#DCE8F2;', boucle: 'border:1px dashed #DCE8F2;', stoolLeg: 'background:#DCE8F2;',
+      cellFrame: 'border:1px solid #DCE8F2;background:transparent;', shelfBoard: 'border-top:1px solid #DCE8F2;', crateFrame: 'border:1px solid #DCE8F2;background:transparent;',
+      sony: 'border:1px solid #DCE8F2;', yamaha: 'border:1px solid #DCE8F2;', knob: 'border:1px solid #DCE8F2;', badge: 'background:#FFB547;color:#14324F;', selOutline: 'outline:1px solid #FFB547;outline-offset:6px;',
+      cellLabel: 'color:#DCE8F2;', panel: 'background:#14324F;', tabsBar: 'border-bottom:1px solid #DCE8F2;',
+      tabOn: 'background:#DCE8F2;color:#14324F;border:0;', tabOff: 'background:transparent;color:#DCE8F2;border:1px solid #DCE8F266;border-bottom:0;',
+      pillOn: 'background:#DCE8F2;color:#14324F;border:1px solid #DCE8F2;', pillOff: 'background:transparent;color:#DCE8F2;border:1px solid #DCE8F266;',
+      stamp: 'border:1px solid #FFB547;color:#FFB547;', stampRing: 'border:2px solid #FFB547;color:#FFB547;',
+      indexCard: 'background:transparent;border:1px solid #DCE8F266;color:#DCE8F2;', aside: 'background:#14324F;border-left:1px solid #DCE8F2;color:#DCE8F2;',
+      ruled: 'background-color:transparent;background-image:repeating-linear-gradient(to bottom, transparent 0, transparent 27px, #DCE8F222 27px, #DCE8F222 28px);border:1px solid #DCE8F2;',
+      select: 'border:1px solid #DCE8F2;background:#14324F;color:#DCE8F2;', marginOn: '#FFB547', stackEdge: 'border:1px solid #DCE8F2;',
+      lampShade: 'border:1px solid #FFB547;', lampBase: 'border:1px solid #FFB547;', lampRibs: 'background:repeating-linear-gradient(115deg, transparent 0 6px, #FFB54788 6px 7px);',
+      dimLine: 'background:#DCE8F2;', tick: '#DCE8F2',
+    });
+
+    // F · kveldslys: rommet slik det ser ut på bildene, med lampa på
+    S.kveld = Object.assign({}, S.flat, {
+      name: 'Stil F · kveldslys', glow: true,
+      wallEnd: 'background:#616C59;', corner: 'border-left:2px solid rgba(0,0,0,0.3);box-shadow:-8px 0 16px rgba(0,0,0,0.18);',
+      root: 'background:#1F1C19;color:#F1E9DF;', headerCss: 'border-bottom:1px solid #3A332C;', mutedC: 'color:#BFB3A5;', textC: 'color:#F1E9DF;', accentC: 'color:#FF8466;',
+      btn: 'border:1px solid #574C41;color:#F1E9DF;', primary: 'background:#FF7A59;color:#2A0F07;', inputBox: 'border:1px solid #574C41;background:#191613;color:#BFB3A5;',
+      wallBg: 'background:#56604F;', floor: 'background:#B58552;box-shadow:inset 0 10px 18px rgba(0,0,0,0.25);', ceil: 'background:#E9C9B8;',
+      glowCss: 'background:radial-gradient(closest-side, rgba(255,150,120,0.55), rgba(255,150,120,0.18) 55%, rgba(255,150,120,0) 100%);mix-blend-mode:screen;',
+      frameDark: 'background:#151515;box-shadow:0 6px 14px rgba(0,0,0,0.35);', frameOak: 'background:#D07A3E;box-shadow:0 6px 14px rgba(0,0,0,0.35);', mat: 'background:#F4EEE6;',
+      frameOakLight: 'background:#C9A47A;box-shadow:0 6px 14px rgba(0,0,0,0.35);', oakShelf: 'background:#A86F3E;',
+      speaker: 'background:#121212;box-shadow:0 4px 10px rgba(0,0,0,0.4);', pot: 'background:#C27A3F;box-shadow:inset -10px 0 14px rgba(0,0,0,0.2);',
+      lampShade: 'background:#F26A55;box-shadow:0 0 24px rgba(255,140,110,0.8);', lampBase: 'background:#D9493A;',
+      cellFrame: 'border:6px solid #F3EEE6;background:#1A1714;box-shadow:inset 0 8px 14px rgba(0,0,0,0.5);', crateFrame: 'border:6px solid #C79A63;background:#1A1714;box-shadow:inset 0 8px 14px rgba(0,0,0,0.5);',
+      chair: 'background:#EE6B33;box-shadow:inset 0 -8px 12px rgba(0,0,0,0.18);', amp: 'background:#EE7A2E;', boucle: 'background:#EFE6D6;',
+      panel: 'background:#1F1C19;', tabsBar: 'border-bottom:1px solid #3A332C;', tabOn: 'background:#E9C9A0;color:#1F1309;border:0;', tabOff: 'background:transparent;color:#F1E9DF;border:1px solid #574C41;border-bottom:0;',
+      pillOn: 'background:#F1E9DF;color:#1F1C19;border:1px solid #F1E9DF;', pillOff: 'background:transparent;color:#F1E9DF;border:1px solid #574C41;',
+      stamp: 'border:2px solid #FF8466;color:#FF8466;', stampRing: 'border:3px solid #FF8466;color:#FF8466;', badge: 'background:#FF7A59;color:#2A0F07;', selOutline: 'outline:3px solid #FF7A59;outline-offset:3px;',
+      indexCard: 'background:#29241F;border:0;border-top:3px solid #FF7A59;color:#F1E9DF;', aside: 'background:#1B1815;border-left:1px solid #3A332C;box-shadow:-24px 0 48px rgba(0,0,0,0.5);color:#F1E9DF;',
+      ruled: 'background-color:#29241F;background-image:repeating-linear-gradient(to bottom, transparent 0, transparent 27px, #3D352D 27px, #3D352D 28px);border-top:3px solid #FF7A59;',
+      select: 'border:1px solid #6A5D50;background:#29241F;color:#F1E9DF;', marginOn: '#FF7A59', mapInk: '#3A2412', mapBg: '#B58552', cellLabel: 'color:#2D1C0E;',
+    });
+    S.kveld.pulse = 'border:2px solid rgba(255,140,110,0.75);';
+    S.oppriss.pulse = 'border:1px dashed #FFB547;';
+    S.zine.pulse = 'border:2px solid #C8231B;';
+    return Object.assign({}, S.flat, S[stil] || {});
+  }
+
+  prep() {
+    const d = this.d;
+    this.FOTOS = { pano: '/_blob/745acf3741f0a7cc7e497b4bc718dd57', c12: '/_blob/0b301a67d40e4de8dea106bcf0ecf3d1', c3: '/_blob/d3f6aa404c4caac91a70ca3bf968990c', c4: '/_blob/98fc1921371a06daa374316734ec7e85', c56: '/_blob/42f49d5ed141ceaeea209194fb99c1a4', c78: '/_blob/5c17c70a3bccb1312c5a77cebc1cf15b', cd: '/_blob/38de82618e7ce9eae6091d698484aac1', rack: '/_blob/56ae79e17eed31ecb191d2cad09fcb1d' };
+    this.FOTO = this.FOTOS.pano;
+    this.ATLAS = ['/_blob/7d3dca2173e794cd9750ee7359ee7b9c', '/_blob/47bc2dba07779a7f1f7ffa2e15248384', '/_blob/c62ba644b439dc1cb8cf69e16a8689b8',
+      '/_blob/afcf0a44f5de4f6fdd2b9a6e454b9c1d', '/_blob/7a29a595621dcd9f881d2621978971aa', '/_blob/5fff028a13f9cfa106d2de75742290c5',
+      '/_blob/5dd90e876133e89537b720198bd51e87', '/_blob/6b10434aa48037c25a8ac5eaf17a2346'];
+    const A = d.atlas || { cell: 300, n: 10 };
+    this.img = (r, w) => {
+      if (r && r.nyImg) return { hasCover: true, noCover: false, src: r.nyImg, imgCss: 'width:' + w + 'px;height:' + w + 'px;left:0;top:0;' };
+      if (!r || !r.cv) return { hasCover: false, noCover: true, src: '', imgCss: '' };
+      const s = w / A.cell, full = A.cell * A.n * s;
+      return { hasCover: true, noCover: false, src: this.ATLAS[r.cv[0]], imgCss: 'width:' + full + 'px;height:' + full + 'px;left:' + (-r.cv[1] * A.cell * s) + 'px;top:' + (-r.cv[2] * A.cell * s) + 'px;' };
+    };
+    const SHELF = ['Pønk', 'Hardt-lett', 'Hardt-kaos', 'Hardt-seigt', 'Rock-bøtta', 'Rock-proggy', 'Post-rock', 'Ambient/minimalisme',
+      'Rock-jazzrock', 'Jazz-gammel', 'Jazz-ny', 'Rocksteady', 'Lav Gitar/Folk', 'Electro', 'HipHop/TripHop', 'Indie/Pop', 'Uplassert'];
+    this.rank = d.genres.map((G) => SHELF.indexOf(G.name));
+    // sjangernavnene brukes slik de står i Platesamling.csv
+    this.SHORT = {};
+    // Plassene. 0–5 = rutene, 6–7 = kassene, 8 = stativet, 9 = boksene, 10 = CD-mappene
+    this.PL = [
+      // brede, lave celler som på bildet (store ca. 1,5 : 1, smale halvparten); kassene står på kortveggen, x i langveggens system
+      { name: 'Celle 1', x: 40, w: 225 }, { name: 'Celle 2', x: 265, w: 112 }, { name: 'Celle 3', x: 377, w: 225 },
+      { name: 'Celle 4', x: 702, w: 225 }, { name: 'Celle 5', x: 927, w: 112 }, { name: 'Celle 6', x: 1039, w: 225 },
+      { name: 'Celle 7', x: 1458, w: 76, crate: true }, { name: 'Celle 8', x: 1546, w: 76, crate: true },
+      { name: 'Stativet' }, { name: 'Boksene' }, { name: 'CD-mappene' }, { name: 'Ny i hus' },
+    ];
+    const BOXES = [['Rosetta', 'The Galilean Satellites'], ['Burst', 'A Labyrinth Of Layers'], ['Fall Of Efrafa', 'The Warren Of Snares'],
+      ['Simon & Garfunkel', 'Collected Works'], ['Django Reinhardt', ''], ['Kamasi Washington', 'The Epic'], ['Steve Reich', 'Drumming']];
+    const key = (a) => a.replace(/^the\s+/i, '').toLowerCase();
+    this.mk = (r, i) => ({
+      i, r, key: key(r.a), lc: (r.a + ' ' + r.t).toLowerCase(),
+      isCD: r.s === 'CD', small: r.s === '7"' || r.s === '10"',
+      box: BOXES.some((b) => r.a === b[0] && r.t.indexOf(b[1]) === 0),
+      th: 1 + 0.55 * (Math.min(r.n, 4) - 1),
+      col: r.sc || '#6E6A62',
+      meta: (r.y || '–') + ' · ' + (r.s === 'CD' ? 'CD' : (r.n > 1 ? r.n + '×' : '') + r.s) + (r.re ? ' · re' : ''),
+    });
+    this.recs = d.recs.map(this.mk);
+    this.baseRecs = d.recs.slice();
+    this.base = d.recs.length;
+    this.posters = { ape: this.img(d.recs[642], 136), betty: this.img(d.recs[501], 118) };
+    this.posters.betty.imgCss += 'left:' + (parseFloat(this.posters.betty.imgCss.split('left:')[1]) - 20) + 'px;';
+    // Grensene Nico oppga: siste plate i hver rute
+    this.bounds = [
+      (r) => r.a === 'Meshuggah' && r.t === 'Catch Thirtythree',
+      (r) => r.a === 'Mouth Of The Architect',
+      (r) => r.a === 'Novalis',
+      (r) => d.genres[r.g].name === 'Ambient/minimalisme',
+      (r) => r.a.indexOf('Herb Alpert') === 0,
+      (r) => r.a === 'Songs: Ohia',
+      (r) => d.genres[r.g].name === 'Electro',
+    ];
+  }
+
+  layout(moved, placed) {
+    const d = this.d, R = this.recs;
+    const g = (i) => (moved[i] !== undefined ? moved[i] : d.recs[i].g);
+    const cmp = (a, b) => this.rank[g(a)] - this.rank[g(b)] || (R[a].key < R[b].key ? -1 : R[a].key > R[b].key ? 1 : 0) || (d.recs[a].y || 0) - (d.recs[b].y || 0);
+    const where = new Array(R.length), seq = [];
+    R.forEach((x, i) => {
+      if (x.r.gone || (this.goneMap || {})[i]) where[i] = 13;
+      else if (placed[i] !== undefined) where[i] = placed[i];
+      else if (x.r.ny && !x.r.homed) where[i] = 11;
+      else if (x.isCD) where[i] = 10;
+      else if (x.box) where[i] = 9;
+      else if (x.small) where[i] = 8;
+      else seq.push(i);
+    });
+    seq.sort(cmp);
+    // finn siste posisjon for hver grense, og hold dem i stigende rekkefølge
+    let k = 0, lastCut = -1;
+    const cuts = this.bounds.map((fn) => {
+      let c = -1;
+      seq.forEach((i, j) => { if (fn(d.recs[i]) && moved[i] === undefined) c = j; });
+      if (c < lastCut) c = lastCut;
+      lastCut = c;
+      return c;
+    });
+    seq.forEach((i, j) => {
+      while (k < 7 && j > cuts[k]) k++;
+      where[i] = k;
+    });
+    const lists = Array.from({ length: 14 }, () => []);
+    R.forEach((x, i) => lists[where[i]].push(i));
+    lists.forEach((l) => l.sort((a, b) => (placed[a] !== undefined) - (placed[b] !== undefined) || cmp(a, b)));
+    return { where, lists, g, cmp };
+  }
+
+  // Sett på en plate: coveret løftes ut av cellen, plata glir ut av omslaget og ned på tallerkenen,
+  // armen senkes, og coveret havner på «spiller nå»-hylla.
+  lyttUrl(r) {
+    // har vi YouTube-videoene fra Discogs: spill dem som en spilleliste, i rekkefølge
+    if (r.yt && r.yt.length) return 'https://www.youtube.com/watch_videos?video_ids=' + r.yt.slice(0, 50).join(',');
+    // ellers YouTube-søk på artist og album (Discogs-siden ligger på egen knapp)
+    return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(r.a + ' ' + r.t + ' full album');
+  }
+  play(i) {
+    // Musikkfanen: første gang åpnes den (det kan ikke skje i bakgrunnen); deretter byttes musikken i den
+    // samme fanen uten at den hentes fram, så det spiller «bak» rommet. Innhold: YouTube-videoene Discogs har
+    // på utgaven, ellers Discogs-siden, ellers et YouTube-søk.
+    // Må skje direkte i trykket, ellers stopper nettleseren det. Uten tillatelse bruker du knappene øverst.
+    const r = this.recs && this.recs[i] ? this.recs[i].r : (this.d && this.d.recs[i]);
+    if (r && window.spillAv) {
+      // egen nettside: spill i rommets egen YouTube-spiller
+      this.musikkBlokkert = !window.spillAv(r, this.lyttUrl(r));
+    } else if (r) {
+      try {
+        const url = this.lyttUrl(r);
+        let w = this.musikkVindu && !this.musikkVindu.closed ? this.musikkVindu : null;
+        if (w) w.location.href = url;  // fanen finnes: bytt musikk uten å hente den fram
+        else {
+          // et lite spillervindu nede i hjørnet i stedet for en fane over rommet (PC); iPad gjør det uansett til en fane
+          const W = 420, H = 300, sw = (window.screen && screen.availWidth) || 1400, sh = (window.screen && screen.availHeight) || 900;
+          w = window.open(url, 'rommet-musikk', 'popup,width=' + W + ',height=' + H + ',left=' + Math.max(0, sw - W - 16) + ',top=' + Math.max(0, sh - H - 16));
+          // be nettleseren legge rommet foran igjen (noen nettlesere lar det skje, andre ikke)
+          if (w) { try { w.blur(); window.focus(); } catch (e) {} }
+        }  // opener beholdes, ellers kan ikke neste plate bytte musikk i samme vindu
+        this.musikkVindu = w;
+        this.musikkBlokkert = !w;
+      } catch (e) { this.musikkVindu = null; this.musikkBlokkert = true; }
+    }
+    (this.timers || []).forEach((t) => clearTimeout(t));
+    this.timers = [];
+    const k = this.lastL ? this.lastL.where[i] : 0, P = this.PL[k] || {};
+    const src = P.x !== undefined ? { x: P.x + P.w / 2 - 20, y: 262 } : k === 8 ? { x: 414, y: 140 } : k === 9 ? { x: 58, y: 110 } : { x: 145, y: 160 };
+    this.setState({ fly: { i, phase: 0, src }, playing: false });
+    this.timers.push(setTimeout(() => this.setState({ fly: { i, phase: 1, src } }), 40));
+    this.timers.push(setTimeout(() => this.setState({ fly: { i, phase: 2, src } }), 850));
+    this.timers.push(setTimeout(() => this.setState({ fly: null, np: i, playing: true }), 1650));
+  }
+
+  // Hjørnevisning: langveggen roteres rundt hjørnet (x = 912) med perspektiv.
+  cornerGeo() {
+    const h = 912, cy = 215, P = 1300, A = 32 * Math.PI / 180;
+    // Langveggen står rett forfra; kortveggen (stolen, celle 7–8, Super Ape) vinkles innover fra hjørnet.
+    const pt = (x, y) => {
+      if (x <= h) return [x, y, 1];
+      const dx = x - h, s = P / (P + dx * Math.sin(A));
+      return [h + dx * Math.cos(A) * s, cy + (y - cy) * s, s];
+    };
+    return { pt, tf: 'transform-origin:' + h + 'px ' + cy + 'px;transform:perspective(' + P + 'px) rotateY(32deg);' };
+  }
+
+  // ---------- nye plater ----------
+  syncExtra(ex) {
+    if (this._exRef === ex) return;
+    this.d.recs = this.baseRecs.concat(ex);
+    this.recs = this.d.recs.map(this.mk);
+    this._exRef = ex;
+  }
+  norm(a) {
+    return String(a || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/^the\s+/, '').replace(/[^a-z0-9]/g, '');
+  }
+  suggest(a) {
+    const k = this.norm(a), c = {};
+    if (!k) return -1;
+    this.baseRecs.forEach((r) => { if (this.norm(r.a) === k) c[r.g] = (c[r.g] || 0) + 1; });
+    let best = -1, n = 0;
+    Object.keys(c).forEach((g) => { if (c[g] > n) { n = c[g]; best = +g; } });
+    return best;
+  }
+  wishFor(a) {
+    const k = this.norm(a);
+    if (!k) return '';
+    const w = (this.curWish || this.d.wish || []).find((x) => this.norm(x.a) === k);
+    return w ? w.tags : '';
+  }
+  readImg(file) {
+    return new Promise((ok, fail) => {
+      const fr = new FileReader();
+      fr.onerror = fail;
+      fr.onload = () => {
+        const im = new Image();
+        im.onerror = fail;
+        im.onload = () => {
+          const S = 300, cv = document.createElement('canvas'); cv.width = S; cv.height = S;
+          const x = cv.getContext('2d'), m = Math.min(im.width, im.height);
+          x.drawImage(im, (im.width - m) / 2, (im.height - m) / 2, m, m, 0, 0, S, S);
+          const px = x.getImageData(0, 0, S, S).data; let r = 0, g = 0, b = 0, n = 0;
+          for (let i = 0; i < px.length; i += 4 * 97) { r += px[i]; g += px[i + 1]; b += px[i + 2]; n++; }
+          const hx = (v) => ('0' + Math.round(v / n).toString(16)).slice(-2);
+          ok({ img: cv.toDataURL('image/jpeg', 0.82), sc: '#' + hx(r) + hx(g) + hx(b) });
+        };
+        im.src = fr.result;
+      };
+      fr.readAsDataURL(file);
+    });
+  }
+  formVals(st) {
+    const f = st.form || {}, set = (o) => this.setState({ form: Object.assign({}, this.state.form, o) });
+    const sug = this.suggest(f.a);
+    const g = f.gTouched ? f.g : (sug >= 0 ? sug : this.d.genres.findIndex((G) => G.name === 'Uplassert'));
+    const wish = this.wishFor(f.a);
+    return {
+      s: f.s || 'LP', n: String(f.n || 1), g: String(g), aVal: f.a || '',
+      gHint: f.gTouched ? '' : sug >= 0 ? '· foreslått ut fra platene du har av artisten' : f.a ? '· ny artist, velg selv' : '',
+      hasWish: !!wish, wish,
+      hasImg: !!f.img, noImg: !f.img, img: f.img || '',
+      hasErr: !!f.err, err: f.err || '',
+      setA: (e) => set({ a: e.target.value, err: '' }), setT: (e) => set({ t: e.target.value, err: '' }),
+      setY: (e) => set({ y: e.target.value }), setU: (e) => set({ u: e.target.value }),
+      setS: (e) => set({ s: e.target.value }), setN: (e) => set({ n: +e.target.value }),
+      setG: (e) => set({ g: +e.target.value, gTouched: true }),
+      pickImg: (e) => { const file = e.target.files && e.target.files[0]; if (file) this.readImg(file).then((o) => set(o)).catch(() => set({ err: 'Klarte ikke å lese bildet.' })); },
+      save: () => {
+        const a = (f.a || '').trim(), t = (f.t || '').trim();
+        if (!a || !t) { set({ err: 'Fyll inn både artist og tittel.' }); return; }
+        const s = f.s || 'LP', n = f.n || 1, d = new Date();
+        const MND = ['januar', 'februar', 'mars', 'april', 'mai', 'juni', 'juli', 'august', 'september', 'oktober', 'november', 'desember'];
+        const id = (/release\/(\d+)/.exec(f.u || '') || [])[1] || '';
+        const rec = {
+          a, t, g, y: parseInt(f.y, 10) || 0, s, n, fmt: (n > 1 ? n + ' x ' : '') + (s === 'CD' ? 'CD' : 'Vinyl ' + s), st: 0, r: '', lb: '', cat: '', c: '',
+          kj: 'Ny i hus ' + d.getDate() + '. ' + MND[d.getMonth()] + ' ' + d.getFullYear(), w: wish, id, url: f.u || '', re: false, cv: null,
+          sc: f.sc || '#8A7F72', nyImg: f.img || '', ny: true, homed: false, nid: Date.now(),
+        };
+        this.setState({ extra: (this.state.extra || []).concat([rec]), form: null, panel: true, cont: 11, gsel: -1, idx: 0, q: '' });
+      },
+    };
+  }
+
+  componentWillUnmount() { (this.timers || []).forEach((t) => clearTimeout(t)); }
+
+  renderVals() {
+    const st = this.state || {};
+    const T = this.tokens(this.props.stil);
+    const set = (o) => () => this.setState(o);
+    const open = (o) => () => this.setState(Object.assign({ panel: true }, o));
+    // bredden følger vinduet (minst 1366); høyden er alltid 1024
+    const appW = Math.max(1366, this.props.bredde || 1366);
+    const big = !st.panel, S2 = big ? (968 - 24) / 670 : Math.min(appW / 1366, 1.3); // med panelet åpent må infoen få plass under rommet
+    const roomH = big ? 968 : Math.round(430 * S2), coverS = Math.max(150, Math.min(300, 1024 - 56 - roomH - 54 - 172));
+    this.coverS = coverS;
+    const pan = (dx) => () => { const el = document.getElementById('romboks'); if (el) el.scrollBy({ left: dx, behavior: 'smooth' }); };
+    const base = {
+      appW, big, panelOpen: !big, sceneS: S2, sceneW: big ? appW : 1700 * S2, sceneH: (big ? 670 : 430) * S2, sceneTop: big ? -60 * S2 : -300 * S2, sceneLW: big ? appW / S2 : 1700,
+      trackW: big ? (this._panelCont = null, appW + this.turnSetup(appW / S2, S2) * S2) : (requestAnimationFrame(() => this.syncPanel(cont, S2)), 0) || Math.max(appW, 1700 * S2), stageW: big ? appW : Math.max(appW, 1700 * S2), roomOverflow: 'auto', bigFill: big ? '' : 'display:none;',
+      panL: pan(-640), panR: pan(640), closePanel: set({ panel: false, sel: -1, q: '' }),
+      T, styleName: T.name, onSearch: (e) => this.setState(e.target.value ? { q: e.target.value, idx: 0, panel: true } : { q: '', idx: 0 }), undoAll: set({ moved: {}, placed: {}, gone: {} }),
+      closeCard: set({ sel: -1, goneAsk: null }), pickNow: set({ cont: -2 }), pickBoxes: open({ cont: 9, gsel: -1, idx: 0 }), pickCD: open({ cont: 10, gsel: -1, idx: 0 }), pickRack: open({ cont: 8, gsel: -1, idx: 0 }),
+      setBla: set({ mode: 'bla' }), setKort: set({ mode: 'kort' }),
+      openForm: set({ form: { s: 'LP', n: 1 }, sel: -1 }), closeForm: set({ form: null }), pickNy: open({ cont: 11, gsel: -1, idx: 0 }), pickWish: open({ cont: 12, gsel: -1, idx: 0, q: '' }),
+      formOpen: !!st.form,
+      setFlat: set({ view: 'flat' }), setCorner: set({ view: 'corner' }),
+      setTegning: set({ foto: false }), setFoto: set({ foto: true }),
+      viewTegning: false ? T.pillOff : T.pillOn, viewFoto: false ? T.pillOn : T.pillOff,
+      isFoto: !!false, notFoto: !false, roomH, fotoSrc: this.FOTO || '',
+      viewFlat: (st.view || this.props.visning) === 'corner' ? T.pillOff : T.pillOn, viewCorner: (st.view || this.props.visning) === 'corner' ? T.pillOn : T.pillOff,
+    };
+    if (!st.ready) {
+      return Object.assign(base, { loading: true, loadText: st.failed ? 'Fant ikke platedataene.' : 'Rydder i rommet …', cells: [], cellsLong: [], cellsEnd: [], roomBg: T.wallBg, isCorner: false, cornerFloor: '', cornerCeil: '', longTf: '', endTf: '', ticks: [], boxSpines: [], cdSpines: [], rackSpines: [], tabs: [], stack: [], cards: [], margin: { spines: [], label: '' }, front: {}, isBla: false, isKort: false, hasSel: false, card: {}, now: { noCover: false, hasCover: false, a: '' }, nowSleeve: 'display:none;', nyHar: false, nyAntall: '0', nyStabel: [], hots: [], hotLabels: [], fotoNow: { show: false }, detail: { hots: [], now: { show: false } }, pano: { css: '' }, form: {}, artistOptions: [], isWish: false, notWish: true, wishFilters: [], wishItems: [], wishAdd: {}, wishSort: {}, wishCount: '', tt: {}, fly: { show: false }, playing: false, nowText: '', stop: () => { if (window.stoppAv) window.stoppAv(); this.setState({ playing: false }); }, posters: { ape: {}, betty: {} }, sel: {}, moveText: '', hasMoves: false, gOptions: [], pOptions: [], modeBla: '', modeKort: '' });
+    }
+    this.syncExtra(st.extra || []);
+    this.curWish = st.wish || this.d.wish || [];
+    this.goneMap = st.gone || {};
+    const d = this.d, R = this.recs, moved = st.moved || {}, placed = st.placed || {}, q = (st.q || '').trim().toLowerCase();
+    const cont = st.cont === undefined || st.cont < 0 ? 0 : st.cont;
+    const gsel = st.gsel === undefined ? -1 : st.gsel;
+    const mode = st.mode || 'bla';
+    const sel = st.sel === undefined ? -1 : st.sel;
+    const L = this.layout(moved, placed);
+    this.lastL = L;
+    const name = (gi) => this.SHORT[d.genres[gi].name] || d.genres[gi].name;
+    const hit = (i) => q && R[i].lc.indexOf(q) >= 0;
+
+    // ---- rutene og kassene i rommet ----
+    const runs = [];
+    const cells = this.PL.slice(0, 8).map((P, k) => {
+      const list = L.lists[k], inner = P.w - 12;
+      const S = list.reduce((s, i) => s + R[i].th, 0) || 1, unit = Math.min(3.2, inner / S);
+      const spines = [];
+      let lastG = -1, x = P.x + 32 + 6; // veggene ligger 32 px inn i scenen
+      list.forEach((i) => {
+        const gi = L.g(i);
+        if (gi !== lastG && lastG !== -1) { spines.push({ css: 'width:2px;height:132px;background:' + T.marginOn + ';' }); x += 2; }
+        lastG = gi;
+        const dim = q && !hit(i), w = Math.max(0.5, R[i].th * unit);
+        spines.push({ css: 'width:' + w + 'px;height:' + (126 + ((i * 7) % 9)) + 'px;background:' + (i === sel ? T.marginOn : R[i].col) + ';opacity:' + (dim ? 0.2 : 1) + ';' });
+        // sjangerkartet på gulvet: hvor hver sjanger starter og slutter (logiske px)
+        const run = runs[runs.length - 1];
+        if (run && run.gi === gi && (run.k === k || (run.k === k - 1 && k !== 6))) { run.x1 = x + w; run.k = k; }
+        else runs.push({ gi, x0: x, x1: x + w, k });
+        x += w;
+      });
+      const gs = [];
+      list.forEach((i) => { const n = name(L.g(i)); if (gs.indexOf(n) < 0) gs.push(n); });
+      const hits = q ? list.filter(hit).length : 0;
+      const top = P.crate ? 34 : 0;
+      return {
+        name: P.name + ': ' + gs.join(', '), label: P.name.replace('Celle ', '') + ' · ' + list.length,
+        hit: hits > 0, hits: String(hits), pick: open({ cont: k, gsel: -1, idx: 0 }),
+        css: 'left:' + (P.crate ? P.x - 428 : P.x) + 'px;width:' + P.w + 'px;' + (P.crate ? T.crateFrame : T.cellFrame) + (cont === k && !big ? T.selOutline : ''),
+        lcss: 'left:' + ((P.crate ? P.x - 428 : P.x) + 2) + 'px;' + T.cellLabel,
+        spines,
+      };
+    });
+    const mini = (k, h, w) => L.lists[k].map((i) => ({ css: 'width:' + w + 'px;height:' + h(i) + 'px;background:' + R[i].col + ';opacity:' + (q && !hit(i) ? 0.25 : 1) + ';' }));
+    const boxSpines = mini(9, (i) => 96 + (i % 3) * 6, 9);
+    const cdFolders = [];
+    for (let f = 0; f < L.lists[10].length; f += 8) cdFolders.push({ css: 'width:1.4px;height:' + (60 + (f % 5)) + 'px;background:' + R[L.lists[10][f]].col + ';' });
+    const rackSpines = L.lists[8].slice(0, 12).map((i, j) => ({ css: 'left:' + (10 + j * 6) + 'px;top:' + (j % 2 ? 4 : 0) + 'px;width:56px;height:' + (R[i].r.s === '7"' ? 40 : 52) + 'px;transform:rotate(' + (-8 + j * 1.4) + 'deg);background:' + R[i].col + ';opacity:' + (q && !hit(i) ? 0.3 : 1) + ';' }));
+
+    // ---- hva panelet viser ----
+    let list, title;
+    if (cont === 12 && !q) { list = []; title = 'Ønskelista'; }
+    else if (q) { list = R.map((x) => x.i).filter((i) => hit(i) && L.where[i] !== 13).sort(L.cmp); title = 'Søk'; }
+    else if (gsel >= 0) { list = R.map((x) => x.i).filter((i) => L.g(i) === gsel && L.where[i] <= 7).sort(L.cmp); title = name(gsel); }
+    else { list = L.lists[cont]; title = this.PL[cont].name; }
+    const gsIn = [];
+    (gsel >= 0 ? L.lists.slice(0, 8).filter((l) => l.some((i) => L.g(i) === gsel)).flat() : (L.lists[cont] || [])).forEach((i) => { const gi = L.g(i); if (gsIn.indexOf(gi) < 0) gsIn.push(gi); });
+    const tabs = cont === 12 && !q ? [{ name: 'Ønskelista', pick: set({}), css: T.tabOn }] : [{ name: q ? 'Søk · ' + list.length : this.PL[cont].name, pick: set({ gsel: -1, idx: 0 }), css: gsel < 0 ? T.tabOn : T.tabOff }]
+      .concat(q ? [] : (gsel >= 0 ? [gsel] : gsIn).map((gi) => ({ name: name(gi), pick: set({ gsel: gi, idx: 0 }), css: gsel === gi ? T.tabOn : T.tabOff })));
+    const where = (i) => this.PL[L.where[i]].name;
+
+    // ---- ønskelista ----
+    const wishes = this.curWish;
+    const wf = st.wf || 'Alle';
+    const TYPES = ['Alle', 'Mer', 'Original', 'Selge', 'Vil ha'];
+    const isType = (w, t) => t === 'Alle' || w.tags.split(' · ').some((x) => x === t || x.indexOf(t + ':') === 0);
+    const wishFilters = TYPES.map((t) => ({ name: t, n: String(wishes.filter((w) => isType(w, t)).length), pick: set({ wf: t }), css: wf === t ? T.pillOn : T.pillOff }));
+    const haveOf = {};
+    this.baseRecs.concat(st.extra || []).forEach((r, i) => { if (L.where[i] === 13) return; const k = this.norm(r.a); (haveOf[k] = haveOf[k] || []).push(i); });
+    const prio = st.ws !== 'az';
+    const wishSort = { isPrio: prio, isAz: !prio, prio: set({ ws: 'prio' }), az: set({ ws: 'az' }), prioCss: prio ? T.pillOn : T.pillOff, azCss: prio ? T.pillOff : T.pillOn };
+    const visible = (w) => isType(w, wf);
+    // flytt et ønske til en ny plass i hele lista; med filter på hopper den over skjulte ønsker
+    const moveWish = (w, to) => {
+      const l = this.curWish.slice(), from = l.indexOf(w);
+      if (from < 0 || to < 0 || to >= l.length || to === from) return;
+      l.splice(from, 1); l.splice(to, 0, w);
+      this.setState({ wish: l, wishFlash: w.a });
+    };
+    const step = (w, dir) => {
+      const l = this.curWish; let j = l.indexOf(w) + dir;
+      while (j >= 0 && j < l.length && !visible(l[j])) j += dir;
+      if (j >= 0 && j < l.length) moveWish(w, j);
+    };
+    let ordered = wishes.filter(visible);
+    if (!prio) ordered = ordered.slice().sort((x, y) => this.norm(x.a).localeCompare(this.norm(y.a)));
+    const wishItems = ordered.map((w) => {
+      const ids = haveOf[this.norm(w.a)] || [];
+      const cells = Array.from(new Set(ids.map((i) => (L.where[i] !== undefined ? this.PL[L.where[i]].name : '')))).filter(Boolean);
+      return {
+        a: w.a, tags: w.tags || '–',
+        have: ids.length ? 'Du har ' + ids.length + (ids.length === 1 ? ' plate' : ' plater') + ' · ' + cells.join(', ') : 'Ingen plater ennå',
+        got: () => this.setState({ form: { a: w.a, s: 'LP', n: 1 }, sel: -1 }),
+        remove: () => this.setState({ wish: this.curWish.filter((x) => x !== w) }),
+        rank: String(wishes.indexOf(w) + 1),
+        rankCss: wishes.indexOf(w) < 10 ? T.accentC : T.mutedC,
+        rowCss: st.wishFlash === w.a ? 'outline:2px solid #FF7A59;outline-offset:2px;' : '',
+        up: () => step(w, -1), down: () => step(w, 1), top: () => moveWish(w, 0),
+        dragStart: (e) => { this.dragWish = w; try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', w.a); } catch (x) {} },
+        dragOver: (e) => { e.preventDefault(); },
+        drop: (e) => { e.preventDefault(); const d0 = this.dragWish; this.dragWish = null; if (d0 && d0 !== w) moveWish(d0, this.curWish.indexOf(w)); },
+      };
+    });
+    const wa = st.wishAdd || {};
+    const setWa = (o) => this.setState({ wishAdd: Object.assign({}, this.state.wishAdd, o) });
+    const wishAdd = {
+      type: wa.type || 'Mer', hasErr: !!wa.err, err: wa.err || '',
+      setA: (e) => setWa({ a: e.target.value, err: '' }), setT: (e) => setWa({ t: e.target.value }), setType: (e) => setWa({ type: e.target.value }),
+      save: () => {
+        const a = (wa.a || '').trim();
+        if (!a) { setWa({ err: 'Skriv inn en artist.' }); return; }
+        const tag = (wa.type || 'Mer') + ((wa.t || '').trim() ? ': ' + wa.t.trim() : '');
+        const list2 = this.curWish.slice(), k = this.norm(a), j = list2.findIndex((x) => this.norm(x.a) === k);
+        if (j >= 0) list2[j] = { a: list2[j].a, tags: list2[j].tags ? list2[j].tags + ' · ' + tag : tag };
+        else list2.push({ a, tags: tag });
+        this.setState({ wish: list2, wishAdd: { type: wa.type || 'Mer' }, wf: 'Alle' });
+      },
+    };
+
+    const idx = Math.max(0, Math.min(st.idx || 0, list.length - 1));
+    const go = (n) => () => this.setState({ idx: Math.max(0, Math.min(n, list.length - 1)) });
+    const stack = [];
+    for (let j = Math.min(list.length - 1, idx + 9); j >= idx; j--) {
+      const i = list[j], off = j - idx, size = (this.coverS || 300) - off * 4;
+      stack.push(Object.assign({
+        a: d.recs[i].a, t: d.recs[i].t, label: off ? 'Bla fram til ' + d.recs[i].a + ' – ' + d.recs[i].t : 'Åpne kortet for ' + d.recs[i].t,
+        pick: off ? go(j) : set({ sel: i }),
+        css: 'left:' + (off * 11) + 'px;top:' + (24 - off * 3 + off * 0) + 'px;width:' + size + 'px;height:' + size + 'px;transform:translateY(' + (-off * 0) + 'px);z-index:' + (20 - off) + ';opacity:' + (off ? 1 - off * 0.06 : 1) + ';' + T.coverWrap + T.stackEdge,
+      }, this.img(d.recs[i], size)));
+    }
+    const fi = list[idx];
+    const fr = fi !== undefined ? d.recs[fi] : null;
+    const front = fr ? {
+      a: fr.a, t: fr.t, meta: R[fi].meta + ' · ' + name(L.g(fi)) + ' · ' + where(fi), pos: (idx + 1) + ' AV ' + list.length + ' · ' + title.toUpperCase(),
+      aplus: fr.r === 'A+', forslag: fr.st === 1 && moved[fi] === undefined, open: set({ sel: fi }), play: () => this.play(fi),
+    } : { a: '', t: list.length ? '' : 'Ingen plater her', meta: '', pos: '', aplus: false, forslag: false };
+    const mw = list.length;
+    const margin = {
+      label: 'Margen · trykk på en rygg for å bla dit',
+      spines: list.map((i, j) => ({ label: d.recs[i].a + ' – ' + d.recs[i].t, pick: go(j), css: 'height:' + (j === idx ? 40 : 30 + ((i * 7) % 8)) + 'px;background:' + (j === idx ? T.marginOn : R[i].col) + ';' + (mw > 300 ? '' : 'max-width:14px;') })),
+    };
+    const cards = mode === 'kort' ? list.map((i) => Object.assign({
+      a: d.recs[i].a, t: d.recs[i].t, meta: R[i].meta, label: d.recs[i].a + ' – ' + d.recs[i].t, open: set({ sel: i }),
+      stamp: d.recs[i].r === 'A+' ? 'A+' : d.recs[i].st === 1 ? 'forslag?' : '', stampCss: d.recs[i].r === 'A+' ? T.accentC + 'font-weight:600;' : 'color:#B79A2E;',
+    }, this.img(d.recs[i], 64))) : [];
+
+    // ---- spiller nå ----
+    const np = st.np === undefined ? -1 : st.np;
+    const npOk = np >= 0 && np < d.recs.length;
+    // foto: cellene tegnet som flater over bildet (koordinater i originalbildet, 2576 px bredt)
+    const K = 1366 / 2576, OY = 65;
+    const HOT = [
+      [0, 'Celle 1', [[75, 905], [470, 915], [470, 1150], [80, 1135]]], [1, 'Celle 2', [[480, 915], [750, 915], [750, 1150], [480, 1150]]],
+      [2, 'Celle 3', [[756, 912], [1170, 900], [1170, 1140], [756, 1150]]], [3, 'Celle 4', [[1440, 830], [1720, 780], [1720, 1040], [1440, 1070]]],
+      [4, 'Celle 5', [[1724, 775], [1812, 750], [1812, 990], [1724, 1035]]], [5, 'Celle 6', [[1812, 745], [1890, 720], [1890, 945], [1812, 985]]],
+      [6, 'Celle 7', [[2205, 745], [2305, 735], [2305, 905], [2205, 915]]], [7, 'Celle 8', [[2310, 725], [2560, 715], [2560, 885], [2310, 900]]],
+      [9, 'Boksene', [[80, 700], [250, 700], [250, 900], [80, 900]]], [8, 'Stativet med 7" og 10"', [[830, 610], [1070, 610], [1070, 780], [830, 780]]],
+    ];
+    const hots = [], hotLabels = [];
+    HOT.forEach(([k, nm, pts]) => {
+      const P = pts.map(([x, y]) => [x * K, y * K - OY]);
+      const x0 = Math.min(...P.map((p) => p[0])), y0 = Math.min(...P.map((p) => p[1])), x1 = Math.max(...P.map((p) => p[0])), y1 = Math.max(...P.map((p) => p[1]));
+      const on = cont === k;
+      hots.push({
+        name: nm, pick: set({ cont: k, gsel: -1, idx: 0, fotoCell: k }),
+        css: 'left:' + x0 + 'px;top:' + y0 + 'px;width:' + (x1 - x0) + 'px;height:' + (y1 - y0) + 'px;clip-path:polygon(' + P.map((p) => (p[0] - x0) + 'px ' + (p[1] - y0) + 'px').join(',') + ');' + (on ? 'background:rgba(255,122,89,0.38) !important;' : ''),
+      });
+      if (k <= 7) {
+        const h = q ? L.lists[k].filter((i) => R[i].lc.indexOf(q) >= 0).length : 0;
+        hotLabels.push({ t: (h ? h + ' treff · ' : '') + (k + 1), css: 'left:' + (x0 + x1) / 2 + 'px;top:' + (y1 - 26) + 'px;' + (h || on ? 'background:#FF7A59;color:#2A0F07;' : 'background:rgba(20,18,15,0.7);color:#F1E9DF;') });
+      }
+    });
+    // ---- detaljbildene (koordinater i originalbildene) ----
+    const PH = {
+      c12: { W: 1512, H: 2016, alt: 'Celle 1 og 2', reg: { 0: [43, 1397, 835, 1930], 1: [835, 1397, 1427, 1930], 9: [58, 994, 648, 1397] } },
+      c3: { W: 1512, H: 2016, alt: 'Celle 3 og stativet', reg: { 2: [187, 1123, 1340, 1900], 8: [432, 403, 980, 1095] } },
+      rack: { W: 1512, H: 2016, alt: 'Stativet med 7" og 10"', reg: { 8: [300, 250, 1300, 1700] } },
+      c4: { W: 1512, H: 2016, alt: 'Celle 4 og platespilleren', reg: { 3: [86, 1109, 1440, 1915] } },
+      c56: { W: 2016, H: 1512, alt: 'Celle 5 og 6', reg: { 4: [14, 605, 907, 1440], 5: [907, 605, 1930, 1440] } },
+      c78: { W: 1512, H: 2016, alt: 'Celle 7 og 8', reg: { 6: [245, 1397, 821, 1960], 7: [836, 1297, 1427, 1960] }, now: [72, 130, 461, 475] },
+      cd: { W: 1512, H: 2016, alt: 'CD-mappene', reg: { 10: [250, 700, 1300, 1700] } },
+    };
+    const OF = { 0: 'c12', 1: 'c12', 9: 'c12', 2: 'c3', 8: 'rack', 3: 'c4', 4: 'c56', 5: 'c56', 6: 'c78', 7: 'c78', 10: 'cd' };
+    const fc = st.fotoCell === undefined || st.fotoCell === null ? null : st.fotoCell;
+    const phKey = fc !== null && OF[fc] ? OF[fc] : (this.lastPh || 'c12');
+    this.lastPh = phKey;
+    const ph = PH[phKey], AW = 1366, AH = 550;
+    const frg = ph.reg[fc] || Object.values(ph.reg)[0];
+    let sc = Math.min(AW * 0.9 / (frg[2] - frg[0]), AH * 0.84 / (frg[3] - frg[1]));
+    sc = Math.max(sc, AW / ph.W, AH / ph.H);
+    let ox = AW / 2 - (frg[0] + frg[2]) / 2 * sc, oy = AH / 2 + 14 - (frg[1] + frg[3]) / 2 * sc;
+    ox = Math.min(0, Math.max(AW - ph.W * sc, ox)); oy = Math.min(0, Math.max(AH - ph.H * sc, oy));
+    const box = (r) => 'left:' + (ox + r[0] * sc) + 'px;top:' + (oy + r[1] * sc) + 'px;width:' + (r[2] - r[0]) * sc + 'px;height:' + (r[3] - r[1]) * sc + 'px;';
+    const nameOf = (k) => (k <= 7 ? 'Celle ' + (k + 1) : this.PL[k].name);
+    const detail = {
+      src: this.FOTOS ? this.FOTOS[phKey] : '', alt: ph.alt,
+      css: fc !== null ? 'opacity:1;pointer-events:auto;' : 'opacity:0;pointer-events:none;',
+      imgCss: 'left:' + ox + 'px;top:' + oy + 'px;width:' + ph.W * sc + 'px;height:' + ph.H * sc + 'px;',
+      back: set({ fotoCell: null }),
+      hots: Object.keys(ph.reg).map((k) => {
+        k = +k;
+        const on = k === fc, n = (L.lists[k] || []).length, h = q ? (L.lists[k] || []).filter((i) => R[i].lc.indexOf(q) >= 0).length : 0;
+        return {
+          name: nameOf(k), label: nameOf(k) + ' · ' + n + (h ? ' · ' + h + ' treff' : ''), pick: set({ cont: k, gsel: -1, idx: 0, fotoCell: k }),
+          css: box(ph.reg[k]) + (on ? 'border:3px solid #FF7A59;background:rgba(255,122,89,0.10);' : 'border:2px dashed rgba(241,233,223,0.55);'),
+          lcss: on || h ? 'background:#FF7A59;color:#2A0F07;' : 'background:rgba(20,17,14,0.8);color:#F1E9DF;',
+        };
+      }),
+      now: ph.now && npOk ? Object.assign({ show: true, css: box(ph.now) }, this.img(d.recs[np], (ph.now[2] - ph.now[0]) * sc)) : { show: false },
+    };
+    const panoHot = HOT.find((h) => h[0] === fc);
+    let pano = 'transform:none;opacity:1;';
+    if (fc !== null) {
+      const cx = panoHot ? panoHot[2].reduce((a, p) => a + p[0], 0) / 4 * K : 683, cy = panoHot ? panoHot[2].reduce((a, p) => a + p[1], 0) / 4 * K - OY : 275;
+      pano = 'transform-origin:' + cx + 'px ' + cy + 'px;transform:scale(2.6);opacity:0;pointer-events:none;';
+    }
+    const fotoNow = npOk ? Object.assign({ show: true, css: 'left:' + 2140 * K + 'px;top:' + (150 * K - OY) + 'px;width:72px;height:72px;transform:rotate(-1deg);' }, this.img(d.recs[np], 72)) : { show: false };
+    const now = npOk ? Object.assign({ a: d.recs[np].a }, this.img(d.recs[np], 80)) : { hasCover: false, noCover: false, a: '' };
+    const nowSleeve = npOk ? T.coverWrap : 'display:none;';
+    const nyList = L.lists[11];
+    const nyStabel = nyList.slice(-3).map((i, j) => Object.assign({ a: d.recs[i].a + ' – ' + d.recs[i].t, css: 'left:' + (j * 12) + 'px;transform:rotate(' + (-14 + j * 6) + 'deg);' }, this.img(d.recs[i], 70)));
+    const artistOptions = (this.curWish || []).map((w) => ({ v: w.a, note: 'ønskeliste' }))
+      .concat(Array.from(new Set(this.baseRecs.map((r) => r.a))).sort().map((a) => ({ v: a, note: '' })));
+    const corner = false; // hjørnevisningen er slått av inntil vinkelen er riktig
+    let fly = { show: false };
+    if (st.fly) {
+      const F = st.fly, r = d.recs[F.i];
+      // omslaget er alltid 80 px og skaleres, så bildet ikke hopper under animasjonen
+      const c = F.phase === 0 ? [F.src.x, F.src.y, 0.5] : F.phase === 1 ? [647, -40, 0.95] : [1393, -40, 1.15];
+      const dk = F.phase === 0 ? 'translate(' + (F.src.x + 2) + 'px,' + (F.src.y + 2) + 'px) scale(0.36)' : F.phase === 1 ? 'translate(694px,-34px) scale(0.7)' : 'translate(652px,180px) scale(1.25,0.35)';
+      const tr = F.phase ? 'transition:transform 750ms cubic-bezier(.2,.8,.2,1);' : '';
+      let dkCss = dk;
+      if (corner) {
+        const G = this.cornerGeo();
+        const a = G.pt(c[0] + 32, c[1]); c[0] = a[0] - 32; c[1] = a[1]; c[2] *= a[2];
+        const dpos = F.phase === 0 ? [F.src.x + 2, F.src.y + 2, 0.36, 0.36] : F.phase === 1 ? [600, 76, 0.7, 0.7] : [564, 190, 1, 0.28];
+        const b = G.pt(dpos[0] + 32, dpos[1]);
+        dkCss = 'translate(' + (b[0] - 32) + 'px,' + b[1] + 'px) scale(' + dpos[2] * b[2] + ',' + dpos[3] * b[2] + ')';
+      }
+      fly = Object.assign({
+        show: true,
+        cover: 'left:0;top:0;width:80px;height:80px;transform-origin:0 0;transform:translate(' + c[0] + 'px,' + c[1] + 'px) scale(' + c[2] + ');' + tr,
+        disc: 'left:0;top:0;width:100px;height:100px;transform-origin:0 0;transform:' + dkCss + ';' + tr,
+      }, this.img(r, 80));
+    }
+
+    // ---- kortet ----
+    let card = {};
+    if (sel >= 0) {
+      const r = d.recs[sel], gi = L.g(sel), p = L.where[sel];
+      card = Object.assign({
+        no: String(sel + 1).padStart(4, '0'), place: this.PL[p].name.toUpperCase(), a: r.a, t: r.t,
+        placeLong: this.PL[p].name + (placed[sel] !== undefined ? ' (satt av deg)' : ''),
+        genre: d.genres[gi].name, status: moved[sel] !== undefined ? 'flyttet nå' : ['bekreftet', 'forslag', 'uplassert'][r.st],
+        fmt: r.fmt || r.s, y: r.y ? String(r.y) + (r.re ? ', reissue/repress' : '') : 'ukjent', lb: r.lb || '–', cat: r.cat || '–', c: r.c || '–',
+        kj: r.kj ? r.kj.trim() : '–', r: r.r || 'ikke satt', aplus: r.r === 'A+', w: this.wishFor(r.a) || '–',
+        url: r.url || (r.id ? 'https://www.discogs.com/release/' + r.id : ''), hasUrl: !!(r.url || r.id),
+        isNy: !!r.ny, waiting: !!r.ny && !r.homed, canGone: !r.ny,
+        goneText: st.goneAsk === sel ? 'Trykk igjen for å fjerne fra samlingen' : 'Fjern fra samlingen (solgt, borte …)',
+        gone: () => {
+          if (this.state.goneAsk !== sel) { this.setState({ goneAsk: sel }); return; }
+          const g2 = Object.assign({}, this.state.gone || {}); g2[sel] = true;
+          this.setState({ gone: g2, goneAsk: null, sel: -1, np: this.state.np === sel ? -1 : this.state.np, playing: this.state.np === sel ? false : this.state.playing });
+        },
+        target: (() => { if (!r.ny || r.homed) return ''; const ex = (st.extra || []).map((x) => (x.nid === r.nid ? Object.assign({}, x, { homed: true }) : x)); const saveRef = this._exRef; this.syncExtra(ex); const w = this.layout(moved, placed).where[sel]; this.syncExtra(saveRef); this._exRef = saveRef; return this.PL[w].name; })(),
+        home: () => {
+          const ex = (this.state.extra || []).map((x) => (x.nid === r.nid ? Object.assign({}, x, { homed: true }) : x));
+          this.setState({ extra: ex });
+          setTimeout(() => { const L2 = this.lastL; if (L2) this.setState({ cont: L2.where[sel], gsel: -1, idx: Math.max(0, L2.lists[L2.where[sel]].indexOf(sel)) }); }, 150);
+        },
+        remove: () => {
+          const ex = (this.state.extra || []).filter((x) => x.nid !== r.nid);
+          const clean = (m) => { const o = {}; Object.keys(m || {}).forEach((k) => { if (+k < this.base) o[k] = m[k]; }); return o; };
+          this.setState({ extra: ex, sel: -1, moved: clean(this.state.moved), placed: clean(this.state.placed), np: this.state.np >= this.base ? -1 : this.state.np });
+        },
+        gval: String(gi), pval: String(p), play: () => { this.setState({ sel: -1 }); this.play(sel); },
+        moveG: (e) => { const to = parseInt(e.target.value, 10), m = Object.assign({}, moved); if (to === r.g) delete m[sel]; else m[sel] = to; this.setState({ moved: m }); },
+        moveP: (e) => { const to = parseInt(e.target.value, 10), m = Object.assign({}, placed); m[sel] = to; this.setState({ placed: m, cont: to, gsel: -1 }); },
+      }, this.img(r, 388));
+    }
+    const nm = Object.keys(moved).length + Object.keys(placed).length + Object.keys(st.gone || {}).length;
+    return Object.assign(base, {
+      ticks: this.PL.slice(0, 8).reduce((a, P) => a.concat([P.x, P.x + P.w]), []).map((x) => ({ css: 'left:' + (x + 32) + 'px;background:' + (T.tick || 'transparent') + ';' })),
+      cellsLong: cells.slice(0, 6), cellsEnd: cells.slice(6),
+      // sjangerraden under cellene i to nivåer: familien (f.eks. HARDT) som en strek over hele,
+      // og undersjangrene (lett · kaos · seigt) delt opp under. Familier med bare én sjanger får bare øverste nivå.
+      ...(() => {
+        const G = d.genres, xr = (r) => (r.k >= 6 ? r.x0 - 32 - 428 : r.x0 - 32);
+        // familien fra Sjangerfamilie i Platesamling.csv; Post-rock og Ambient er ikke lenger én familie
+        const famOf = (gi) => (G[gi].fam === 'Ambient/Post-rock' ? G[gi].name : G[gi].fam);
+        const passer = (tekst, w, px) => tekst.length * px + 6 <= w;
+        const dimG = (gi) => q && !(L.lists.slice(0, 8).flat().some((i) => L.g(i) === gi && hit(i)));
+        const fam = [];
+        runs.forEach((r) => {
+          const f = famOf(r.gi), last = fam[fam.length - 1];
+          if (last && last.f === f && (last.k < 6) === (r.k < 6)) { last.x1 = r.x1; last.runs.push(r); }
+          else fam.push({ f, k: r.k, x0: r.x0, x1: r.x1, runs: [r] });
+        });
+        const rad = [];
+        fam.forEach((F) => {
+          const gs = [...new Set(F.runs.map((r) => r.gi))], flere = gs.length > 1 || G[gs[0]].name.indexOf(famOf(gs[0]) + '-') === 0;  // f.eks. ROCK over «jazzrock» selv om den står alene
+          const navn = flere ? F.f : name(gs[0]), w = Math.max(3, F.x1 - F.x0 - 4), dim = gs.every(dimG);
+          const kortF = flere ? navn : (G[gs[0]].short || navn);
+          rad.push({ k: F.k, name: navn, aria: 'Bla i ' + navn, label: passer(navn, w, 6.2) ? navn : passer(kortF, w, 6.2) ? kortF : (w >= 30 ? navn : ''), pick: open({ cont: F.k, gsel: flere ? -1 : gs[0], idx: 0 }),
+            css: 'left:' + xr(F) + 'px;width:' + w + 'px;top:383px;height:16px;border-top:2px solid;font-size:9.5px;font-weight:700;color:' + T.mapInk + ';border-color:' + T.mapInk + ';opacity:' + (dim ? 0.3 : 1) + ';' });
+          if (!flere) return;
+          F.runs.forEach((r) => {
+            const full = name(r.gi), pre = F.f + '-', kort = full.indexOf(pre) === 0 ? full.slice(pre.length) : full;
+            const ws = Math.max(2, r.x1 - r.x0 - 3);
+            rad.push({ k: r.k, name: full, aria: 'Bla i ' + full, label: ws >= 22 ? kort : '', pick: open({ cont: r.k, gsel: r.gi, idx: 0 }),
+              css: 'left:' + xr(r) + 'px;width:' + ws + 'px;top:400px;height:14px;border-top:1px solid;padding-top:2px;font-size:8.5px;font-weight:500;text-transform:lowercase;color:' + T.mapInk + ';border-color:' + T.mapInk + '99;opacity:' + (dimG(r.gi) ? 0.3 : 1) + ';' });
+          });
+        });
+        return { genreRowL: rad.filter((r) => r.k < 6), genreRowE: rad.filter((r) => r.k >= 6) };
+      })(),
+      ...(() => { const all = (() => {
+        if (!big) return [];  // deles i langvegg (L) og kortvegg (E) under
+        const rowsL = [], rowsE = [];
+        return runs.map((r, j) => {
+          const rows = r.k >= 6 ? rowsE : rowsL;
+          const label = name(r.gi), cx = (r.x0 + r.x1) / 2 * S2, lw = label.length * 7.6 + 16;
+          let lx = Math.max(4, cx - lw / 2);
+          let row = rows.findIndex((end) => lx > end + 6);
+          if (row < 0) { row = rows.length; rows.push(0); }
+          rows[row] = lx + lw;
+          const dim = q && !(L.lists.slice(0, 8).flat().some((i) => L.g(i) === r.gi && hit(i)));
+          const by = 12, ly = 34 + row * 26;
+          return {
+            name: label, k: r.k, pick: open({ cont: r.k, gsel: r.gi, idx: 0 }), aria: 'Bla i ' + label,
+            bcss: 'left:' + r.x0 * S2 + 'px;width:' + Math.max(4, (r.x1 - r.x0) * S2 - 3) + 'px;top:' + by + 'px;opacity:' + (dim ? 0.35 : 1) + ';border-color:' + T.mapInk + ';',
+            lcss: 'left:' + cx + 'px;top:' + (by + 8) + 'px;height:' + (ly - by - 8) + 'px;opacity:' + (dim ? 0.35 : 1) + ';background:' + T.mapInk + ';',
+            tcss: 'left:' + lx + 'px;top:' + ly + 'px;opacity:' + (dim ? 0.35 : 1) + ';color:' + T.mapInk + ';background:' + T.mapBg + ';',
+          };
+        });
+      })(); return { floorMapL: all.filter((x) => x.k < 6), floorMapE: all.filter((x) => x.k >= 6) }; })(),
+      // på brede skjermer med panelet åpent: vegg og gulv fortsetter ut til sidene
+      roomBox: (() => {
+        const c = (t, f) => ((t || '').match(/#[0-9a-fA-F]{6}/) || [f])[0];
+        const ft = big ? (968 - 670 * S2) * 0.3 / 1.9 + 620 * S2 : 380 * S2;
+        return 'background:linear-gradient(to bottom,' + c(T.wallBg, '#56604F') + ' 0 ' + ft + 'px,' + c(T.floor, '#B58552') + ' ' + ft + 'px);';
+      })(),
+      roomBg: T.wallBg, isCorner: corner,
+      longTf: big ? 'transform-origin:1340px 60%;transform:translateX(calc(var(--rom-xc, 1340px) - 1340px)) rotateY(calc(var(--rom-t, 0) * 52deg));' : 'transform:none;',
+      endTf: big ? 'transform-origin:912px 60%;transform:translateX(calc(var(--rom-xc, 1340px) - 1340px)) rotateY(calc((var(--rom-t, 0) - 1) * 52deg));' : (corner ? this.cornerGeo().tf : 'transform:none;'),
+      flyTf: big ? 'transform:translateX(calc(var(--rom-xc, 1340px) - 1340px));' : '',
+      scenePersp: big ? 'perspective:1500px;perspective-origin:var(--rom-po, 50%) 55%;' : '',
+      mapL: false ? 'transform:translateX(calc((var(--rom-xc, 1340px) - 1340px) * ' + S2 + '));opacity:calc(1 - var(--rom-t, 0) * 3);' : 'display:none;',
+      mapE: false ? 'transform:translateX(calc((var(--rom-xc, 1340px) - 1340px) * ' + S2 + '));opacity:calc(var(--rom-t, 0) * 3 - 2);' : 'display:none;',
+      cornerFloor: (() => { const a = this.cornerGeo().pt(1366, 430); return 'clip-path:polygon(912px 430px, ' + a[0] + 'px ' + a[1] + 'px, 1366px ' + a[1] + 'px, 1366px 430px);'; })(),
+      cornerCeil: (() => { const a = this.cornerGeo().pt(1366, 0); return 'clip-path:polygon(912px 0, 1366px 0, 1366px ' + a[1] + 'px, ' + a[0] + 'px ' + a[1] + 'px);'; })(),
+      loading: false, loadText: '', cells, boxSpines, cdSpines: cdFolders, rackSpines, tabs, stack, front, margin, cards,
+      isBla: mode === 'bla' && !(cont === 12 && !q), isKort: mode === 'kort' && !(cont === 12 && !q), isWish: cont === 12 && !q, notWish: !(cont === 12 && !q),
+      wishFilters, wishItems, wishAdd, wishSort, wishCount: String(wishes.length), modeBla: mode === 'bla' ? T.pillOn : T.pillOff, modeKort: mode === 'kort' ? T.pillOn : T.pillOff,
+      prev: go(idx - 1), next: go(idx + 1),
+      sel: { boxes: cont === 9 ? T.selOutline : '', cd: cont === 10 ? T.selOutline : '', rack: cont === 8 ? T.selOutline : '', ny: cont === 11 ? T.selOutline : '', wish: cont === 12 ? T.selOutline : '' },
+      hots, hotLabels, fotoNow, detail, pano: { css: pano },
+      nyHar: nyList.length > 0, nyAntall: String(nyList.length), nyStabel, artistOptions,
+      form: st.form ? this.formVals(st) : {}, formOpen: !!st.form,
+      now, nowSleeve, posters: this.posters, fly, playing: !!st.playing && npOk, stop: () => { if (window.stoppAv) window.stoppAv(); this.setState({ playing: false }); },
+      nowText: npOk ? d.recs[np].a + ' – ' + d.recs[np].t : '',
+      // musikken kan ikke spilles inne i siden; lenkene åpner albumet i Spotify-appen eller på YouTube
+      listenMain: npOk ? this.lyttUrl(d.recs[np]) : '',
+      listenLabel: !npOk ? '' : (d.recs[np].yt && d.recs[np].yt.length ? 'Spill på YouTube' : 'Søk på YouTube'),
+      // fikk ikke siden åpne fanen selv (f.eks. på iPad), blinker knappen så du ser hvor du skal trykke
+      listenPulse: this.musikkBlokkert ? 'animation: puls-knapp 1.2s ease-in-out 3; box-shadow: 0 0 0 3px rgba(255,122,89,0.45);' : '',
+      listenDc: npOk && (d.recs[np].id || '') ? 'https://www.discogs.com/release/' + String(d.recs[np].id).split('.')[0] : '',
+      listenSp: npOk ? 'https://open.spotify.com/search/' + encodeURIComponent(d.recs[np].a + ' ' + d.recs[np].t) + '/albums' : '',
+      listenYt: npOk && d.recs[np].yt && d.recs[np].yt.length ? this.lyttUrl(d.recs[np]) : npOk ? 'https://www.youtube.com/results?search_query=' + encodeURIComponent(d.recs[np].a + ' ' + d.recs[np].t + ' full album') : '',
+      tt: {
+        label: 'background:' + (npOk ? R[np].col : '#C4532F') + ';',
+        disc: st.playing ? 'animation:spinn 1.8s linear infinite;' : '',
+        arm: st.playing ? 'transform:rotate(32deg);' : 'transform:rotate(-4deg);',
+      },
+      moveText: nm ? nm + (nm === 1 ? ' endring' : ' endringer') : '', hasMoves: nm > 0,
+      hasSel: sel >= 0, card,
+      gOptions: d.genres.map((G, g) => ({ v: String(g), name: G.name })),
+      pOptions: this.PL.map((P, k) => ({ v: String(k), name: P.name })),
+    });
+  }
+}
+</script>
+</body>
+</html>
