@@ -21,3 +21,32 @@
 #spiller-yt{display:block;width:100%;aspect-ratio:16/9;height:auto}
 .spiller.liten{width:220px}
 #spiller iframe{display:block;width:100%;height:auto;aspect-ratio:16/9;border:0}
+
+#sj{position:fixed;inset:0;z-index:100;background:rgba(10,8,6,0.62);display:flex;align-items:flex-start;justify-content:center;overflow-y:auto;padding:max(24px,env(safe-area-inset-top,0px)) 16px 24px;box-sizing:border-box}
+#sj[hidden]{display:none}
+.sj-kort{width:100%;max-width:640px;background:#211C17;color:#F1E9DF;border:1px solid #3A322A;border-radius:8px;padding:20px 22px 22px;box-shadow:0 20px 60px rgba(0,0,0,0.5)}
+.sj-topp{display:flex;align-items:center;gap:14px}
+.sj-topp h2{margin:0;font-size:28px;font-weight:800;font-stretch:75%;flex:none}
+.sj-topp .sj-mono{flex:1}
+.sj-mono{font:12px 'IBM Plex Mono',monospace;letter-spacing:0.06em;color:#BFB2A3}
+.sj-hjelp{margin:8px 0 14px;color:#BFB2A3;font-size:14px}
+.sj-liste,.sj-sub{list-style:none;margin:0;padding:0}
+.sj-liste>li{border-top:1px solid #3A322A;padding:6px 0}
+.sj-fam,.sj-und{width:100%;display:grid;grid-template-columns:18px minmax(0,1fr) 120px 40px minmax(0,130px);align-items:center;gap:10px;padding:8px 6px;border:0;border-radius:4px;background:transparent;color:inherit;cursor:pointer;text-align:left;font:inherit}
+.sj-fam:hover,.sj-und:hover{background:#2A241E}
+.sj-fam .sj-navn{font-weight:800;text-transform:uppercase;letter-spacing:0.04em;font-size:15px}
+.sj-und{grid-template-columns:18px minmax(0,1fr) 120px 40px minmax(0,130px);padding:4px 6px}
+.sj-und::before{content:"";grid-column:1}
+.sj-und .sj-navn{grid-column:2;font-size:14px;color:#E3D8CB}
+.sj-und .sj-tall{grid-column:4}
+.sj-und .sj-celle{grid-column:5}
+.sj-prikk{width:12px;height:12px;border-radius:9999px}
+.sj-stolpe{height:6px;border-radius:3px;background:#3A322A;overflow:hidden}
+.sj-stolpe span{display:block;height:100%}
+.sj-tall{font:600 13px 'IBM Plex Mono',monospace;text-align:right}
+.sj-celle{font:11px 'IBM Plex Mono',monospace;color:#BFB2A3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sj-merke{position:fixed;right:max(12px,env(safe-area-inset-right,0px));top:var(--topp,64px);z-index:95;height:32px;padding:0 14px;border-radius:9999px;border:1px solid #FF7A59;background:rgba(20,17,14,0.9);color:#F1E9DF;font:13px 'Archivo',sans-serif;cursor:pointer;display:flex;align-items:center;gap:8px}
+#sj-merke[hidden]{display:none}
+#sj-merke span{font-size:16px;color:#FF7A59}
+@media (max-width:560px){.sj-fam,.sj-und{grid-template-columns:18px minmax(0,1fr) 40px}.sj-stolpe,.sj-celle{display:none}}
+.spiller.venstre{right:auto;left:max(16px,env(safe-area-inset-left,0px))}

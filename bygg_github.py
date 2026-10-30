@@ -34,7 +34,10 @@ assert tpl.count(b0) == 1
 tpl = tpl.replace(b0, '<button type="button" onClick="{{openDiscogs}}" style="flex: none; white-space: nowrap; height: 40px; padding: 0 14px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 6px; background: transparent; font-family: \'Archivo\', sans-serif; font-size: 14px; font-weight: 700; {{T.btn}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="2.5"></circle></svg>Discogs</button>\n' + b0)
 o0 = "openForm: set({ form: { s: 'LP', n: 1 }, sel: -1 }),"
 assert script.count(o0) == 1
-script = script.replace(o0, "openDiscogs: () => { if (window.discogsÅpne) window.discogsÅpne(); }, " + o0)
+script = script.replace(o0, "openDiscogs: () => { if (window.discogsÅpne) window.discogsÅpne(); }, openSjangre: () => { if (window.sjangreÅpne) window.sjangreÅpne(); }, " + o0)
+d0 = '<button type="button" onClick="{{openDiscogs}}"'
+assert tpl.count(d0) == 1
+tpl = tpl.replace(d0, '<button type="button" onClick="{{openSjangre}}" style="flex: none; white-space: nowrap; height: 40px; padding: 0 14px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 6px; background: transparent; font-family: \'Archivo\', sans-serif; font-size: 14px; font-weight: 700; {{T.btn}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h6"></path></svg>Sjangre</button>\n' + d0)
 # en plate som var fjernet i dataene kan hentes tilbake (gone[i] === false)
 a0 = "if (x.r.gone || (this.goneMap || {})[i]) where[i] = 13;"
 assert a0 in script
@@ -241,9 +244,11 @@ runtime = r"""
     const boks = document.getElementById('spiller');
     boks.classList.remove('skjult');
     if (!spillerKlar) { venterPa = ids; return; }
+    if (ids && ids.liste) { spiller.loadPlaylist({ list: ids.liste, listType: 'playlist', index: 0 }); return; }
     spiller.loadPlaylist(ids.slice(0, 200), 0, 0);
   }
   window.spillAv = (r, reserveUrl) => {
+    if (r.ytListe) { startListe({ liste: r.ytListe }); return true; }
     if (r.yt && r.yt.length) { startListe(r.yt); return true; }
     // ingen videoer fra Discogs: åpne YouTube-søket i ny fane
     try { return !!window.open(reserveUrl, '_blank'); } catch (e) { return false; }
@@ -317,6 +322,7 @@ runtime = r"""
     });
     rot.querySelectorAll('select[data-value]').forEach((s) => { if (s.value !== s.getAttribute('data-value')) s.value = s.getAttribute('data-value'); });
     lagre(komp.state || {});
+    if (window.etterTegning) window.etterTegning();
   }
   ['click', 'input', 'change', 'dragstart', 'dragover', 'drop'].forEach((ev) => {
     document.addEventListener(ev, (e) => {
@@ -430,6 +436,6 @@ button:focus-visible,select:focus-visible,input:focus-visible,li:focus-visible{{
 </body>
 </html>
 """
-html = html.replace('__PANEL__', (S / 'standalone/discogs_panel.js').read_text().replace("try { dl = window.claude && window.claude.use ? await window.claude.use('downloads') : null; } catch (e) { dl = null; }", "dl = { save: ({ filename, data }) => { const a = document.createElement('a'); a.href = URL.createObjectURL(data); a.download = filename; document.body.appendChild(a); a.click(); a.remove(); return Promise.resolve(); } };"))
+html = html.replace('__PANEL__', ((S / 'standalone/discogs_panel.js').read_text() + (S / 'standalone/sjanger_panel.js').read_text()).replace("try { dl = window.claude && window.claude.use ? await window.claude.use('downloads') : null; } catch (e) { dl = null; }", "dl = { save: ({ filename, data }) => { const a = document.createElement('a'); a.href = URL.createObjectURL(data); a.download = filename; document.body.appendChild(a); a.click(); a.remove(); return Promise.resolve(); } };"))
 OUT.write_text(html)
 print('skrev', OUT, round(OUT.stat().st_size / 1e6, 1), 'MB')

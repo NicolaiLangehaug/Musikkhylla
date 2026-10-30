@@ -186,9 +186,11 @@
     const boks = document.getElementById('spiller');
     boks.classList.remove('skjult');
     if (!spillerKlar) { venterPa = ids; return; }
+    if (ids && ids.liste) { spiller.loadPlaylist({ list: ids.liste, listType: 'playlist', index: 0 }); return; }
     spiller.loadPlaylist(ids.slice(0, 200), 0, 0);
   }
   window.spillAv = (r, reserveUrl) => {
+    if (r.ytListe) { startListe({ liste: r.ytListe }); return true; }
     if (r.yt && r.yt.length) { startListe(r.yt); return true; }
     // ingen videoer fra Discogs: åpne YouTube-søket i ny fane
     try { return !!window.open(reserveUrl, '_blank'); } catch (e) { return false; }

@@ -516,6 +516,10 @@ body{margin:0}
 <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px">Discogs-lenke (valgfritt)
 <input type="url" autocomplete="off" onInput="{{form.setU}}" style="height: 44px; padding: 0 10px; border-radius: 4px; font-family: 'Archivo', sans-serif; font-size: 15px; {{T.select}}">
 </label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px">YouTube-lenke (valgfritt – en video eller en spilleliste)
+<input type="url" autocomplete="off" placeholder="https://www.youtube.com/playlist?list=…" onInput="{{form.setYt}}" style="height: 44px; padding: 0 10px; border-radius: 4px; font-family: 'Archivo', sans-serif; font-size: 15px; {{T.select}}">
+<sc-if value="{{form.ytOk}}" hint-placeholder-val="{{ false }}"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; {{T.accentC}}">{{form.ytOk}}</span></sc-if>
+</label>
 <div style="display: flex; gap: 14px; align-items: center">
 <span style="width: 96px; height: 96px; flex: none; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-align: center; {{T.coverWrap}} {{T.mutedC}}">
 <sc-if value="{{form.hasImg}}" hint-placeholder-val="{{ false }}"><img src="{{form.img}}" alt="Valgt cover" style="position: absolute; left: 0; top: 0; width: 96px; height: 96px"></sc-if>
@@ -801,7 +805,7 @@ class Component extends DCLogic {
       return { hasCover: true, noCover: false, src: this.ATLAS[r.cv[0]], imgCss: 'width:' + full + 'px;height:' + full + 'px;left:' + (-r.cv[1] * A.cell * s) + 'px;top:' + (-r.cv[2] * A.cell * s) + 'px;' };
     };
     const SHELF = ['Pønk', 'Hardt-lett', 'Hardt-kaos', 'Hardt-seigt', 'Rock-bøtta', 'Rock-proggy', 'Post-rock', 'Ambient/minimalisme',
-      'Rock-jazzrock', 'Jazz-gammel', 'Jazz-ny', 'Rocksteady', 'Lav Gitar/Folk', 'Electro', 'HipHop/TripHop', 'Indie/Pop', 'Uplassert'];
+      'Jazz rock', 'Jazz-gammel', 'Jazz-ny', 'Rocksteady', 'Lav Gitar/Folk', 'Electro', 'HipHop/TripHop', 'Indie/Pop', 'Uplassert'];
     this.rank = d.genres.map((G) => SHELF.indexOf(G.name));
     // sjangernavnene brukes slik de står i Platesamling.csv
     this.SHORT = {};
@@ -877,7 +881,16 @@ class Component extends DCLogic {
 
   // Sett på en plate: coveret løftes ut av cellen, plata glir ut av omslaget og ned på tallerkenen,
   // armen senkes, og coveret havner på «spiller nå»-hylla.
+  // les video-ID-er og/eller spilleliste fra lenker (kan være flere, adskilt med mellomrom eller komma)
+  lesYt(t) {
+    const ids = [], s = String(t || '');
+    let liste = (/[?&]list=([A-Za-z0-9_-]{10,})/.exec(s) || [])[1] || '';
+    s.split(/[\s,]+/).forEach((u) => { const m = /(?:v=|youtu\.be\/|embed\/|shorts\/)([A-Za-z0-9_-]{11})/.exec(u); if (m && ids.indexOf(m[1]) < 0) ids.push(m[1]); });
+    if (liste && ids.length) liste = liste;  // har lenka både video og liste, spilles lista fra starten
+    return { ids, liste };
+  }
   lyttUrl(r) {
+    if (r.ytListe) return 'https://www.youtube.com/playlist?list=' + r.ytListe;
     // har vi YouTube-videoene fra Discogs: spill dem som en spilleliste, i rekkefølge
     if (r.yt && r.yt.length) return 'https://www.youtube.com/watch_videos?video_ids=' + r.yt.slice(0, 50).join(',');
     // ellers YouTube-søk på artist og album (Discogs-siden ligger på egen knapp)
@@ -986,8 +999,9 @@ class Component extends DCLogic {
       hasWish: !!wish, wish,
       hasImg: !!f.img, noImg: !f.img, img: f.img || '',
       hasErr: !!f.err, err: f.err || '',
+      ytOk: (() => { const y = this.lesYt(f.ytu); return !f.ytu ? '' : y.liste ? '✓ spilleliste' : y.ids.length ? '✓ ' + y.ids.length + ' video' : 'fant ingen YouTube-ID i lenka'; })(),
       setA: (e) => set({ a: e.target.value, err: '' }), setT: (e) => set({ t: e.target.value, err: '' }),
-      setY: (e) => set({ y: e.target.value }), setU: (e) => set({ u: e.target.value }),
+      setY: (e) => set({ y: e.target.value }), setU: (e) => set({ u: e.target.value }), setYt: (e) => set({ ytu: e.target.value }),
       setS: (e) => set({ s: e.target.value }), setN: (e) => set({ n: +e.target.value }),
       setG: (e) => set({ g: +e.target.value, gTouched: true }),
       pickImg: (e) => { const file = e.target.files && e.target.files[0]; if (file) this.readImg(file).then((o) => set(o)).catch(() => set({ err: 'Klarte ikke å lese bildet.' })); },
@@ -1000,7 +1014,7 @@ class Component extends DCLogic {
         const rec = {
           a, t, g, y: parseInt(f.y, 10) || 0, s, n, fmt: (n > 1 ? n + ' x ' : '') + (s === 'CD' ? 'CD' : 'Vinyl ' + s), st: 0, r: '', lb: '', cat: '', c: '',
           kj: 'Ny i hus ' + d.getDate() + '. ' + MND[d.getMonth()] + ' ' + d.getFullYear(), w: wish, id, url: f.u || '', re: false, cv: null,
-          sc: f.sc || '#8A7F72', nyImg: f.img || '', ny: true, homed: false, nid: Date.now(),
+          sc: f.sc || '#8A7F72', nyImg: f.img || '', ny: true, homed: false, nid: Date.now(), yt: this.lesYt(f.ytu).ids, ytListe: this.lesYt(f.ytu).liste,
         };
         this.setState({ extra: (this.state.extra || []).concat([rec]), form: null, panel: true, cont: 11, gsel: -1, idx: 0, q: '' });
       },
@@ -1049,7 +1063,9 @@ class Component extends DCLogic {
     const L = this.layout(moved, placed);
     this.lastL = L;
     const name = (gi) => this.SHORT[d.genres[gi].name] || d.genres[gi].name;
-    const hit = (i) => q && R[i].lc.indexOf(q) >= 0;
+    // søk (q) eller markering fra sjangeroversikten (st.hl) demper alt annet i hylla
+    const hlSet = !q && st.hl && st.hl.length ? new Set(st.hl) : null, dimOn = !!(q || hlSet);
+    const hit = (i) => (q ? R[i].lc.indexOf(q) >= 0 : hlSet ? hlSet.has(L.g(i)) : false);
 
     // ---- rutene og kassene i rommet ----
     const runs = [];
@@ -1062,7 +1078,7 @@ class Component extends DCLogic {
         const gi = L.g(i);
         if (gi !== lastG && lastG !== -1) { spines.push({ css: 'width:2px;height:132px;background:' + T.marginOn + ';' }); x += 2; }
         lastG = gi;
-        const dim = q && !hit(i), w = Math.max(0.5, R[i].th * unit);
+        const dim = dimOn && !hit(i), w = Math.max(0.5, R[i].th * unit);
         spines.push({ css: 'width:' + w + 'px;height:' + (126 + ((i * 7) % 9)) + 'px;background:' + (i === sel ? T.marginOn : R[i].col) + ';opacity:' + (dim ? 0.2 : 1) + ';' });
         // sjangerkartet på gulvet: hvor hver sjanger starter og slutter (logiske px)
         const run = runs[runs.length - 1];
@@ -1072,7 +1088,7 @@ class Component extends DCLogic {
       });
       const gs = [];
       list.forEach((i) => { const n = name(L.g(i)); if (gs.indexOf(n) < 0) gs.push(n); });
-      const hits = q ? list.filter(hit).length : 0;
+      const hits = dimOn ? list.filter(hit).length : 0;
       const top = P.crate ? 34 : 0;
       return {
         name: P.name + ': ' + gs.join(', '), label: P.name.replace('Celle ', '') + ' · ' + list.length,
@@ -1082,7 +1098,7 @@ class Component extends DCLogic {
         spines,
       };
     });
-    const mini = (k, h, w) => L.lists[k].map((i) => ({ css: 'width:' + w + 'px;height:' + h(i) + 'px;background:' + R[i].col + ';opacity:' + (q && !hit(i) ? 0.25 : 1) + ';' }));
+    const mini = (k, h, w) => L.lists[k].map((i) => ({ css: 'width:' + w + 'px;height:' + h(i) + 'px;background:' + R[i].col + ';opacity:' + (dimOn && !hit(i) ? 0.25 : 1) + ';' }));
     const boxSpines = mini(9, (i) => 96 + (i % 3) * 6, 9);
     const cdFolders = [];
     for (let f = 0; f < L.lists[10].length; f += 8) cdFolders.push({ css: 'width:1.4px;height:' + (60 + (f % 5)) + 'px;background:' + R[L.lists[10][f]].col + ';' });
@@ -1330,7 +1346,7 @@ class Component extends DCLogic {
         // familien fra Sjangerfamilie i Platesamling.csv; Post-rock og Ambient er ikke lenger én familie
         const famOf = (gi) => (G[gi].fam === 'Ambient/Post-rock' ? G[gi].name : G[gi].fam);
         const passer = (tekst, w, px) => tekst.length * px + 6 <= w;
-        const dimG = (gi) => q && !(L.lists.slice(0, 8).flat().some((i) => L.g(i) === gi && hit(i)));
+        const dimG = (gi) => dimOn && !(L.lists.slice(0, 8).flat().some((i) => L.g(i) === gi && hit(i)));
         const fam = [];
         runs.forEach((r) => {
           const f = famOf(r.gi), last = fam[fam.length - 1];
@@ -1342,11 +1358,16 @@ class Component extends DCLogic {
           const gs = [...new Set(F.runs.map((r) => r.gi))], flere = gs.length > 1 || G[gs[0]].name.indexOf(famOf(gs[0]) + '-') === 0;  // f.eks. ROCK over «jazzrock» selv om den står alene
           const navn = flere ? F.f : name(gs[0]), w = Math.max(3, F.x1 - F.x0 - 4), dim = gs.every(dimG);
           const kortF = flere ? navn : (G[gs[0]].short || navn);
-          rad.push({ k: F.k, name: navn, aria: 'Bla i ' + navn, label: passer(navn, w, 6.2) ? navn : passer(kortF, w, 6.2) ? kortF : (w >= 30 ? navn : ''), pick: open({ cont: F.k, gsel: flere ? -1 : gs[0], idx: 0 }),
-            css: 'left:' + xr(F) + 'px;width:' + w + 'px;top:383px;height:16px;border-top:2px solid;font-size:9.5px;font-weight:700;color:' + T.mapInk + ';border-color:' + T.mapInk + ';opacity:' + (dim ? 0.3 : 1) + ';' });
-          if (!flere) return;
+          const farge = (G[gs.find((gi) => G[gi].name.indexOf(F.f + '-') === 0)] || G[gs[0]]).col || T.mapInk,  // familiens egen farge (Jazz er blå selv om Jazzrock står først)
+           _ = 0, px = big ? 8.4 : 6.2;
+          // skriften krymper til navnet får plass; blir den for liten, brukes kortnavnet (f.eks. «Ambient»)
+          const fsMax = big ? 13 : 9.5, fsMin = big ? 7 : 6.5, fsBehov = (t, ww) => (ww - 7) / (t.length * 0.8);
+          rad.push({ k: F.k, name: navn, aria: 'Bla i ' + navn, label: fsBehov(navn, w) >= fsMin ? navn : passer(kortF, w, fsMin * 0.8) ? kortF : navn, pick: open({ cont: F.k, gsel: flere ? -1 : gs[0], idx: 0 }),
+            // lyslisten: en tynn, glødende strek i familiens farge (kveldslys), navnet under
+            css: 'left:' + xr(F) + 'px;width:' + w + 'px;top:383px;height:' + (big ? 22 : 16) + 'px;border-top:3px solid ' + farge + ';box-shadow:0 -2px 10px -2px ' + farge + ';font-size:' + Math.max(fsMin, Math.min(fsMax, fsBehov(fsBehov(navn, w) >= fsMin ? navn : kortF, w))) + 'px;font-weight:800;color:' + T.mapInk + ';opacity:' + (dim ? 0.25 : 1) + ';' });
+          if (!flere || big) return;  // undersjangrene vises først når du har trykket deg inn
           F.runs.forEach((r) => {
-            const full = name(r.gi), pre = F.f + '-', kort = full.indexOf(pre) === 0 ? full.slice(pre.length) : full;
+            const full = name(r.gi), pre = F.f + '-', kort = full.indexOf(pre) === 0 ? full.slice(pre.length) : full.indexOf('-') > 0 ? full.slice(full.indexOf('-') + 1) : full;  // Rock-jazzrock under JAZZ blir «jazzrock»
             const ws = Math.max(2, r.x1 - r.x0 - 3);
             rad.push({ k: r.k, name: full, aria: 'Bla i ' + full, label: ws >= 22 ? kort : '', pick: open({ cont: r.k, gsel: r.gi, idx: 0 }),
               css: 'left:' + xr(r) + 'px;width:' + ws + 'px;top:400px;height:14px;border-top:1px solid;padding-top:2px;font-size:8.5px;font-weight:500;text-transform:lowercase;color:' + T.mapInk + ';border-color:' + T.mapInk + '99;opacity:' + (dimG(r.gi) ? 0.3 : 1) + ';' });
@@ -1401,7 +1422,7 @@ class Component extends DCLogic {
       nowText: npOk ? d.recs[np].a + ' – ' + d.recs[np].t : '',
       // musikken kan ikke spilles inne i siden; lenkene åpner albumet i Spotify-appen eller på YouTube
       listenMain: npOk ? this.lyttUrl(d.recs[np]) : '',
-      listenLabel: !npOk ? '' : (d.recs[np].yt && d.recs[np].yt.length ? 'Spill på YouTube' : 'Søk på YouTube'),
+      listenLabel: !npOk ? '' : (d.recs[np].ytListe || (d.recs[np].yt && d.recs[np].yt.length) ? 'Spill på YouTube' : 'Søk på YouTube'),
       // fikk ikke siden åpne fanen selv (f.eks. på iPad), blinker knappen så du ser hvor du skal trykke
       listenPulse: this.musikkBlokkert ? 'animation: puls-knapp 1.2s ease-in-out 3; box-shadow: 0 0 0 3px rgba(255,122,89,0.45);' : '',
       listenDc: npOk && (d.recs[np].id || '') ? 'https://www.discogs.com/release/' + String(d.recs[np].id).split('.')[0] : '',
