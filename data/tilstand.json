@@ -1,36 +1,10 @@
 {
- "extra": [
-  {
-   "a": "Black Sheep Wall",
-   "c": "",
-   "cat": "",
-   "cv": null,
-   "fmt": "Vinyl LP",
-   "g": 3,
-   "homed": false,
-   "id": "15953433",
-   "kj": "Ny i hus 30. oktober 2026",
-   "lb": "",
-   "n": 1,
-   "nid": 1793378216017,
-   "ny": true,
-   "nyImg": "gh:1793378216017",
-   "r": "",
-   "re": false,
-   "s": "LP",
-   "sc": "#c4beb7",
-   "st": 0,
-   "t": "I Am God Songs",
-   "url": "https://www.discogs.com/release/15953433-Black-Sheep-Wall-I-Am-God-Songs",
-   "w": "Mer: I Am God Songs, Songs for the Enamel Queen",
-   "y": 2008
-  }
- ],
+ "extra": [],
  "gone": {},
  "moved": {
   "770": 4
  },
- "np": 793,
+ "np": -1,
  "placed": {},
  "wish": [
   {
