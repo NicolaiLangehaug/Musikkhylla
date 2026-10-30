@@ -1,8 +1,9 @@
 {
- "moved": {},
- "placed": {},
- "gone": {},
  "extra": [],
+ "gone": {},
+ "moved": {},
+ "np": 436,
+ "placed": {},
  "wish": [
   {
    "a": "Angora Static",
@@ -19,10 +20,6 @@
   {
    "a": "Alice Clark",
    "tags": "Original"
-  },
-  {
-   "a": "Aussitôt Mort",
-   "tags": "Mer"
   },
   {
    "a": "Back When",
@@ -328,6 +325,5 @@
    "a": "Wovenhand",
    "tags": "Mer: Mosaic"
   }
- ],
- "np": 436
+ ]
 }
