@@ -828,7 +828,10 @@
    "url": "https://www.discogs.com/release/24934064",
    "w": "",
    "y": 2022,
-   "yt": []
+   "yt": [
+    "8LO4ku80EyE"
+   ],
+   "ytListe": "RD8LO4ku80EyE"
   },
   {
    "a": "Black Sheep Wall",
@@ -1386,6 +1389,7 @@
  ],
  "ytFix": {
   "794": "https://www.youtube.com/watch?v=IjpLwziROe8",
+  "n1793440694860": "https://www.youtuhttps://www.youtube.com/watch?v=8LO4ku80EyE&list=RD8LO4ku80EyE&start_radio=1be.com/watch?v=jW5c31bFVtg",
   "n1793440694862": "https://www.youtube.com/watch?v=jW5c31bFVtg"
  }
 }
