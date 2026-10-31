@@ -1574,7 +1574,7 @@ class Component extends DCLogic {
       if (r && r.nyImg && window.omslagSrc(r.nyImg)) return { hasCover: true, noCover: false, src: window.omslagSrc(r.nyImg), imgCss: 'width:' + w + 'px;height:' + w + 'px;left:0;top:0;' };
       if (!r || !r.cv) return { hasCover: false, noCover: true, src: '', imgCss: '' };
       const s = w / A.cell, full = A.cell * A.n * s;
-      return { hasCover: true, noCover: false, src: 'omslag-' + Math.floor((r.cv[0] * 100 + r.cv[1] * 10 + r.cv[2]) / 90) + '/' + (r.cv[0] * 100 + r.cv[1] * 10 + r.cv[2]) + '.jpg', imgCss: 'width:' + w + 'px;height:' + w + 'px;left:0;top:0;' };
+      return { hasCover: true, noCover: false, src: 'omslag/' + (r.cv[0] * 100 + r.cv[1] * 10 + r.cv[2]) + '.jpg', imgCss: 'width:' + w + 'px;height:' + w + 'px;left:0;top:0;' };
     };
     const SHELF = ['Pønk', 'Hardt-lett', 'Hardt-kaos', 'Hardt-seigt', 'Rock-bøtta', 'Rock-proggy', 'Post-rock', 'Ambient/minimalisme',
       'Jazz rock', 'Jazz-gammel', 'Jazz-ny', 'Rocksteady', 'Lav Gitar/Folk', 'Electro', 'HipHop/TripHop', 'Indie/Pop', 'Uplassert'];
