@@ -256,7 +256,7 @@ body{margin:0}
 </sc-if>
 
 <!-- puta oppå celle 7 -->
-<div style="position: absolute; left: 1024px; top: 204px; width: 90px; height: 30px; border-radius: 12px 12px 6px 6px; {{T.boucle}}"></div>
+<div style="position: absolute; left: 1020px; top: 204px; width: 124px; height: 30px; border-radius: 12px 12px 6px 6px; {{T.boucle}}"></div>
 <sc-for list="{{cellsEnd}}" as="c" hint-placeholder-count="6">
 <button type="button" onClick="{{c.pick}}" aria-label="{{c.name}}" style="position: absolute; top: 230px; height: 150px; padding: 0; box-sizing: border-box; cursor: pointer; overflow: hidden; display: flex; align-items: flex-end; {{c.css}}">
 <sc-for list="{{c.spines}}" as="sp" hint-placeholder-count="0"><span style="flex: none; {{sp.css}}"></span></sc-for>
@@ -814,7 +814,7 @@ class Component extends DCLogic {
       // brede, lave celler som på bildet (store ca. 1,5 : 1, smale halvparten); kassene står på kortveggen, x i langveggens system
       { name: 'Celle 1', x: 40, w: 225 }, { name: 'Celle 2', x: 265, w: 112 }, { name: 'Celle 3', x: 377, w: 225 },
       { name: 'Celle 4', x: 702, w: 225 }, { name: 'Celle 5', x: 927, w: 112 }, { name: 'Celle 6', x: 1039, w: 225 },
-      { name: 'Celle 7', x: 1458, w: 76, crate: true }, { name: 'Celle 8', x: 1546, w: 76, crate: true },
+      { name: 'Celle 7', x: 1452, w: 112, crate: true }, { name: 'Celle 8', x: 1576, w: 112, crate: true },
       { name: 'Stativet' }, { name: 'Boksene' }, { name: 'CD-mappene' }, { name: 'Ny i hus' },
     ];
     const BOXES = [['Rosetta', 'The Galilean Satellites'], ['Burst', 'A Labyrinth Of Layers'], ['Fall Of Efrafa', 'The Warren Of Snares'],
@@ -1074,6 +1074,7 @@ class Component extends DCLogic {
       const S = list.reduce((s, i) => s + R[i].th, 0) || 1, unit = Math.min(3.2, inner / S);
       const spines = [];
       let lastG = -1, x = P.x + 32 + 6; // veggene ligger 32 px inn i scenen
+      const treff = [], x00 = x;  // [fra, til, plate] i cellens egne px, for å finne plata du trykket på
       list.forEach((i) => {
         const gi = L.g(i);
         if (gi !== lastG && lastG !== -1) { spines.push({ css: 'width:2px;height:132px;background:' + T.marginOn + ';' }); x += 2; }
@@ -1084,6 +1085,7 @@ class Component extends DCLogic {
         const run = runs[runs.length - 1];
         if (run && run.gi === gi && (run.k === k || (run.k === k - 1 && k !== 6))) { run.x1 = x + w; run.k = k; }
         else runs.push({ gi, x0: x, x1: x + w, k });
+        treff.push([x - x00, x - x00 + w, i]);
         x += w;
       });
       const gs = [];
@@ -1092,7 +1094,20 @@ class Component extends DCLogic {
       const top = P.crate ? 34 : 0;
       return {
         name: P.name + ': ' + gs.join(', '), label: P.name.replace('Celle ', '') + ' · ' + list.length,
-        hit: hits > 0, hits: String(hits), pick: open({ cont: k, gsel: -1, idx: 0 }),
+        hit: hits > 0, hits: String(hits),
+        pick: (e) => {
+          // finn plata under fingeren og åpne sjangeren dens, med akkurat den plata fremme
+          const el = e && e.currentTarget && e.currentTarget.getBoundingClientRect ? e.currentTarget : (e && e.target && e.target.closest ? e.target.closest('button') : null);
+          let i = -1;
+          if (el && e.clientX !== undefined && treff.length) {
+            const b = el.getBoundingClientRect(), lx = (e.clientX - b.left) / b.width * P.w - 6;
+            const t = treff.find((r) => lx >= r[0] - 1 && lx <= r[1] + 1) || (lx < treff[0][0] ? treff[0] : treff[treff.length - 1]);
+            i = t[2];
+          }
+          if (i < 0) { this.setState({ panel: true, cont: k, gsel: -1, idx: 0 }); return; }
+          const gi = L.g(i), gl = R.map((xx) => xx.i).filter((j) => L.g(j) === gi && L.where[j] <= 7).sort(L.cmp);
+          this.setState({ panel: true, cont: k, gsel: gi, idx: Math.max(0, gl.indexOf(i)), sel: -1 });
+        },
         css: 'left:' + (P.crate ? P.x - 428 : P.x) + 'px;width:' + P.w + 'px;' + (P.crate ? T.crateFrame : T.cellFrame) + (cont === k && !big ? T.selOutline : ''),
         lcss: 'left:' + ((P.crate ? P.x - 428 : P.x) + 2) + 'px;' + T.cellLabel,
         spines,
