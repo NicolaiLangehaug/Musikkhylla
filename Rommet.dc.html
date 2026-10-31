@@ -185,7 +185,7 @@ body{margin:0}
 <!-- hylla: rutene og stereoruta -->
 <sc-for list="{{cellsLong}}" as="c" hint-placeholder-count="6">
 <button type="button" onClick="{{c.pick}}" aria-label="{{c.name}}" style="position: absolute; top: 230px; height: 150px; padding: 0; box-sizing: border-box; cursor: pointer; overflow: hidden; display: flex; align-items: flex-end; {{c.css}}">
-<sc-for list="{{c.spines}}" as="sp" hint-placeholder-count="0"><span style="flex: none; {{sp.css}}"></span></sc-for>
+<sc-for list="{{c.spines}}" as="sp" hint-placeholder-count="0"><span style="flex: none; {{sp.css}}"></span></sc-for><sc-for list="{{c.hlBoxes}}" as="hb" hint-placeholder-count="0"><span style="position: absolute; pointer-events: none; box-sizing: border-box; {{hb.css}}"></span></sc-for>
 <sc-if value="{{c.hit}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; right: 4px; top: 4px; min-width: 22px; height: 22px; padding: 0 5px; box-sizing: border-box; border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; {{T.badge}}">{{c.hits}}</span></sc-if>
 </button>
 </sc-for>
@@ -262,7 +262,7 @@ body{margin:0}
 <div style="position: absolute; left: 1020px; top: 204px; width: 124px; height: 30px; border-radius: 12px 12px 6px 6px; {{T.boucle}}"></div>
 <sc-for list="{{cellsEnd}}" as="c" hint-placeholder-count="6">
 <button type="button" onClick="{{c.pick}}" aria-label="{{c.name}}" style="position: absolute; top: 230px; height: 150px; padding: 0; box-sizing: border-box; cursor: pointer; overflow: hidden; display: flex; align-items: flex-end; {{c.css}}">
-<sc-for list="{{c.spines}}" as="sp" hint-placeholder-count="0"><span style="flex: none; {{sp.css}}"></span></sc-for>
+<sc-for list="{{c.spines}}" as="sp" hint-placeholder-count="0"><span style="flex: none; {{sp.css}}"></span></sc-for><sc-for list="{{c.hlBoxes}}" as="hb" hint-placeholder-count="0"><span style="position: absolute; pointer-events: none; box-sizing: border-box; {{hb.css}}"></span></sc-for>
 <sc-if value="{{c.hit}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; right: 4px; top: 4px; min-width: 22px; height: 22px; padding: 0 5px; box-sizing: border-box; border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; {{T.badge}}">{{c.hits}}</span></sc-if>
 </button>
 </sc-for>
@@ -1029,7 +1029,7 @@ class Component extends DCLogic {
     const st = this.state || {};
     const T = this.tokens(this.props.stil);
     const set = (o) => () => this.setState(o);
-    const open = (o) => () => this.setState(Object.assign({ panel: true }, o));
+    const open = (o) => () => this.setState(Object.assign({ panel: true, hl: null, hlNavn: '' }, o));  // å åpne noe nytt nullstiller markeringen fra sjangerlista
     // bredden følger vinduet (minst 1366); høyden er alltid 1024
     const appW = Math.max(1366, this.props.bredde || 1366);
     const big = !st.panel, S2 = big ? (968 - 24) / 670 : Math.min(appW / 1366, 1.3); // med panelet åpent må infoen få plass under rommet
@@ -1066,8 +1066,12 @@ class Component extends DCLogic {
     this.lastL = L;
     const name = (gi) => this.SHORT[d.genres[gi].name] || d.genres[gi].name;
     // søk (q) eller markering fra sjangeroversikten (st.hl) demper alt annet i hylla
-    const hlSet = !q && st.hl && st.hl.length ? new Set(st.hl) : null, dimOn = !!(q || hlSet);
-    const hit = (i) => (q ? R[i].lc.indexOf(q) >= 0 : hlSet ? hlSet.has(L.g(i)) : false);
+    // med panelet åpent på en sjanger lyser bare den sjangeren i hylla; plata du ser på er oransje
+    const panelG = !big && !q && gsel >= 0 && cont !== 12, panelC = !big && !q && gsel < 0 && cont <= 7;
+    const hlSet = q ? null : panelG ? new Set([gsel]) : !panelC && st.hl && st.hl.length ? new Set(st.hl) : null, dimOn = !!(q || hlSet || panelC);
+    const curList = big || q || cont === 12 ? [] : gsel >= 0 ? R.map((x) => x.i).filter((i) => L.g(i) === gsel && L.where[i] <= 7).sort(L.cmp) : (L.lists[cont] || []);
+    const curI = curList.length ? curList[Math.min(st.idx || 0, curList.length - 1)] : -1;
+    const hit = (i) => (q ? R[i].lc.indexOf(q) >= 0 : hlSet ? hlSet.has(L.g(i)) : panelC ? L.where[i] === cont : false);
 
     // ---- rutene og kassene i rommet ----
     const runs = [];
@@ -1082,7 +1086,7 @@ class Component extends DCLogic {
         if (gi !== lastG && lastG !== -1) { spines.push({ css: 'width:2px;height:132px;background:' + T.marginOn + ';' }); x += 2; }
         lastG = gi;
         const dim = dimOn && !hit(i), w = Math.max(0.5, R[i].th * unit);
-        spines.push({ css: 'width:' + w + 'px;height:' + (126 + ((i * 7) % 9)) + 'px;background:' + (i === sel ? T.marginOn : R[i].col) + ';opacity:' + (dim ? 0.2 : 1) + ';' });
+        spines.push({ css: 'width:' + w + 'px;height:' + (i === curI ? 140 : 126 + ((i * 7) % 9)) + 'px;background:' + (i === sel || i === curI ? T.marginOn : R[i].col) + ';opacity:' + (dim ? 0.1 : 1) + ';' + (i === curI ? 'box-shadow:0 0 6px ' + T.marginOn + ';min-width:3px;position:relative;z-index:1;' : '') });
         // sjangerkartet på gulvet: hvor hver sjanger starter og slutter (logiske px)
         const run = runs[runs.length - 1];
         if (run && run.gi === gi && (run.k === k || (run.k === k - 1 && k !== 6))) { run.x1 = x + w; run.k = k; }
@@ -1092,7 +1096,18 @@ class Component extends DCLogic {
       });
       const gs = [];
       list.forEach((i) => { const n = name(L.g(i)); if (gs.indexOf(n) < 0) gs.push(n); });
-      const hits = dimOn ? list.filter(hit).length : 0;
+      const hits = dimOn && !panelG && !panelC ? list.filter(hit).length : 0;
+      // tydelig markering: en lysende ramme rundt platene som er valgt; celler uten treff blir mørke
+      const hlBoxes = [];
+      if (dimOn && !q) {
+        let cur = null;
+        treff.forEach((t) => {
+          if (hit(t[2])) { if (cur && t[0] - cur.x1 < 4) cur.x1 = t[1]; else { cur = { x0: t[0], x1: t[1] }; hlBoxes.push(cur); } }
+          else cur = null;
+        });
+        hlBoxes.forEach((b) => { b.css = 'left:' + (b.x0 - 3) + 'px;width:' + (b.x1 - b.x0 + 6) + 'px;top:2px;bottom:0;border:3px solid ' + T.marginOn + ';border-radius:4px;box-shadow:0 0 14px ' + T.marginOn + ', inset 0 0 12px rgba(255,122,89,0.35);'; });
+        if (!hlBoxes.length) hlBoxes.push({ css: 'inset:0;background:rgba(8,6,4,0.55);' });
+      }
       const top = P.crate ? 34 : 0;
       return {
         name: P.name + ': ' + gs.join(', '), label: P.name.replace('Celle ', '') + ' · ' + list.length,
@@ -1106,13 +1121,13 @@ class Component extends DCLogic {
             const t = treff.find((r) => lx >= r[0] - 1 && lx <= r[1] + 1) || (lx < treff[0][0] ? treff[0] : treff[treff.length - 1]);
             i = t[2];
           }
-          if (i < 0) { this.setState({ panel: true, cont: k, gsel: -1, idx: 0 }); return; }
+          if (i < 0) { this.setState({ panel: true, cont: k, gsel: -1, idx: 0, hl: null, hlNavn: '' }); return; }
           const gi = L.g(i), gl = R.map((xx) => xx.i).filter((j) => L.g(j) === gi && L.where[j] <= 7).sort(L.cmp);
-          this.setState({ panel: true, cont: k, gsel: gi, idx: Math.max(0, gl.indexOf(i)), sel: -1 });
+          this.setState({ panel: true, cont: k, gsel: gi, idx: Math.max(0, gl.indexOf(i)), sel: -1, hl: null, hlNavn: '' });
         },
         css: 'left:' + (P.crate ? P.x - 428 : P.x) + 'px;width:' + P.w + 'px;' + (P.crate ? T.crateFrame : T.cellFrame) + (cont === k && !big ? T.selOutline : ''),
         lcss: 'left:' + ((P.crate ? P.x - 428 : P.x) + 2) + 'px;' + T.cellLabel,
-        spines,
+        spines, hlBoxes,
       };
     });
     const mini = (k, h, w) => L.lists[k].map((i) => ({ css: 'width:' + w + 'px;height:' + h(i) + 'px;background:' + R[i].col + ';opacity:' + (dimOn && !hit(i) ? 0.25 : 1) + ';' }));
