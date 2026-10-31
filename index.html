@@ -225,9 +225,9 @@ body{margin:0}
 </button>
 
 <!-- merkelapper: viser at boksene, CD-mappene og stativet også kan åpnes -->
-<button type="button" onClick="{{pickBoxes}}" aria-label="Boksene, {{andre.bokser}}" style="position: absolute; left: 40px; top: 64px; z-index: 3; height: 18px; padding: 0 7px; border-radius: 3px; border: 0; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; font-weight: 600; letter-spacing: 0.05em; background: rgba(241,233,223,0.92); color: #2A2016; box-shadow: 0 2px 6px rgba(0,0,0,0.35)"><span style="width: 5px; height: 5px; border-radius: 9999px; background: #FF7A59"></span>BOKSER · {{andre.bokser}}</button>
-<button type="button" onClick="{{pickCD}}" aria-label="CD-mappene, {{andre.cd}}" style="position: absolute; left: 128px; top: 128px; z-index: 3; height: 18px; padding: 0 7px; border-radius: 3px; border: 0; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; font-weight: 600; letter-spacing: 0.05em; background: rgba(241,233,223,0.92); color: #2A2016; box-shadow: 0 2px 6px rgba(0,0,0,0.35)"><span style="width: 5px; height: 5px; border-radius: 9999px; background: #FF7A59"></span>CD · {{andre.cd}}</button>
-<button type="button" onClick="{{pickRack}}" aria-label="Stativet med 7- og 10-tommere, {{andre.stativ}}" style="position: absolute; left: 382px; top: 108px; z-index: 3; height: 18px; padding: 0 7px; border-radius: 3px; border: 0; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; font-weight: 600; letter-spacing: 0.05em; background: rgba(241,233,223,0.92); color: #2A2016; box-shadow: 0 2px 6px rgba(0,0,0,0.35)"><span style="width: 5px; height: 5px; border-radius: 9999px; background: #FF7A59"></span>7&quot;/10&quot; · {{andre.stativ}}</button>
+<button type="button" onClick="{{pickBoxes}}" aria-label="Boksene, {{andre.bokser}}" style="position: absolute; left: 40px; top: 64px; z-index: 3; height: 18px; padding: 0 7px; border-radius: 3px; border: 0; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; font-weight: 600; letter-spacing: 0.05em; background: rgba(241,233,223,0.92); color: #2A2016; box-shadow: 0 2px 6px rgba(0,0,0,0.35)"><span style="width: 5px; height: 5px; border-radius: 9999px; background: #FF7A59"></span>BOKSER</button>
+<button type="button" onClick="{{pickCD}}" aria-label="CD-mappene, {{andre.cd}}" style="position: absolute; left: 128px; top: 128px; z-index: 3; height: 18px; padding: 0 7px; border-radius: 3px; border: 0; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; font-weight: 600; letter-spacing: 0.05em; background: rgba(241,233,223,0.92); color: #2A2016; box-shadow: 0 2px 6px rgba(0,0,0,0.35)"><span style="width: 5px; height: 5px; border-radius: 9999px; background: #FF7A59"></span>CD</button>
+<button type="button" onClick="{{pickRack}}" aria-label="Stativet med 7- og 10-tommere, {{andre.stativ}}" style="position: absolute; left: 382px; top: 108px; z-index: 3; height: 18px; padding: 0 7px; border-radius: 3px; border: 0; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; font-weight: 600; letter-spacing: 0.05em; background: rgba(241,233,223,0.92); color: #2A2016; box-shadow: 0 2px 6px rgba(0,0,0,0.35)"><span style="width: 5px; height: 5px; border-radius: 9999px; background: #FF7A59"></span>7&quot;/10&quot;</button>
 <!-- lampen over stereocellen -->
 <sc-if value="{{T.glow}}" hint-placeholder-val="{{ false }}">
 <div style="position: absolute; left: 430px; top: -40px; width: 320px; height: 320px; border-radius: 9999px; pointer-events: none; {{T.glowCss}}"></div>
@@ -285,7 +285,6 @@ body{margin:0}
 <sc-for list="{{c.spines}}" as="sp" hint-placeholder-count="0"><span style="flex: none; {{sp.css}}"></span></sc-for>
 <sc-if value="{{c.hit}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; right: 4px; top: 4px; min-width: 22px; height: 22px; padding: 0 5px; box-sizing: border-box; border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; {{T.badge}}">{{c.hits}}</span></sc-if>
 </button>
-<span style="position: absolute; top: 417px; font-family: 'IBM Plex Mono', monospace; font-size: 9px; white-space: nowrap; pointer-events: none; {{c.lcss}}">{{c.label}}</span>
 </sc-for>
 <sc-for list="{{genreRowL}}" as="gr" hint-placeholder-count="0"><button type="button" onClick="{{gr.pick}}" aria-label="{{gr.aria}}" title="{{gr.name}}" style="position: absolute; padding: 3px 3px 0; box-sizing: border-box; border: 0; background: transparent; cursor: pointer; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: left; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.04em; text-transform: uppercase; line-height: 11px; {{gr.css}}">{{gr.label}}</button></sc-for>
 <div style="position: absolute; left: 602px; top: 230px; width: 100px; height: 150px; box-sizing: border-box; {{T.cellFrame}}">
@@ -340,7 +339,7 @@ body{margin:0}
 <span style="position: absolute; left: 25px; top: -4px; width: 10px; height: 10px; border-radius: 9999px; background: #E8692E"></span>
 <span style="font-family: 'IBM Plex Mono', monospace; font-size: 8px; font-weight: 600; letter-spacing: 0.06em; color: #2A2016">ØNSKER</span>
 <span style="height: 1px; background: #2A201640"></span><span style="height: 1px; background: #2A201640"></span><span style="height: 1px; background: #2A201640"></span><span style="height: 1px; background: #2A201640"></span>
-<span style="font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: #2A2016">{{wishCount}}</span>
+
 </button>
 
 <!-- nye plater, lent mot stolen til de får plass -->
@@ -353,7 +352,7 @@ body{margin:0}
 </span>
 </sc-for>
 </button>
-<span style="position: absolute; left: 898px; top: 386px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; white-space: nowrap; pointer-events: none; {{T.cellLabel}}">NY I HUS · {{nyAntall}}</span>
+<span style="position: absolute; left: 898px; top: 386px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; white-space: nowrap; pointer-events: none; {{T.cellLabel}}">NY I HUS</span>
 </sc-if>
 
 <!-- puta oppå celle 7 -->
@@ -363,7 +362,6 @@ body{margin:0}
 <sc-for list="{{c.spines}}" as="sp" hint-placeholder-count="0"><span style="flex: none; {{sp.css}}"></span></sc-for>
 <sc-if value="{{c.hit}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; right: 4px; top: 4px; min-width: 22px; height: 22px; padding: 0 5px; box-sizing: border-box; border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; {{T.badge}}">{{c.hits}}</span></sc-if>
 </button>
-<span style="position: absolute; top: 417px; font-family: 'IBM Plex Mono', monospace; font-size: 9px; white-space: nowrap; pointer-events: none; {{c.lcss}}">{{c.label}}</span>
 </sc-for>
 <sc-for list="{{genreRowE}}" as="gr" hint-placeholder-count="0"><button type="button" onClick="{{gr.pick}}" aria-label="{{gr.aria}}" title="{{gr.name}}" style="position: absolute; padding: 3px 3px 0; box-sizing: border-box; border: 0; background: transparent; cursor: pointer; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: left; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.04em; text-transform: uppercase; line-height: 11px; {{gr.css}}">{{gr.label}}</button></sc-for>
 </div>
@@ -422,7 +420,7 @@ body{margin:0}
 <button type="button" onClick="{{detail.back}}" style="position: absolute; left: 24px; bottom: 20px; height: 44px; padding: 0 16px; border-radius: 9999px; border: 0; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.4); font-family: 'Archivo', sans-serif; font-size: 14px; font-weight: 700; background: rgba(20,17,14,0.82); color: #F1E9DF"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>Hele rommet</button>
 </div>
 <sc-if value="{{nyHar}}" hint-placeholder-val="{{ false }}">
-<button type="button" onClick="{{pickNy}}" aria-label="Ny i hus: {{nyAntall}}" style="position: absolute; left: 960px; top: 400px; height: 28px; padding: 0 10px; border-radius: 9999px; border: 0; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; {{T.primary}}">NY I HUS · {{nyAntall}}</button>
+<button type="button" onClick="{{pickNy}}" aria-label="Ny i hus: {{nyAntall}}" style="position: absolute; left: 960px; top: 400px; height: 28px; padding: 0 10px; border-radius: 9999px; border: 0; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; {{T.primary}}">NY I HUS</button>
 </sc-if>
 </sc-if>
 </div>
