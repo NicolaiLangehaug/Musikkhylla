@@ -280,7 +280,7 @@ body{margin:0}
 
 <div style="position: absolute; left: 990px; top: 120px; z-index: 1; width: 60px; height: 110px; border-radius: 2px; {{T.speaker}}"><span style="position: absolute; right: 6px; bottom: 6px; width: 6px; height: 6px; {{T.speakerBadge}}"></span></div>
 <div style="position: absolute; left: 1030px; top: 71px; width: 78px; height: 118px; overflow: hidden; transform: scale(1.35); transform-origin: 0 0; {{T.coverWrap}}">
-<sc-if value="{{posters.betty.hasCover}}" hint-placeholder-val="{{ false }}"><img src="{{posters.betty.src}}" alt="" style="position: absolute; max-width: none; {{posters.betty.imgCss}} {{T.coverImg}}"></sc-if>
+<sc-if value="{{posters.betty.hasCover}}" hint-placeholder-val="{{ false }}"><img loading="lazy" decoding="async" src="{{posters.betty.src}}" alt="" style="position: absolute; max-width: none; {{posters.betty.imgCss}} {{T.coverImg}}"></sc-if>
 </div>
 <div style="position: absolute; left: 1110px; top: 162px; z-index: 1; transform: scale(1.25); transform-origin: 100% 100%; width: 74px; height: 68px; box-sizing: border-box; border-radius: 4px; padding: 7px; {{T.amp}}"><div style="width: 100%; height: 100%; {{T.ampGrill}}"></div></div>
 
@@ -320,7 +320,7 @@ body{margin:0}
 <!-- veggen til høyre: «spiller nå»-hylla og Super Ape -->
 <button type="button" onClick="{{pickNow}}" aria-label="Spiller nå" style="position: absolute; left: 958px; top: -40px; transform: scale(1.15); transform-origin: 0 0; width: 92px; height: 100px; padding: 0; border: 0; background: transparent; cursor: pointer">
 <div style="position: absolute; left: 6px; top: 0; width: 80px; height: 80px; overflow: hidden; {{nowSleeve}}">
-<sc-if value="{{now.hasCover}}" hint-placeholder-val="{{ false }}"><img src="{{now.src}}" alt="" style="position: absolute; max-width: none; {{now.imgCss}} {{T.coverImg}}"></sc-if>
+<sc-if value="{{now.hasCover}}" hint-placeholder-val="{{ false }}"><img loading="lazy" decoding="async" src="{{now.src}}" alt="" style="position: absolute; max-width: none; {{now.imgCss}} {{T.coverImg}}"></sc-if>
 <sc-if value="{{now.noCover}}" hint-placeholder-val="{{ true }}"><span style="position: absolute; left: 6px; right: 6px; top: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 9px; line-height: 12px; color: #1A0E06">{{now.a}}</span></sc-if>
 </div>
 <div style="position: absolute; left: 0; top: 80px; width: 92px; height: 8px; {{T.oakShelf}}"></div>
@@ -328,7 +328,7 @@ body{margin:0}
 <span style="position: absolute; left: 964px; top: -58px; width: 120px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.08em; {{T.accentC}}">SPILLER NÅ</span>
 <div style="position: absolute; left: 1110px; top: -150px; transform: scale(1.3); transform-origin: 0 0; width: 150px; height: 150px; box-sizing: border-box; padding: 7px; {{T.frameOakLight}}">
 <div style="width: 100%; height: 100%; position: relative; overflow: hidden; {{T.coverWrap}}">
-<sc-if value="{{posters.ape.hasCover}}" hint-placeholder-val="{{ false }}"><img src="{{posters.ape.src}}" alt="Super Ape" style="position: absolute; max-width: none; {{posters.ape.imgCss}} {{T.coverImg}}"></sc-if>
+<sc-if value="{{posters.ape.hasCover}}" hint-placeholder-val="{{ false }}"><img loading="lazy" decoding="async" src="{{posters.ape.src}}" alt="Super Ape" style="position: absolute; max-width: none; {{posters.ape.imgCss}} {{T.coverImg}}"></sc-if>
 </div>
 </div>
 
@@ -353,7 +353,7 @@ body{margin:0}
 <button type="button" onClick="{{pickNy}}" aria-label="Ny i hus: {{nyAntall}} plater som venter på plass" style="position: absolute; left: 898px; top: 290px; transform: scale(1.5); transform-origin: 0 100%; width: 96px; height: 92px; padding: 0; border: 0; background: transparent; cursor: pointer; {{sel.ny}}">
 <sc-for list="{{nyStabel}}" as="ns" hint-placeholder-count="2">
 <span style="position: absolute; bottom: 0; width: 70px; height: 70px; overflow: hidden; transform-origin: bottom left; box-shadow: 0 4px 10px rgba(0,0,0,0.4); {{ns.css}} {{T.coverWrap}}">
-<sc-if value="{{ns.hasCover}}" hint-placeholder-val="{{ false }}"><img src="{{ns.src}}" alt="" style="position: absolute; max-width: none; {{ns.imgCss}} {{T.coverImg}}"></sc-if>
+<sc-if value="{{ns.hasCover}}" hint-placeholder-val="{{ false }}"><img loading="lazy" decoding="async" src="{{ns.src}}" alt="" style="position: absolute; max-width: none; {{ns.imgCss}} {{T.coverImg}}"></sc-if>
 <sc-if value="{{ns.noCover}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; left: 6px; right: 6px; top: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 9px; line-height: 11px; {{T.textC}}">{{ns.a}}</span></sc-if>
 </span>
 </sc-for>
@@ -378,7 +378,7 @@ body{margin:0}
 <sc-if value="{{fly.show}}" hint-placeholder-val="{{ false }}">
 <div style="position: absolute; z-index: 30; border-radius: 9999px; pointer-events: none; background: repeating-radial-gradient(circle, #0E0E0E 0 2px, #222 2px 3px); {{fly.disc}}"><span style="position: absolute; left: 33%; top: 33%; width: 34%; height: 34%; border-radius: 9999px; {{tt.label}}"></span></div>
 <div style="position: absolute; z-index: 31; overflow: hidden; pointer-events: none; box-shadow: 0 10px 24px rgba(0,0,0,0.45); {{fly.cover}} {{T.coverWrap}}">
-<sc-if value="{{fly.hasCover}}" hint-placeholder-val="{{ false }}"><img src="{{fly.src}}" alt="" style="position: absolute; max-width: none; {{fly.imgCss}} {{T.coverImg}}"></sc-if>
+<sc-if value="{{fly.hasCover}}" hint-placeholder-val="{{ false }}"><img loading="lazy" decoding="async" src="{{fly.src}}" alt="" style="position: absolute; max-width: none; {{fly.imgCss}} {{T.coverImg}}"></sc-if>
 </div>
 </sc-if>
 </div>
@@ -398,7 +398,7 @@ body{margin:0}
 <!-- FOTO: rommet ditt, med trykkbare celler lagt over bildet -->
 <sc-if value="{{isFoto}}" hint-placeholder-val="{{ false }}">
 <div style="position: absolute; left: 0; top: 0; width: 1366px; height: 550px; transition: transform 500ms ease-in-out, opacity 400ms ease-in-out; {{pano.css}}">
-<img src="{{fotoSrc}}" alt="Platerommet" style="position: absolute; left: 0; top: -65px; width: 1366px; height: 804px; max-width: none; pointer-events: none; filter: brightness(1.35) saturate(1.05)">
+<img loading="lazy" decoding="async" src="{{fotoSrc}}" alt="Platerommet" style="position: absolute; left: 0; top: -65px; width: 1366px; height: 804px; max-width: none; pointer-events: none; filter: brightness(1.35) saturate(1.05)">
 <sc-for list="{{hots}}" as="h" hint-placeholder-count="0">
 <button type="button" class="hot" onClick="{{h.pick}}" aria-label="{{h.name}}" title="{{h.name}}" style="position: absolute; padding: 0; border: 0; cursor: pointer; {{h.css}}"></button>
 </sc-for>
@@ -406,7 +406,7 @@ body{margin:0}
 <span style="position: absolute; transform: translate(-50%, 0); padding: 2px 6px; border-radius: 9999px; white-space: nowrap; pointer-events: none; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; {{hl.css}}">{{hl.t}}</span>
 </sc-for>
 <sc-if value="{{fotoNow.show}}" hint-placeholder-val="{{ false }}">
-<div style="position: absolute; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.45); {{fotoNow.css}} {{T.coverWrap}}"><img src="{{fotoNow.src}}" alt="" style="position: absolute; max-width: none; {{fotoNow.imgCss}}"></div>
+<div style="position: absolute; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.45); {{fotoNow.css}} {{T.coverWrap}}"><img loading="lazy" decoding="async" src="{{fotoNow.src}}" alt="" style="position: absolute; max-width: none; {{fotoNow.imgCss}}"></div>
 </sc-if>
 <button type="button" onClick="{{pickWish}}" aria-label="Ønskelista, {{wishCount}} artister" style="position: absolute; left: 1046px; top: 96px; width: 46px; height: 58px; padding: 5px; box-sizing: border-box; border: 0; cursor: pointer; text-align: left; display: flex; flex-direction: column; gap: 3px; transform: rotate(-4deg); background: #F4EEE2; box-shadow: 0 3px 8px rgba(0,0,0,0.45); {{sel.wish}}">
 <span style="font-family: 'IBM Plex Mono', monospace; font-size: 7px; font-weight: 600; color: #2A2016">ØNSKER</span><span style="height: 1px; background: #2A201640"></span><span style="height: 1px; background: #2A201640"></span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 8px; color: #2A2016">{{wishCount}}</span>
@@ -414,14 +414,14 @@ body{margin:0}
 </div>
 <!-- detaljbildet av cellen du trykket på -->
 <div style="position: absolute; left: 0; top: 0; width: 1366px; height: 550px; overflow: hidden; background: #14110E; transition: opacity 400ms ease-in-out 120ms; {{detail.css}}">
-<img src="{{detail.src}}" alt="{{detail.alt}}" style="position: absolute; max-width: none; pointer-events: none; transition: left 450ms ease-in-out, top 450ms ease-in-out, width 450ms ease-in-out, height 450ms ease-in-out; filter: brightness(1.08); {{detail.imgCss}}">
+<img loading="lazy" decoding="async" src="{{detail.src}}" alt="{{detail.alt}}" style="position: absolute; max-width: none; pointer-events: none; transition: left 450ms ease-in-out, top 450ms ease-in-out, width 450ms ease-in-out, height 450ms ease-in-out; filter: brightness(1.08); {{detail.imgCss}}">
 <sc-for list="{{detail.hots}}" as="dh" hint-placeholder-count="0">
 <button type="button" class="hot" onClick="{{dh.pick}}" aria-label="{{dh.name}}" style="position: absolute; padding: 0; border-radius: 4px; cursor: pointer; transition: left 450ms ease-in-out, top 450ms ease-in-out, width 450ms ease-in-out, height 450ms ease-in-out; {{dh.css}}">
 <span style="position: absolute; left: 8px; top: 8px; padding: 3px 8px; border-radius: 9999px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; white-space: nowrap; {{dh.lcss}}">{{dh.label}}</span>
 </button>
 </sc-for>
 <sc-if value="{{detail.now.show}}" hint-placeholder-val="{{ false }}">
-<div style="position: absolute; overflow: hidden; box-shadow: 0 6px 16px rgba(0,0,0,0.5); transition: left 450ms ease-in-out, top 450ms ease-in-out, width 450ms ease-in-out, height 450ms ease-in-out; {{detail.now.css}} {{T.coverWrap}}"><img src="{{detail.now.src}}" alt="Spiller nå" style="position: absolute; max-width: none; {{detail.now.imgCss}}"></div>
+<div style="position: absolute; overflow: hidden; box-shadow: 0 6px 16px rgba(0,0,0,0.5); transition: left 450ms ease-in-out, top 450ms ease-in-out, width 450ms ease-in-out, height 450ms ease-in-out; {{detail.now.css}} {{T.coverWrap}}"><img loading="lazy" decoding="async" src="{{detail.now.src}}" alt="Spiller nå" style="position: absolute; max-width: none; {{detail.now.imgCss}}"></div>
 </sc-if>
 <button type="button" onClick="{{detail.back}}" style="position: absolute; left: 24px; bottom: 20px; height: 44px; padding: 0 16px; border-radius: 9999px; border: 0; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.4); font-family: 'Archivo', sans-serif; font-size: 14px; font-weight: 700; background: rgba(20,17,14,0.82); color: #F1E9DF"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>Hele rommet</button>
 </div>
@@ -469,7 +469,7 @@ body{margin:0}
 <div data-sveip="1" style="position: absolute; left: 40px; top: 46px; width: 420px; height: 330px; touch-action: pan-y; user-select: none; -webkit-user-select: none">
 <sc-for list="{{stack}}" as="sk" hint-placeholder-count="6">
 <button type="button" onClick="{{sk.pick}}" aria-label="{{sk.label}}" style="position: absolute; padding: 0; border: 0; overflow: hidden; cursor: pointer; {{sk.css}}">
-<sc-if value="{{sk.hasCover}}" hint-placeholder-val="{{ false }}"><img src="{{sk.src}}" alt="" style="position: absolute; max-width: none; pointer-events: none; {{sk.imgCss}} {{T.coverImg}}"></sc-if>
+<sc-if value="{{sk.hasCover}}" hint-placeholder-val="{{ false }}"><img loading="lazy" decoding="async" src="{{sk.src}}" alt="" style="position: absolute; max-width: none; pointer-events: none; {{sk.imgCss}} {{T.coverImg}}"></sc-if>
 <sc-if value="{{sk.noCover}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; left: 12px; right: 12px; top: 12px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 18px; text-align: left; {{T.textC}}">{{sk.a}} – {{sk.t}}</span></sc-if>
 </button>
 </sc-for>
@@ -503,7 +503,7 @@ body{margin:0}
 <sc-for list="{{cards}}" as="k" hint-placeholder-count="8">
 <button type="button" onClick="{{k.open}}" aria-label="{{k.label}}" style="display: flex; gap: 12px; padding: 10px; border-radius: 3px; cursor: pointer; text-align: left; font-family: 'IBM Plex Mono', monospace; {{T.indexCard}}">
 <span style="width: 64px; height: 64px; flex: none; position: relative; overflow: hidden; {{T.coverWrap}}">
-<sc-if value="{{k.hasCover}}" hint-placeholder-val="{{ false }}"><img src="{{k.src}}" alt="" style="position: absolute; max-width: none; {{k.imgCss}} {{T.coverImg}}"></sc-if>
+<sc-if value="{{k.hasCover}}" hint-placeholder-val="{{ false }}"><img loading="lazy" decoding="async" src="{{k.src}}" alt="" style="position: absolute; max-width: none; {{k.imgCss}} {{T.coverImg}}"></sc-if>
 </span>
 <span style="display: flex; flex-direction: column; gap: 2px; min-width: 0; font-size: 12px; line-height: 16px">
 <span style="font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{k.a}}</span>
@@ -623,7 +623,7 @@ body{margin:0}
 </label>
 <div style="display: flex; gap: 14px; align-items: center">
 <span style="width: 96px; height: 96px; flex: none; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-align: center; {{T.coverWrap}} {{T.mutedC}}">
-<sc-if value="{{form.hasImg}}" hint-placeholder-val="{{ false }}"><img src="{{form.img}}" alt="Valgt cover" style="position: absolute; left: 0; top: 0; width: 96px; height: 96px"></sc-if>
+<sc-if value="{{form.hasImg}}" hint-placeholder-val="{{ false }}"><img loading="lazy" decoding="async" src="{{form.img}}" alt="Valgt cover" style="position: absolute; left: 0; top: 0; width: 96px; height: 96px"></sc-if>
 <sc-if value="{{form.noImg}}" hint-placeholder-val="{{ true }}">ingen cover</sc-if>
 </span>
 <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px">Cover (bilde eller foto av plata)
@@ -644,7 +644,7 @@ body{margin:0}
 <button type="button" onClick="{{closeCard}}" aria-label="Lukk kortet" style="width: 44px; height: 44px; border-radius: 4px; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; {{T.btn}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
 </div>
 <div style="position: relative; width: 388px; height: 388px; flex: none; overflow: hidden; {{T.coverWrap}}">
-<sc-if value="{{card.hasCover}}" hint-placeholder-val="{{ false }}"><img src="{{card.src}}" alt="Omslaget til {{card.t}}" style="position: absolute; max-width: none; {{card.imgCss}} {{T.coverImg}}"></sc-if>
+<sc-if value="{{card.hasCover}}" hint-placeholder-val="{{ false }}"><img loading="lazy" decoding="async" src="{{card.src}}" alt="Omslaget til {{card.t}}" style="position: absolute; max-width: none; {{card.imgCss}} {{T.coverImg}}"></sc-if>
 <sc-if value="{{card.noCover}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; left: 18px; right: 18px; top: 18px; font-family: 'IBM Plex Mono', monospace; font-size: 15px; line-height: 20px; {{T.textC}}">{{card.a}} – {{card.t}}</span></sc-if>
 </div>
 <button type="button" onClick="{{card.play}}" style="flex: none; height: 48px; border-radius: 4px; border: 0; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 15px; font-weight: 700; {{T.primary}}">Sett på platespilleren</button>
@@ -973,7 +973,7 @@ body{margin:0}
     H = [];
     const html = '<div id="app">' + render(MAL, komp.renderVals()) + '</div>';
     morphdom(rot, html, {
-      onBeforeElUpdated: (from, to) => { if (from.tagName === 'INPUT') { if (from.type === 'file') return false; to.value = from.value; } return true; },
+      onBeforeElUpdated: (from, to) => { if (from.tagName === 'IMG' && from.getAttribute('src') !== to.getAttribute('src')) { from.parentNode.replaceChild(to.cloneNode(true), from); return false; } if (from.tagName === 'INPUT') { if (from.type === 'file') return false; to.value = from.value; } return true; },
     });
     rot.querySelectorAll('select[data-value]').forEach((s) => { if (s.value !== s.getAttribute('data-value')) s.value = s.getAttribute('data-value'); });
     lagre(komp.state || {});
@@ -1574,7 +1574,7 @@ class Component extends DCLogic {
       if (r && r.nyImg && window.omslagSrc(r.nyImg)) return { hasCover: true, noCover: false, src: window.omslagSrc(r.nyImg), imgCss: 'width:' + w + 'px;height:' + w + 'px;left:0;top:0;' };
       if (!r || !r.cv) return { hasCover: false, noCover: true, src: '', imgCss: '' };
       const s = w / A.cell, full = A.cell * A.n * s;
-      return { hasCover: true, noCover: false, src: this.ATLAS[r.cv[0]], imgCss: 'width:' + full + 'px;height:' + full + 'px;left:' + (-r.cv[1] * A.cell * s) + 'px;top:' + (-r.cv[2] * A.cell * s) + 'px;' };
+      return { hasCover: true, noCover: false, src: 'omslag-' + Math.floor((r.cv[0] * 100 + r.cv[1] * 10 + r.cv[2]) / 90) + '/' + (r.cv[0] * 100 + r.cv[1] * 10 + r.cv[2]) + '.jpg', imgCss: 'width:' + w + 'px;height:' + w + 'px;left:0;top:0;' };
     };
     const SHELF = ['Pønk', 'Hardt-lett', 'Hardt-kaos', 'Hardt-seigt', 'Rock-bøtta', 'Rock-proggy', 'Post-rock', 'Ambient/minimalisme',
       'Jazz rock', 'Jazz-gammel', 'Jazz-ny', 'Rocksteady', 'Lav Gitar/Folk', 'Electro', 'HipHop/TripHop', 'Indie/Pop', 'Uplassert'];
@@ -1827,11 +1827,14 @@ class Component extends DCLogic {
       return Object.assign(base, { loading: true, loadText: st.failed ? 'Fant ikke platedataene.' : 'Rydder i rommet …', cells: [], cellsLong: [], cellsEnd: [], andre: {}, roomBg: T.wallBg, isCorner: false, cornerFloor: '', cornerCeil: '', longTf: '', endTf: '', ticks: [], boxSpines: [], cdSpines: [], rackSpines: [], tabs: [], stack: [], cards: [], margin: { spines: [], label: '' }, front: {}, isBla: false, isKort: false, hasSel: false, card: {}, now: { noCover: false, hasCover: false, a: '' }, nowSleeve: 'display:none;', nyHar: false, nyAntall: '0', nyStabel: [], hots: [], hotLabels: [], fotoNow: { show: false }, detail: { hots: [], now: { show: false } }, pano: { css: '' }, form: {}, artistOptions: [], isWish: false, notWish: true, wishFilters: [], wishItems: [], wishAdd: {}, wishSort: {}, wishCount: '', tt: {}, fly: { show: false }, playing: false, nowText: '', stop: () => { if (window.stoppAv) window.stoppAv(); this.setState({ playing: false }); }, posters: { ape: {}, betty: {} }, sel: {}, moveText: '', hasMoves: false, gOptions: [], pOptions: [], modeBla: '', modeKort: '' });
     }
     this.syncExtra(st.extra || []);
-    // YouTube-lenker lagt inn fra platekortet (ytFix: plateindeks -> lenke) går foran Discogs-videoene
+    // YouTube-lenker lagt inn fra platekortet går foran Discogs-videoene.
+    // Nøkkelen er fast for hver plate: plass i grunnlista, eller «n<id>» for plater du har lagt inn selv.
     if (!this.ytOrig) this.ytOrig = {};
     const yf = st.ytFix || {};
+    this.ytKey = (i) => { const r = this.d.recs[i]; return r && r.nid ? 'n' + r.nid : String(i); };
+    const finn = (k) => (k[0] === 'n' ? this.d.recs.find((x) => x && String(x.nid) === k.slice(1)) : this.d.recs[k]);
     Object.keys(Object.assign({}, this.ytOrig, yf)).forEach((k) => {
-      const r = this.d.recs[k]; if (!r) return;
+      const r = finn(k); if (!r) return;
       if (!(k in this.ytOrig)) this.ytOrig[k] = { yt: r.yt, ytListe: r.ytListe };
       if (yf[k]) { const y = this.lesYt(yf[k]); r.yt = y.ids; r.ytListe = y.liste; }
       else { r.yt = this.ytOrig[k].yt; r.ytListe = this.ytOrig[k].ytListe; }
@@ -2144,10 +2147,10 @@ class Component extends DCLogic {
         },
         gval: String(gi), pval: String(p), play: () => { this.setState({ sel: -1 }); this.play(sel); },
         moveG: (e) => { const to = parseInt(e.target.value, 10), m = Object.assign({}, moved); if (to === r.g) delete m[sel]; else m[sel] = to; this.setState({ moved: m }); },
-        ytVal: (st.ytEdit && st.ytEdit.i === sel) ? st.ytEdit.v : ((st.ytFix || {})[sel] || ''),
+        ytVal: (st.ytEdit && st.ytEdit.i === sel) ? st.ytEdit.v : ((st.ytFix || {})[this.ytKey(sel)] || ''),
         ytInfo: (() => {
-          const y = this.lesYt((st.ytEdit && st.ytEdit.i === sel) ? st.ytEdit.v : ((st.ytFix || {})[sel] || ''));
-          if (y.liste || y.ids.length) return (y.liste ? 'spilleliste' : y.ids.length + ' video') + ((st.ytFix || {})[sel] ? ' · lagret' : ' · ikke lagret ennå');
+          const y = this.lesYt((st.ytEdit && st.ytEdit.i === sel) ? st.ytEdit.v : ((st.ytFix || {})[this.ytKey(sel)] || ''));
+          if (y.liste || y.ids.length) return (y.liste ? 'spilleliste' : y.ids.length + ' video') + ((st.ytFix || {})[this.ytKey(sel)] ? ' · lagret' : ' · ikke lagret ennå');
           return r.yt && r.yt.length ? 'Bruker ' + r.yt.length + ' video fra Discogs' : 'Ingen video – lim inn en lenke';
         })(),
         setYt: (e) => this.setState({ ytEdit: { i: sel, v: e.target.value } }),
@@ -2155,7 +2158,7 @@ class Component extends DCLogic {
           const v = (this.state.ytEdit && this.state.ytEdit.i === sel ? this.state.ytEdit.v : '').trim(), f = Object.assign({}, this.state.ytFix || {});
           const y = this.lesYt(v);
           if (v && !y.liste && !y.ids.length) { if (window.visMelding) window.visMelding('Fant ingen YouTube-video eller spilleliste i lenka.'); return; }
-          if (v) f[sel] = v; else delete f[sel];
+          if (v) f[this.ytKey(sel)] = v; else delete f[this.ytKey(sel)];
           this.setState({ ytFix: f, ytEdit: null });
           if (window.visMelding) window.visMelding(v ? 'YouTube-lenka er lagret.' : 'YouTube-lenka er fjernet.');
         },
