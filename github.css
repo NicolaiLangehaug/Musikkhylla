@@ -50,3 +50,4 @@
 #sj-merke span{font-size:16px;color:#FF7A59}
 @media (max-width:560px){.sj-fam,.sj-und{grid-template-columns:18px minmax(0,1fr) 40px}.sj-stolpe,.sj-celle{display:none}}
 .spiller.venstre{right:auto;left:max(16px,env(safe-area-inset-left,0px))}
+.sj-andre{padding:14px 6px 4px !important}

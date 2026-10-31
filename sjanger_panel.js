@@ -61,6 +61,13 @@
       }
       h += '</li>';
     });
+    // andre steder i rommet (ikke sortert etter sjanger)
+    const ST = [[9, 'Boksene'], [10, 'CD-mappene'], [8, 'Stativet · 7" og 10"']];
+    h += '<li class="sj-andre"><span class="sj-mono">ANDRE STEDER</span></li>';
+    ST.forEach(([k, navn]) => {
+      const n = (komp.lastL.lists[k] || []).length;
+      h += '<li><button type="button" class="sj-fam" data-sj-sted="' + k + '"><span class="sj-prikk" style="background:#F1E9DF"></span><span class="sj-navn">' + hEsc(navn) + '</span><span class="sj-stolpe"><span style="width:' + Math.round(n / maks * 100) + '%;background:#BFB2A3"></span></span><span class="sj-tall">' + n + '</span><span class="sj-celle">åpne</span></button></li>';
+    });
     h += '</ul></div>';
     el.innerHTML = h;
     el._data = data;
@@ -86,6 +93,8 @@
     if (e.target === el || (e.target.closest && e.target.closest('[data-sj="lukk"]'))) { SJ.open = false; return tegnSJ(); }
     const f = e.target.closest && e.target.closest('[data-sj-fam]'), u = e.target.closest && e.target.closest('[data-sj-sub]');
     if (f) { const F = el._data[+f.dataset.sjFam]; sjMarker(F.gs, F.f); }
+    const sted = e.target.closest && e.target.closest('[data-sj-sted]');
+    if (sted) { SJ.open = false; tegnSJ(); komp.setState({ panel: true, cont: +sted.dataset.sjSted, gsel: -1, idx: 0, sel: -1, hl: null, q: '' }); }
     if (u) { const [fi, si] = u.dataset.sjSub.split(':').map(Number), S = el._data[fi].subs[si]; sjMarker([S.gi], S.name); }
   });
   document.addEventListener('keydown', (e) => {

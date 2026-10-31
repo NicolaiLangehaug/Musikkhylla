@@ -103,6 +103,7 @@ body{margin:0}
 #sj-merke span{font-size:16px;color:#FF7A59}
 @media (max-width:560px){.sj-fam,.sj-und{grid-template-columns:18px minmax(0,1fr) 40px}.sj-stolpe,.sj-celle{display:none}}
 .spiller.venstre{right:auto;left:max(16px,env(safe-area-inset-left,0px))}
+.sj-andre{padding:14px 6px 4px !important}
 
 </style>
 <script src="https://www.youtube.com/iframe_api" async></script>
@@ -223,6 +224,10 @@ body{margin:0}
 <span style="position: absolute; left: 76px; top: 62px; width: 2px; height: 18px; transform: rotate(-14deg); {{T.wire}}"></span>
 </button>
 
+<!-- merkelapper: viser at boksene, CD-mappene og stativet også kan åpnes -->
+<button type="button" onClick="{{pickBoxes}}" aria-label="Boksene, {{andre.bokser}}" style="position: absolute; left: 40px; top: 64px; z-index: 3; height: 18px; padding: 0 7px; border-radius: 3px; border: 0; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; font-weight: 600; letter-spacing: 0.05em; background: rgba(241,233,223,0.92); color: #2A2016; box-shadow: 0 2px 6px rgba(0,0,0,0.35)"><span style="width: 5px; height: 5px; border-radius: 9999px; background: #FF7A59"></span>BOKSER · {{andre.bokser}}</button>
+<button type="button" onClick="{{pickCD}}" aria-label="CD-mappene, {{andre.cd}}" style="position: absolute; left: 128px; top: 128px; z-index: 3; height: 18px; padding: 0 7px; border-radius: 3px; border: 0; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; font-weight: 600; letter-spacing: 0.05em; background: rgba(241,233,223,0.92); color: #2A2016; box-shadow: 0 2px 6px rgba(0,0,0,0.35)"><span style="width: 5px; height: 5px; border-radius: 9999px; background: #FF7A59"></span>CD · {{andre.cd}}</button>
+<button type="button" onClick="{{pickRack}}" aria-label="Stativet med 7- og 10-tommere, {{andre.stativ}}" style="position: absolute; left: 382px; top: 108px; z-index: 3; height: 18px; padding: 0 7px; border-radius: 3px; border: 0; cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; font-weight: 600; letter-spacing: 0.05em; background: rgba(241,233,223,0.92); color: #2A2016; box-shadow: 0 2px 6px rgba(0,0,0,0.35)"><span style="width: 5px; height: 5px; border-radius: 9999px; background: #FF7A59"></span>7&quot;/10&quot; · {{andre.stativ}}</button>
 <!-- lampen over stereocellen -->
 <sc-if value="{{T.glow}}" hint-placeholder-val="{{ false }}">
 <div style="position: absolute; left: 430px; top: -40px; width: 320px; height: 320px; border-radius: 9999px; pointer-events: none; {{T.glowCss}}"></div>
@@ -1263,6 +1268,13 @@ body{margin:0}
       }
       h += '</li>';
     });
+    // andre steder i rommet (ikke sortert etter sjanger)
+    const ST = [[9, 'Boksene'], [10, 'CD-mappene'], [8, 'Stativet · 7" og 10"']];
+    h += '<li class="sj-andre"><span class="sj-mono">ANDRE STEDER</span></li>';
+    ST.forEach(([k, navn]) => {
+      const n = (komp.lastL.lists[k] || []).length;
+      h += '<li><button type="button" class="sj-fam" data-sj-sted="' + k + '"><span class="sj-prikk" style="background:#F1E9DF"></span><span class="sj-navn">' + hEsc(navn) + '</span><span class="sj-stolpe"><span style="width:' + Math.round(n / maks * 100) + '%;background:#BFB2A3"></span></span><span class="sj-tall">' + n + '</span><span class="sj-celle">åpne</span></button></li>';
+    });
     h += '</ul></div>';
     el.innerHTML = h;
     el._data = data;
@@ -1288,6 +1300,8 @@ body{margin:0}
     if (e.target === el || (e.target.closest && e.target.closest('[data-sj="lukk"]'))) { SJ.open = false; return tegnSJ(); }
     const f = e.target.closest && e.target.closest('[data-sj-fam]'), u = e.target.closest && e.target.closest('[data-sj-sub]');
     if (f) { const F = el._data[+f.dataset.sjFam]; sjMarker(F.gs, F.f); }
+    const sted = e.target.closest && e.target.closest('[data-sj-sted]');
+    if (sted) { SJ.open = false; tegnSJ(); komp.setState({ panel: true, cont: +sted.dataset.sjSted, gsel: -1, idx: 0, sel: -1, hl: null, q: '' }); }
     if (u) { const [fi, si] = u.dataset.sjSub.split(':').map(Number), S = el._data[fi].subs[si]; sjMarker([S.gi], S.name); }
   });
   document.addEventListener('keydown', (e) => {
@@ -1771,7 +1785,7 @@ class Component extends DCLogic {
       viewFlat: (st.view || this.props.visning) === 'corner' ? T.pillOff : T.pillOn, viewCorner: (st.view || this.props.visning) === 'corner' ? T.pillOn : T.pillOff,
     };
     if (!st.ready) {
-      return Object.assign(base, { loading: true, loadText: st.failed ? 'Fant ikke platedataene.' : 'Rydder i rommet …', cells: [], cellsLong: [], cellsEnd: [], roomBg: T.wallBg, isCorner: false, cornerFloor: '', cornerCeil: '', longTf: '', endTf: '', ticks: [], boxSpines: [], cdSpines: [], rackSpines: [], tabs: [], stack: [], cards: [], margin: { spines: [], label: '' }, front: {}, isBla: false, isKort: false, hasSel: false, card: {}, now: { noCover: false, hasCover: false, a: '' }, nowSleeve: 'display:none;', nyHar: false, nyAntall: '0', nyStabel: [], hots: [], hotLabels: [], fotoNow: { show: false }, detail: { hots: [], now: { show: false } }, pano: { css: '' }, form: {}, artistOptions: [], isWish: false, notWish: true, wishFilters: [], wishItems: [], wishAdd: {}, wishSort: {}, wishCount: '', tt: {}, fly: { show: false }, playing: false, nowText: '', stop: () => { if (window.stoppAv) window.stoppAv(); this.setState({ playing: false }); }, posters: { ape: {}, betty: {} }, sel: {}, moveText: '', hasMoves: false, gOptions: [], pOptions: [], modeBla: '', modeKort: '' });
+      return Object.assign(base, { loading: true, loadText: st.failed ? 'Fant ikke platedataene.' : 'Rydder i rommet …', cells: [], cellsLong: [], cellsEnd: [], andre: {}, roomBg: T.wallBg, isCorner: false, cornerFloor: '', cornerCeil: '', longTf: '', endTf: '', ticks: [], boxSpines: [], cdSpines: [], rackSpines: [], tabs: [], stack: [], cards: [], margin: { spines: [], label: '' }, front: {}, isBla: false, isKort: false, hasSel: false, card: {}, now: { noCover: false, hasCover: false, a: '' }, nowSleeve: 'display:none;', nyHar: false, nyAntall: '0', nyStabel: [], hots: [], hotLabels: [], fotoNow: { show: false }, detail: { hots: [], now: { show: false } }, pano: { css: '' }, form: {}, artistOptions: [], isWish: false, notWish: true, wishFilters: [], wishItems: [], wishAdd: {}, wishSort: {}, wishCount: '', tt: {}, fly: { show: false }, playing: false, nowText: '', stop: () => { if (window.stoppAv) window.stoppAv(); this.setState({ playing: false }); }, posters: { ape: {}, betty: {} }, sel: {}, moveText: '', hasMoves: false, gOptions: [], pOptions: [], modeBla: '', modeKort: '' });
     }
     this.syncExtra(st.extra || []);
     this.curWish = st.wish || this.d.wish || [];
@@ -2075,6 +2089,7 @@ class Component extends DCLogic {
     return Object.assign(base, {
       ticks: this.PL.slice(0, 8).reduce((a, P) => a.concat([P.x, P.x + P.w]), []).map((x) => ({ css: 'left:' + (x + 32) + 'px;background:' + (T.tick || 'transparent') + ';' })),
       cellsLong: cells.slice(0, 6), cellsEnd: cells.slice(6),
+      andre: { bokser: String(L.lists[9].length), cd: String(L.lists[10].length), stativ: String(L.lists[8].length) },
       // sjangerraden under cellene i to nivåer: familien (f.eks. HARDT) som en strek over hele,
       // og undersjangrene (lett · kaos · seigt) delt opp under. Familier med bare én sjanger får bare øverste nivå.
       ...(() => {
