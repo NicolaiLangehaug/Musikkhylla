@@ -6,8 +6,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Rommet">
 <meta name="theme-color" content="#151310">
-<link rel="apple-touch-icon" href="ikon/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="ikon/favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Platesamlingen</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1887,7 +1887,8 @@ class Component extends DCLogic {
     const boxSpines = mini(9, (i) => 96 + (i % 3) * 6, 9);
     const cdFolders = [];
     for (let f = 0; f < L.lists[10].length; f += 8) cdFolders.push({ css: 'width:1.4px;height:' + (60 + (f % 5)) + 'px;background:' + R[L.lists[10][f]].col + ';' });
-    const rackSpines = L.lists[8].slice(0, 12).map((i, j) => ({ css: 'left:' + (10 + j * 6) + 'px;top:' + (j % 2 ? 4 : 0) + 'px;width:56px;height:' + (R[i].r.s === '7"' ? 40 : 52) + 'px;transform:rotate(' + (-8 + j * 1.4) + 'deg);background:' + R[i].col + ';opacity:' + (q && !hit(i) ? 0.3 : 1) + ';' }));
+    // stativet: platene står rett opp i kassa, tett etter hverandre (7" lavere enn 10")
+    const rackSpines = L.lists[8].slice(0, 14).map((i, j) => ({ css: 'left:' + (8 + j * 4.6) + 'px;top:' + (R[i].r.s === '7"' ? 10 : 2) + 'px;width:' + (R[i].r.s === '7"' ? 14 : 18) + 'px;height:40px;border-radius:1px;box-shadow:-1px 0 0 rgba(0,0,0,0.35);background:' + R[i].col + ';opacity:' + (dimOn && !hit(i) ? 0.3 : 1) + ';' }));
 
     // ---- hva panelet viser ----
     let list, title;
