@@ -1059,7 +1059,9 @@
   "770": 4
  },
  "np": 345,
- "placed": {},
+ "placed": {
+  "801": 10
+ },
  "wish": [
   {
    "a": "Angora Static",
