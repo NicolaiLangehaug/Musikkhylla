@@ -192,8 +192,14 @@
   window.spillAv = (r, reserveUrl) => {
     if (r.ytListe) { startListe({ liste: r.ytListe }); return true; }
     if (r.yt && r.yt.length) { startListe(r.yt); return true; }
-    // ingen videoer fra Discogs: åpne YouTube-søket i ny fane
-    try { return !!window.open(reserveUrl, '_blank'); } catch (e) { return false; }
+    return false;
+  };
+  // kort melding nederst på skjermen
+  window.visMelding = (tekst) => {
+    let m = document.getElementById('melding');
+    if (!m) { m = document.createElement('div'); m.id = 'melding'; m.setAttribute('role', 'status'); document.body.appendChild(m); }
+    m.textContent = tekst; m.classList.add('vis');
+    clearTimeout(m._t); m._t = setTimeout(() => m.classList.remove('vis'), 3500);
   };
   window.stoppAv = () => {
     try { if (spiller && spillerKlar) spiller.stopVideo(); } catch (e) {}

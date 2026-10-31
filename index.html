@@ -107,6 +107,8 @@ body{margin:0}
 @media (max-width:560px){.sj-fam,.sj-und{grid-template-columns:18px minmax(0,1fr) 40px}.sj-stolpe,.sj-celle{display:none}}
 .spiller.venstre{right:auto;left:max(16px,env(safe-area-inset-left,0px))}
 .sj-andre{padding:14px 6px 4px !important}
+#melding{position:fixed;left:50%;bottom:max(24px,env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);z-index:130;max-width:calc(100vw - 32px);padding:12px 18px;border-radius:8px;background:#211C17;color:#F1E9DF;border:1px solid #FF7A59;box-shadow:0 10px 30px rgba(0,0,0,0.5);font:15px 'Archivo',sans-serif;opacity:0;pointer-events:none;transition:opacity 200ms,transform 200ms}
+#melding.vis{opacity:1;transform:translate(-50%,0)}
 
 </style>
 <script src="https://www.youtube.com/iframe_api" async></script>
@@ -672,6 +674,13 @@ body{margin:0}
 <sc-for list="{{pOptions}}" as="o" hint-placeholder-count="11"><x-option value="{{o.v}}">{{o.name}}</x-option></sc-for>
 </x-select>
 </label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px">YouTube-lenke (en video eller en spilleliste)
+<span style="display: flex; gap: 6px">
+<input type="url" autocomplete="off" value="{{card.ytVal}}" placeholder="https://www.youtube.com/playlist?list=…" onInput="{{card.setYt}}" style="flex: 1; min-width: 0; height: 44px; padding: 0 10px; border-radius: 4px; font-family: 'Archivo', sans-serif; font-size: 14px; {{T.select}}">
+<button type="button" onClick="{{card.saveYt}}" style="flex: none; height: 44px; padding: 0 14px; border-radius: 4px; border: 0; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 14px; font-weight: 700; {{T.primary}}">Lagre</button>
+</span>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; {{T.mutedC}}">{{card.ytInfo}}</span>
+</label>
 <sc-if value="{{card.waiting}}" hint-placeholder-val="{{ false }}">
 <button type="button" onClick="{{card.home}}" style="flex: none; height: 48px; border-radius: 4px; cursor: pointer; background: transparent; font-family: 'Archivo', sans-serif; font-size: 15px; font-weight: 700; {{T.btn}}">Sett inn i hylla · {{card.target}}</button>
 </sc-if>
@@ -690,7 +699,7 @@ body{margin:0}
 // ---------- liten motor som tolker designets mal ({{hull}}, sc-for, sc-if, hendelser) ----------
 (function () {
   const LAGRE = 'platesamlingen.side.v1';
-  const NOKLER = ['moved', 'placed', 'gone', 'extra', 'wish', 'np', 'discogs'];
+  const NOKLER = ['moved', 'placed', 'gone', 'extra', 'wish', 'np', 'discogs', 'ytFix'];
   const STD = { moved: {}, placed: {}, gone: {}, extra: [], np: -1 };
   // kanonisk JSON (sorterte nøkler), så lokale og lagrede utgaver kan sammenlignes
   const canon = (v) => JSON.stringify(v, (k, x) => (x && typeof x === 'object' && !Array.isArray(x) ? Object.keys(x).sort().reduce((o, key) => { o[key] = x[key]; return o; }, {}) : x));
@@ -890,8 +899,14 @@ body{margin:0}
   window.spillAv = (r, reserveUrl) => {
     if (r.ytListe) { startListe({ liste: r.ytListe }); return true; }
     if (r.yt && r.yt.length) { startListe(r.yt); return true; }
-    // ingen videoer fra Discogs: åpne YouTube-søket i ny fane
-    try { return !!window.open(reserveUrl, '_blank'); } catch (e) { return false; }
+    return false;
+  };
+  // kort melding nederst på skjermen
+  window.visMelding = (tekst) => {
+    let m = document.getElementById('melding');
+    if (!m) { m = document.createElement('div'); m.id = 'melding'; m.setAttribute('role', 'status'); document.body.appendChild(m); }
+    m.textContent = tekst; m.classList.add('vis');
+    clearTimeout(m._t); m._t = setTimeout(() => m.classList.remove('vis'), 3500);
   };
   window.stoppAv = () => {
     try { if (spiller && spillerKlar) spiller.stopVideo(); } catch (e) {}
@@ -1661,8 +1676,9 @@ class Component extends DCLogic {
     // Må skje direkte i trykket, ellers stopper nettleseren det. Uten tillatelse bruker du knappene øverst.
     const r = this.recs && this.recs[i] ? this.recs[i].r : (this.d && this.d.recs[i]);
     if (r && window.spillAv) {
-      // egen nettside: spill i rommets egen YouTube-spiller
-      this.musikkBlokkert = !window.spillAv(r, this.lyttUrl(r));
+      // egen nettside: spill i rommets egen YouTube-spiller. Uten direktelenke skjer ingenting, bare en melding.
+      if (!r.ytListe && !(r.yt && r.yt.length)) { if (window.visMelding) window.visMelding('«' + r.t + '» finnes ikke på YouTube.'); return; }
+      window.spillAv(r, this.lyttUrl(r));
     } else if (r) {
       try {
         const url = this.lyttUrl(r);
@@ -1811,6 +1827,15 @@ class Component extends DCLogic {
       return Object.assign(base, { loading: true, loadText: st.failed ? 'Fant ikke platedataene.' : 'Rydder i rommet …', cells: [], cellsLong: [], cellsEnd: [], andre: {}, roomBg: T.wallBg, isCorner: false, cornerFloor: '', cornerCeil: '', longTf: '', endTf: '', ticks: [], boxSpines: [], cdSpines: [], rackSpines: [], tabs: [], stack: [], cards: [], margin: { spines: [], label: '' }, front: {}, isBla: false, isKort: false, hasSel: false, card: {}, now: { noCover: false, hasCover: false, a: '' }, nowSleeve: 'display:none;', nyHar: false, nyAntall: '0', nyStabel: [], hots: [], hotLabels: [], fotoNow: { show: false }, detail: { hots: [], now: { show: false } }, pano: { css: '' }, form: {}, artistOptions: [], isWish: false, notWish: true, wishFilters: [], wishItems: [], wishAdd: {}, wishSort: {}, wishCount: '', tt: {}, fly: { show: false }, playing: false, nowText: '', stop: () => { if (window.stoppAv) window.stoppAv(); this.setState({ playing: false }); }, posters: { ape: {}, betty: {} }, sel: {}, moveText: '', hasMoves: false, gOptions: [], pOptions: [], modeBla: '', modeKort: '' });
     }
     this.syncExtra(st.extra || []);
+    // YouTube-lenker lagt inn fra platekortet (ytFix: plateindeks -> lenke) går foran Discogs-videoene
+    if (!this.ytOrig) this.ytOrig = {};
+    const yf = st.ytFix || {};
+    Object.keys(Object.assign({}, this.ytOrig, yf)).forEach((k) => {
+      const r = this.d.recs[k]; if (!r) return;
+      if (!(k in this.ytOrig)) this.ytOrig[k] = { yt: r.yt, ytListe: r.ytListe };
+      if (yf[k]) { const y = this.lesYt(yf[k]); r.yt = y.ids; r.ytListe = y.liste; }
+      else { r.yt = this.ytOrig[k].yt; r.ytListe = this.ytOrig[k].ytListe; }
+    });
     this.curWish = st.wish || this.d.wish || [];
     this.goneMap = st.gone || {};
     const d = this.d, R = this.recs, moved = st.moved || {}, placed = st.placed || {}, q = (st.q || '').trim().toLowerCase();
@@ -2119,6 +2144,21 @@ class Component extends DCLogic {
         },
         gval: String(gi), pval: String(p), play: () => { this.setState({ sel: -1 }); this.play(sel); },
         moveG: (e) => { const to = parseInt(e.target.value, 10), m = Object.assign({}, moved); if (to === r.g) delete m[sel]; else m[sel] = to; this.setState({ moved: m }); },
+        ytVal: (st.ytEdit && st.ytEdit.i === sel) ? st.ytEdit.v : ((st.ytFix || {})[sel] || ''),
+        ytInfo: (() => {
+          const y = this.lesYt((st.ytEdit && st.ytEdit.i === sel) ? st.ytEdit.v : ((st.ytFix || {})[sel] || ''));
+          if (y.liste || y.ids.length) return (y.liste ? 'spilleliste' : y.ids.length + ' video') + ((st.ytFix || {})[sel] ? ' · lagret' : ' · ikke lagret ennå');
+          return r.yt && r.yt.length ? 'Bruker ' + r.yt.length + ' video fra Discogs' : 'Ingen video – lim inn en lenke';
+        })(),
+        setYt: (e) => this.setState({ ytEdit: { i: sel, v: e.target.value } }),
+        saveYt: () => {
+          const v = (this.state.ytEdit && this.state.ytEdit.i === sel ? this.state.ytEdit.v : '').trim(), f = Object.assign({}, this.state.ytFix || {});
+          const y = this.lesYt(v);
+          if (v && !y.liste && !y.ids.length) { if (window.visMelding) window.visMelding('Fant ingen YouTube-video eller spilleliste i lenka.'); return; }
+          if (v) f[sel] = v; else delete f[sel];
+          this.setState({ ytFix: f, ytEdit: null });
+          if (window.visMelding) window.visMelding(v ? 'YouTube-lenka er lagret.' : 'YouTube-lenka er fjernet.');
+        },
         moveP: (e) => { const to = parseInt(e.target.value, 10), m = Object.assign({}, placed); m[sel] = to; this.setState({ placed: m, cont: to, gsel: -1 }); },
       }, this.img(r, 388));
     }

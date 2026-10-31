@@ -51,3 +51,5 @@
 @media (max-width:560px){.sj-fam,.sj-und{grid-template-columns:18px minmax(0,1fr) 40px}.sj-stolpe,.sj-celle{display:none}}
 .spiller.venstre{right:auto;left:max(16px,env(safe-area-inset-left,0px))}
 .sj-andre{padding:14px 6px 4px !important}
+#melding{position:fixed;left:50%;bottom:max(24px,env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);z-index:130;max-width:calc(100vw - 32px);padding:12px 18px;border-radius:8px;background:#211C17;color:#F1E9DF;border:1px solid #FF7A59;box-shadow:0 10px 30px rgba(0,0,0,0.5);font:15px 'Archivo',sans-serif;opacity:0;pointer-events:none;transition:opacity 200ms,transform 200ms}
+#melding.vis{opacity:1;transform:translate(-50%,0)}
