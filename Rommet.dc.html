@@ -117,7 +117,7 @@ body{margin:0}
 <sc-for list="{{cdSpines}}" as="b" hint-placeholder-count="17"><span style="flex: none; {{b.css}}"></span></sc-for>
 </button>
 <div style="position: absolute; left: 192px; top: 120px; width: 60px; height: 110px; border-radius: 2px; {{T.speaker}}"><span style="position: absolute; right: 6px; bottom: 6px; width: 6px; height: 6px; {{T.speakerBadge}}"></span></div>
-<div style="position: absolute; left: 225px; top: 112px; width: 96px; height: 118px; border-radius: 4px 4px 8px 8px; {{T.pot}}"></div>
+<div style="position: absolute; left: 272px; top: 112px; width: 96px; height: 118px; border-radius: 4px 4px 8px 8px; {{T.pot}}"></div>
 <button type="button" onClick="{{pickRack}}" aria-label="Avisstativet med 7- og 10-tommere" style="position: absolute; left: 372px; top: 150px; transform: scale(1.3); transform-origin: 0 100%; width: 92px; height: 80px; padding: 0; border: 0; background: transparent; cursor: pointer; {{sel.rack}}">
 <sc-for list="{{rackSpines}}" as="b" hint-placeholder-count="10"><span style="position: absolute; {{b.css}}"></span></sc-for>
 <span style="position: absolute; left: 4px; top: 22px; width: 84px; height: 40px; border-radius: 4px 4px 0 0; {{T.teak}}"></span>
@@ -142,13 +142,13 @@ body{margin:0}
 </div>
 
 <!-- monsteraen, over potta og tigeren -->
-<svg width="330" height="210" viewBox="0 0 330 210" aria-hidden="true" style="position: absolute; left: 123px; top: -58px; transform: scale(1.6); transform-origin: 150px 170px; overflow: visible; pointer-events: none">
+<svg width="330" height="210" viewBox="0 0 330 210" aria-hidden="true" style="position: absolute; left: 170px; top: -58px; transform: scale(1.6); transform-origin: 150px 170px; overflow: visible; pointer-events: none">
 <defs><path id="mleaf" d="M0 -4 C-8 -2 -20 0 -30 -8 C-44 -20 -44 -46 -26 -62 C-16 -71 -6 -74 0 -76 C6 -74 16 -71 26 -62 C44 -46 44 -20 30 -8 C20 0 8 -2 0 -4 Z"></path><path id="mslits" d="M-4 -22 L-30 -30 M-4 -38 L-34 -48 M-3 -54 L-22 -64 M4 -24 L32 -28 M4 -40 L34 -46 M3 -56 L24 -66"></path></defs>
 <g fill="none" stroke-width="2" style="{{T.stemCss}}">
-<path d="M150 170 C140 120 110 90 80 70"></path><path d="M152 170 C160 120 190 70 220 40"></path><path d="M150 170 C130 130 70 150 40 160"></path><path d="M154 170 C190 140 240 120 290 110"></path><path d="M151 170 C150 110 160 60 170 20"></path>
+<path d="M150 170 C140 120 110 90 80 70"></path><path d="M152 170 C160 120 190 70 220 40"></path><path d="M154 170 C185 135 225 110 268 92"></path><path d="M151 170 C150 110 160 60 170 20"></path><path d="M152 170 C175 150 205 140 236 132"></path>
 </g>
-<g style="{{T.leafCss}}"><g transform="translate(80 70) rotate(-40) scale(0.95)"><use href="#mleaf"></use></g><g transform="translate(220 40) rotate(30) scale(1)"><use href="#mleaf"></use></g><g transform="translate(40 160) rotate(-95) scale(0.85)"><use href="#mleaf"></use></g><g transform="translate(290 110) rotate(75) scale(0.9)"><use href="#mleaf"></use></g><g transform="translate(170 20) rotate(5) scale(0.8)"><use href="#mleaf"></use></g><g transform="translate(255 175) rotate(150) scale(0.75)"><use href="#mleaf"></use></g></g>
-<g fill="none" stroke-width="3.5" stroke-linecap="round" style="{{T.slitCss}}"><g transform="translate(80 70) rotate(-40) scale(0.95)"><use href="#mslits"></use></g><g transform="translate(220 40) rotate(30) scale(1)"><use href="#mslits"></use></g><g transform="translate(40 160) rotate(-95) scale(0.85)"><use href="#mslits"></use></g><g transform="translate(290 110) rotate(75) scale(0.9)"><use href="#mslits"></use></g><g transform="translate(170 20) rotate(5) scale(0.8)"><use href="#mslits"></use></g><g transform="translate(255 175) rotate(150) scale(0.75)"><use href="#mslits"></use></g></g>
+<g style="{{T.leafCss}}"><g transform="translate(80 70) rotate(-40) scale(0.95)"><use href="#mleaf"></use></g><g transform="translate(220 40) rotate(30) scale(1)"><use href="#mleaf"></use></g><g transform="translate(268 92) rotate(68) scale(0.85)"><use href="#mleaf"></use></g><g transform="translate(170 20) rotate(5) scale(0.8)"><use href="#mleaf"></use></g><g transform="translate(236 132) rotate(112) scale(0.72)"><use href="#mleaf"></use></g></g>
+<g fill="none" stroke-width="3.5" stroke-linecap="round" style="{{T.slitCss}}"><g transform="translate(80 70) rotate(-40) scale(0.95)"><use href="#mslits"></use></g><g transform="translate(220 40) rotate(30) scale(1)"><use href="#mslits"></use></g><g transform="translate(268 92) rotate(68) scale(0.85)"><use href="#mslits"></use></g><g transform="translate(170 20) rotate(5) scale(0.8)"><use href="#mslits"></use></g><g transform="translate(236 132) rotate(112) scale(0.72)"><use href="#mslits"></use></g></g>
 </svg>
 
 <!-- platespilleren -->
