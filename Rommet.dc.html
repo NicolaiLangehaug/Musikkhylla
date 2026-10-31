@@ -1109,7 +1109,17 @@ class Component extends DCLogic {
       return {
         name: P.name + ': ' + gs.join(', '), label: P.name.replace('Celle ', '') + ' · ' + list.length,
         hit: hits > 0, hits: String(hits),
-        pick: () => this.setState({ panel: true, cont: k, gsel: -1, idx: 0, sel: -1, hl: null, hlNavn: '' }),  // celle åpnes alltid på første plate
+        pick: (e) => {
+          // finn sjangeren under fingeren og åpne den på første artist i sjangeren
+          const el = e && e.target && e.target.closest ? e.target.closest('button') : null;
+          let i = -1;
+          if (el && e.clientX !== undefined && treff.length) {
+            const b = el.getBoundingClientRect(), lx = (e.clientX - b.left) / b.width * P.w - 6;
+            i = (treff.find((r) => lx >= r[0] - 1 && lx <= r[1] + 1) || (lx < treff[0][0] ? treff[0] : treff[treff.length - 1]))[2];
+          }
+          if (i < 0 || k === 10) { this.setState({ panel: true, cont: k, gsel: -1, idx: 0, sel: -1, hl: null, hlNavn: '' }); return; }
+          this.setState({ panel: true, cont: k, gsel: L.g(i), idx: 0, sel: -1, hl: null, hlNavn: '' });
+        },
         css: 'left:' + (P.crate ? P.x - 428 : P.x) + 'px;width:' + P.w + 'px;' + (P.crate ? T.crateFrame : T.cellFrame) + (cont === k && !big ? T.selOutline : ''),
         lcss: 'left:' + ((P.crate ? P.x - 428 : P.x) + 2) + 'px;' + T.cellLabel,
         spines, hlBoxes,
@@ -1380,7 +1390,7 @@ class Component extends DCLogic {
            _ = 0, px = big ? 8.4 : 6.2;
           // skriften krymper til navnet får plass; blir den for liten, brukes kortnavnet (f.eks. «Ambient»)
           const fsMax = big ? 13 : 9.5, fsMin = big ? 7 : 6.5, fsBehov = (t, ww) => (ww - 7) / (t.length * 0.8);
-          rad.push({ k: F.k, name: navn, aria: 'Bla i ' + navn, label: fsBehov(navn, w) >= fsMin ? navn : passer(kortF, w, fsMin * 0.8) ? kortF : navn, pick: open({ cont: F.k, gsel: flere ? -1 : gs[0], idx: 0 }),
+          rad.push({ k: F.k, name: navn, aria: 'Bla i ' + navn, label: fsBehov(navn, w) >= fsMin ? navn : passer(kortF, w, fsMin * 0.8) ? kortF : navn, pick: open({ cont: F.k, gsel: gs[0], idx: 0 }),
             // lyslisten: en tynn, glødende strek i familiens farge (kveldslys), navnet under
             css: 'left:' + xr(F) + 'px;width:' + w + 'px;top:383px;height:' + (big ? 22 : 16) + 'px;border-top:3px solid ' + farge + ';box-shadow:0 -2px 10px -2px ' + farge + ';font-size:' + Math.max(fsMin, Math.min(fsMax, fsBehov(fsBehov(navn, w) >= fsMin ? navn : kortF, w))) + 'px;font-weight:800;color:' + T.mapInk + ';opacity:' + (dim ? 0.25 : 1) + ';' });
           if (!flere || big) return;  // undersjangrene vises først når du har trykket deg inn
