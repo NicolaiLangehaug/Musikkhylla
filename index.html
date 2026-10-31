@@ -486,11 +486,7 @@ body{margin:0}
 </div>
 <div style="position: absolute; left: 40px; right: 40px; bottom: 26px; display: flex; flex-direction: column; gap: 6px">
 <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; {{T.mutedC}}">{{margin.label}}</span>
-<div style="height: 40px; display: flex; align-items: flex-end; gap: 1px; overflow: hidden">
-<sc-for list="{{margin.spines}}" as="m" hint-placeholder-count="0">
-<button type="button" onClick="{{m.pick}}" aria-label="{{m.label}}" style="flex: 1 1 0; min-width: 1px; padding: 0; border: 0; cursor: pointer; {{m.css}}"></button>
-</sc-for>
-</div>
+
 </div>
 </div>
 </sc-if>
@@ -1868,19 +1864,7 @@ class Component extends DCLogic {
       return {
         name: P.name + ': ' + gs.join(', '), label: P.name.replace('Celle ', '') + ' · ' + list.length,
         hit: hits > 0, hits: String(hits),
-        pick: (e) => {
-          // finn plata under fingeren og åpne sjangeren dens, med akkurat den plata fremme
-          const el = e && e.currentTarget && e.currentTarget.getBoundingClientRect ? e.currentTarget : (e && e.target && e.target.closest ? e.target.closest('button') : null);
-          let i = -1;
-          if (el && e.clientX !== undefined && treff.length) {
-            const b = el.getBoundingClientRect(), lx = (e.clientX - b.left) / b.width * P.w - 6;
-            const t = treff.find((r) => lx >= r[0] - 1 && lx <= r[1] + 1) || (lx < treff[0][0] ? treff[0] : treff[treff.length - 1]);
-            i = t[2];
-          }
-          if (i < 0) { this.setState({ panel: true, cont: k, gsel: -1, idx: 0, hl: null, hlNavn: '' }); return; }
-          const gi = L.g(i), gl = R.map((xx) => xx.i).filter((j) => L.g(j) === gi && L.where[j] <= 7).sort(L.cmp);
-          this.setState({ panel: true, cont: k, gsel: gi, idx: Math.max(0, gl.indexOf(i)), sel: -1, hl: null, hlNavn: '' });
-        },
+        pick: () => this.setState({ panel: true, cont: k, gsel: -1, idx: 0, sel: -1, hl: null, hlNavn: '' }),  // celle åpnes alltid på første plate
         css: 'left:' + (P.crate ? P.x - 428 : P.x) + 'px;width:' + P.w + 'px;' + (P.crate ? T.crateFrame : T.cellFrame) + (cont === k && !big ? T.selOutline : ''),
         lcss: 'left:' + ((P.crate ? P.x - 428 : P.x) + 2) + 'px;' + T.cellLabel,
         spines, hlBoxes,
@@ -1977,16 +1961,16 @@ class Component extends DCLogic {
     const fr = fi !== undefined ? d.recs[fi] : null;
     const front = fr ? {
       a: fr.a, t: fr.t, meta: R[fi].meta + (L.where[fi] === 10 ? '' : ' · ' + name(L.g(fi))) + ' · ' + where(fi), pos: (idx + 1) + ' AV ' + list.length + ' · ' + title.toUpperCase(),
-      aplus: fr.r === 'A+', forslag: fr.st === 1 && moved[fi] === undefined && L.where[fi] !== 10, open: set({ sel: fi }), play: () => this.play(fi),
+      aplus: fr.r === 'A+', forslag: false, open: set({ sel: fi }), play: () => this.play(fi),
     } : { a: '', t: list.length ? '' : 'Ingen plater her', meta: '', pos: '', aplus: false, forslag: false };
     const mw = list.length;
     const margin = {
-      label: 'Margen · trykk på en rygg for å bla dit',
+      label: 'Klikk på pilene eller bla i bildene for å navigere',
       spines: list.map((i, j) => ({ label: d.recs[i].a + ' – ' + d.recs[i].t, pick: go(j), css: 'height:' + (j === idx ? 40 : 30 + ((i * 7) % 8)) + 'px;background:' + (j === idx ? T.marginOn : R[i].col) + ';' + (mw > 300 ? '' : 'max-width:14px;') })),
     };
     const cards = mode === 'kort' ? list.map((i) => Object.assign({
       a: d.recs[i].a, t: d.recs[i].t, meta: R[i].meta, label: d.recs[i].a + ' – ' + d.recs[i].t, open: set({ sel: i }),
-      stamp: d.recs[i].r === 'A+' ? 'A+' : d.recs[i].st === 1 ? 'forslag?' : '', stampCss: d.recs[i].r === 'A+' ? T.accentC + 'font-weight:600;' : 'color:#B79A2E;',
+      stamp: d.recs[i].r === 'A+' ? 'A+' : '', stampCss: d.recs[i].r === 'A+' ? T.accentC + 'font-weight:600;' : 'color:#B79A2E;',
     }, this.img(d.recs[i], 64))) : [];
 
     // ---- spiller nå ----
