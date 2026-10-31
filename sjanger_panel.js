@@ -6,7 +6,7 @@
     if (!L) return [];
     const per = G.map(() => ({ n: 0, celler: new Set() }));
     for (let i = 0; i < L.where.length; i++) {
-      if (L.where[i] === 13) continue;
+      if (L.where[i] === 13 || L.where[i] === 10) continue;  // CD-ene har ingen sjanger, bare alfabet
       const g = L.g(i); if (g === undefined || !per[g]) continue;
       per[g].n++; per[g].celler.add(L.where[i]);
     }

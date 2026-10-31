@@ -1211,7 +1211,7 @@ body{margin:0}
     if (!L) return [];
     const per = G.map(() => ({ n: 0, celler: new Set() }));
     for (let i = 0; i < L.where.length; i++) {
-      if (L.where[i] === 13) continue;
+      if (L.where[i] === 13 || L.where[i] === 10) continue;  // CD-ene har ingen sjanger, bare alfabet
       const g = L.g(i); if (g === undefined || !per[g]) continue;
       per[g].n++; per[g].celler.add(L.where[i]);
     }
@@ -1608,7 +1608,8 @@ class Component extends DCLogic {
     });
     const lists = Array.from({ length: 14 }, () => []);
     R.forEach((x, i) => lists[where[i]].push(i));
-    lists.forEach((l) => l.sort((a, b) => (placed[a] !== undefined) - (placed[b] !== undefined) || cmp(a, b)));
+    const alfa = (a, b) => (R[a].key < R[b].key ? -1 : R[a].key > R[b].key ? 1 : 0) || (d.recs[a].y || 0) - (d.recs[b].y || 0);
+    lists.forEach((l, k) => l.sort(k === 10 ? alfa : (a, b) => (placed[a] !== undefined) - (placed[b] !== undefined) || cmp(a, b)));
     return { where, lists, g, cmp };
   }
 
@@ -1876,7 +1877,7 @@ class Component extends DCLogic {
     const gsIn = [];
     (gsel >= 0 ? L.lists.slice(0, 8).filter((l) => l.some((i) => L.g(i) === gsel)).flat() : (L.lists[cont] || [])).forEach((i) => { const gi = L.g(i); if (gsIn.indexOf(gi) < 0) gsIn.push(gi); });
     const tabs = cont === 12 && !q ? [{ name: 'Ønskelista', pick: set({}), css: T.tabOn }] : [{ name: q ? 'Søk · ' + list.length : this.PL[cont].name, pick: set({ gsel: -1, idx: 0 }), css: gsel < 0 ? T.tabOn : T.tabOff }]
-      .concat(q ? [] : (gsel >= 0 ? [gsel] : gsIn).map((gi) => ({ name: name(gi), pick: set({ gsel: gi, idx: 0 }), css: gsel === gi ? T.tabOn : T.tabOff })));
+      .concat(q || cont === 10 ? [] : (gsel >= 0 ? [gsel] : gsIn).map((gi) => ({ name: name(gi), pick: set({ gsel: gi, idx: 0 }), css: gsel === gi ? T.tabOn : T.tabOff })));
     const where = (i) => this.PL[L.where[i]].name;
 
     // ---- ønskelista ----
@@ -1951,8 +1952,8 @@ class Component extends DCLogic {
     const fi = list[idx];
     const fr = fi !== undefined ? d.recs[fi] : null;
     const front = fr ? {
-      a: fr.a, t: fr.t, meta: R[fi].meta + ' · ' + name(L.g(fi)) + ' · ' + where(fi), pos: (idx + 1) + ' AV ' + list.length + ' · ' + title.toUpperCase(),
-      aplus: fr.r === 'A+', forslag: fr.st === 1 && moved[fi] === undefined, open: set({ sel: fi }), play: () => this.play(fi),
+      a: fr.a, t: fr.t, meta: R[fi].meta + (L.where[fi] === 10 ? '' : ' · ' + name(L.g(fi))) + ' · ' + where(fi), pos: (idx + 1) + ' AV ' + list.length + ' · ' + title.toUpperCase(),
+      aplus: fr.r === 'A+', forslag: fr.st === 1 && moved[fi] === undefined && L.where[fi] !== 10, open: set({ sel: fi }), play: () => this.play(fi),
     } : { a: '', t: list.length ? '' : 'Ingen plater her', meta: '', pos: '', aplus: false, forslag: false };
     const mw = list.length;
     const margin = {
