@@ -32,10 +32,10 @@
 .sj-hjelp{margin:8px 0 14px;color:#BFB2A3;font-size:14px}
 .sj-liste,.sj-sub{list-style:none;margin:0;padding:0}
 .sj-liste>li{border-top:1px solid #3A322A;padding:6px 0}
-.sj-fam,.sj-und{width:100%;display:grid;grid-template-columns:18px minmax(0,1fr) 120px 40px minmax(0,130px);align-items:center;gap:10px;padding:8px 6px;border:0;border-radius:4px;background:transparent;color:inherit;cursor:pointer;text-align:left;font:inherit}
+.sj-fam,.sj-und{width:100%;display:grid;grid-template-columns:18px minmax(0,1fr);align-items:center;gap:10px;padding:8px 6px;border:0;border-radius:4px;background:transparent;color:inherit;cursor:pointer;text-align:left;font:inherit}
 .sj-fam:hover,.sj-und:hover{background:#2A241E}
 .sj-fam .sj-navn{font-weight:800;text-transform:uppercase;letter-spacing:0.04em;font-size:15px}
-.sj-und{grid-template-columns:18px minmax(0,1fr) 120px 40px minmax(0,130px);padding:4px 6px}
+.sj-und{grid-template-columns:18px minmax(0,1fr);padding:4px 6px}
 .sj-und::before{content:"";grid-column:1}
 .sj-und .sj-navn{grid-column:2;font-size:14px;color:#E3D8CB}
 .sj-und .sj-tall{grid-column:4}

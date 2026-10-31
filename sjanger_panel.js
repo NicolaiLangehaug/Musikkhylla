@@ -46,16 +46,16 @@
     el.hidden = !SJ.open;
     if (!SJ.open || !komp || !komp.d) return;
     const data = sjData(), tot = data.reduce((s, F) => s + F.n, 0), maks = Math.max(...data.map((F) => F.n));
-    let h = '<div class="sj-kort" role="dialog" aria-modal="true" aria-labelledby="sj-t"><div class="sj-topp"><h2 id="sj-t">Sjangre</h2><span class="sj-mono">' + tot + ' PLATER · ' + data.length + ' FAMILIER</span><button type="button" class="dg-x" data-sj="lukk" aria-label="Lukk">×</button></div>';
+    let h = '<div class="sj-kort" role="dialog" aria-modal="true" aria-labelledby="sj-t"><div class="sj-topp"><h2 id="sj-t">Sjangre</h2><span class="sj-mono"></span><button type="button" class="dg-x" data-sj="lukk" aria-label="Lukk">×</button></div>';
     h += '<p class="sj-hjelp">Velg en familie eller sjanger for å lyse den opp i hylla.</p><ul class="sj-liste">';
     data.forEach((F, fi) => {
       h += '<li><button type="button" class="sj-fam" data-sj-fam="' + fi + '"><span class="sj-prikk" style="background:' + F.col + ';box-shadow:0 0 8px ' + F.col + '"></span><span class="sj-navn">' + hEsc(F.f) + '</span>' +
-        '<span class="sj-stolpe"><span style="width:' + Math.round(F.n / maks * 100) + '%;background:' + F.col + '"></span></span><span class="sj-tall">' + F.n + '</span><span class="sj-celle">celle ' + hEsc(F.celler) + '</span></button>';
+        '</button>';
       if (F.subs.length > 1) {
         h += '<ul class="sj-sub">';
         F.subs.forEach((S, si) => {
           const kort = S.name.indexOf(F.f + '-') === 0 ? S.name.slice(F.f.length + 1) : S.name.indexOf('-') > 0 ? S.name.slice(S.name.indexOf('-') + 1) : S.name;
-          h += '<li><button type="button" class="sj-und" data-sj-sub="' + fi + ':' + si + '"><span class="sj-navn">' + hEsc(kort) + '</span><span class="sj-tall">' + S.n + '</span><span class="sj-celle">celle ' + hEsc(S.celler) + '</span></button></li>';
+          h += '<li><button type="button" class="sj-und" data-sj-sub="' + fi + ':' + si + '"><span class="sj-navn">' + hEsc(kort) + '</span></button></li>';
         });
         h += '</ul>';
       }
@@ -66,7 +66,7 @@
     h += '<li class="sj-andre"><span class="sj-mono">ANDRE STEDER</span></li>';
     ST.forEach(([k, navn]) => {
       const n = (komp.lastL.lists[k] || []).length;
-      h += '<li><button type="button" class="sj-fam" data-sj-sted="' + k + '"><span class="sj-prikk" style="background:#F1E9DF"></span><span class="sj-navn">' + hEsc(navn) + '</span><span class="sj-stolpe"><span style="width:' + Math.round(n / maks * 100) + '%;background:#BFB2A3"></span></span><span class="sj-tall">' + n + '</span><span class="sj-celle">åpne</span></button></li>';
+      h += '<li><button type="button" class="sj-fam" data-sj-sted="' + k + '"><span class="sj-prikk" style="background:#F1E9DF"></span><span class="sj-navn">' + hEsc(navn) + '</span></button></li>';
     });
     h += '</ul></div>';
     el.innerHTML = h;

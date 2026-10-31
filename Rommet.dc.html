@@ -550,7 +550,7 @@ body{margin:0}
 <dl style="margin: 0; display: grid; grid-template-columns: 100px minmax(0, 1fr); column-gap: 12px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 28px">
 <dt style="{{T.mutedC}}">artist</dt><dd style="margin: 0; padding-right: 64px; font-weight: 600">{{card.a}}</dd>
 <dt style="{{T.mutedC}}">tittel</dt><dd style="margin: 0; padding-right: 64px">{{card.t}}</dd>
-<dt style="{{T.mutedC}}">følelse</dt><dd style="margin: 0">{{card.genre}} ({{card.status}})</dd>
+<dt style="{{T.mutedC}}">sjanger</dt><dd style="margin: 0">{{card.genre}}</dd>
 <dt style="{{T.mutedC}}">plass</dt><dd style="margin: 0">{{card.placeLong}}</dd>
 <dt style="{{T.mutedC}}">format</dt><dd style="margin: 0">{{card.fmt}}</dd>
 <dt style="{{T.mutedC}}">utgave</dt><dd style="margin: 0">{{card.y}}</dd>
@@ -1335,9 +1335,9 @@ class Component extends DCLogic {
       card = Object.assign({
         no: String(sel + 1).padStart(4, '0'), place: this.PL[p].name.toUpperCase(), a: r.a, t: r.t,
         placeLong: this.PL[p].name + (placed[sel] !== undefined ? ' (satt av deg)' : ''),
-        genre: d.genres[gi].name, status: moved[sel] !== undefined ? 'flyttet nå' : ['bekreftet', 'forslag', 'uplassert'][r.st],
+        genre: L.where[sel] === 10 ? '–' : d.genres[gi].name,
         fmt: r.fmt || r.s, y: r.y ? String(r.y) + (r.re ? ', reissue/repress' : '') : 'ukjent', lb: r.lb || '–', cat: r.cat || '–', c: r.c || '–',
-        kj: r.kj ? r.kj.trim() : '–', r: r.r || 'ikke satt', aplus: r.r === 'A+', w: this.wishFor(r.a) || '–',
+        kj: r.kj ? r.kj.trim() : '–', r: r.r || '–', aplus: r.r === 'A+', w: this.wishFor(r.a) || '–',
         url: r.url || (r.id ? 'https://www.discogs.com/release/' + r.id : ''), hasUrl: !!(r.url || r.id),
         isNy: !!r.ny, waiting: !!r.ny && !r.homed, canGone: !r.ny,
         goneText: st.goneAsk === sel ? 'Trykk igjen for å fjerne fra samlingen' : 'Fjern fra samlingen (solgt, borte …)',
