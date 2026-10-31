@@ -324,6 +324,30 @@ runtime = r"""
     lagre(komp.state || {});
     if (window.etterTegning) window.etterTegning();
   }
+  // sveip på omslagene i Bla: mot venstre = neste plate, mot høyre = forrige
+  let sv = null, stoppKlikk = false;
+  document.addEventListener('pointerdown', (e) => {
+    const el = e.target.closest && e.target.closest('[data-sveip]');
+    sv = el ? { el, x: e.clientX, y: e.clientY, dx: 0 } : null;
+  });
+  document.addEventListener('pointermove', (e) => {
+    if (!sv) return;
+    sv.dx = e.clientX - sv.x;
+    if (Math.abs(sv.dx) > 8 && Math.abs(sv.dx) > Math.abs(e.clientY - sv.y)) { sv.el.style.transition = 'none'; sv.el.style.transform = 'translateX(' + sv.dx * 0.5 + 'px) rotate(' + sv.dx * 0.02 + 'deg)'; }
+  });
+  const sveipSlutt = (e) => {
+    if (!sv) return;
+    const { el, x, y } = sv, dx = e.clientX - x, dy = e.clientY - y; sv = null;
+    el.style.transition = 'transform 180ms ease-out'; el.style.transform = '';
+    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.3) {
+      stoppKlikk = true; setTimeout(() => { stoppKlikk = false; }, 400);
+      const b = document.querySelector('button[aria-label="' + (dx < 0 ? 'Neste plate' : 'Forrige plate') + '"]');
+      if (b) b.click();
+    }
+  };
+  document.addEventListener('pointerup', sveipSlutt);
+  document.addEventListener('pointercancel', () => { if (sv) { sv.el.style.transform = ''; sv = null; } });
+  document.addEventListener('click', (e) => { if (stoppKlikk && e.target.closest && e.target.closest('[data-sveip]')) { e.stopPropagation(); e.preventDefault(); stoppKlikk = false; } }, true);
   ['click', 'input', 'change', 'dragstart', 'dragover', 'drop'].forEach((ev) => {
     document.addEventListener(ev, (e) => {
       const el = e.target.closest && e.target.closest('[data-on-' + ev + ']');

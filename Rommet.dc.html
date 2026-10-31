@@ -363,7 +363,7 @@ body{margin:0}
 <!-- BLA: én plate fremme, resten står bak -->
 <sc-if value="{{isBla}}" hint-placeholder-val="{{ true }}">
 <div style="flex: 1; min-height: 0; position: relative">
-<div style="position: absolute; left: 40px; top: 46px; width: 420px; height: 330px">
+<div data-sveip="1" style="position: absolute; left: 40px; top: 46px; width: 420px; height: 330px; touch-action: pan-y; user-select: none; -webkit-user-select: none">
 <sc-for list="{{stack}}" as="sk" hint-placeholder-count="6">
 <button type="button" onClick="{{sk.pick}}" aria-label="{{sk.label}}" style="position: absolute; padding: 0; border: 0; overflow: hidden; cursor: pointer; {{sk.css}}">
 <sc-if value="{{sk.hasCover}}" hint-placeholder-val="{{ false }}"><img src="{{sk.src}}" alt="" style="position: absolute; max-width: none; pointer-events: none; {{sk.imgCss}} {{T.coverImg}}"></sc-if>
