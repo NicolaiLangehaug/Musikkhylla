@@ -1083,10 +1083,6 @@
  },
  "wish": [
   {
-   "a": "Angora Static",
-   "tags": "Mer"
-  },
-  {
    "a": "Aera",
    "tags": "Mer"
   },
@@ -1100,6 +1096,10 @@
   },
   {
    "a": "Birth Control",
+   "tags": "Mer"
+  },
+  {
+   "a": "Angora Static",
    "tags": "Mer"
   },
   {
