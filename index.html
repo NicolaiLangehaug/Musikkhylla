@@ -1320,7 +1320,11 @@ body{margin:0}
   }
   function sjMarker(gs, navn) {
     SJ.open = false; tegnSJ();
-    komp.setState({ hl: gs, hlNavn: navn, panel: false, sel: -1, q: '' });
+    // lys opp sjangeren og åpne platevisningen på første artist i første celle der den står
+    const L0 = komp.lastL; let k0 = -1;
+    if (L0) for (let k = 0; k <= 7 && k0 < 0; k++) if ((L0.lists[k] || []).some((i) => L0.g(i) === gs[0])) k0 = k;
+    if (k0 >= 0) komp.setState({ hl: gs, hlNavn: navn, panel: true, cont: k0, gsel: gs[0], idx: 0, sel: -1, q: '' });
+    else komp.setState({ hl: gs, hlNavn: navn, panel: false, sel: -1, q: '' });
     // rull hylla dit sjangeren står
     setTimeout(() => {
       const el = document.getElementById('romboks'), L = komp.lastL, g = komp.turnGeo;
