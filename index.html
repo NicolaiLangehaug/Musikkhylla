@@ -293,7 +293,15 @@ body{margin:0}
 </sc-for>
 <sc-for list="{{genreRowL}}" as="gr" hint-placeholder-count="0"><button type="button" onClick="{{gr.pick}}" aria-label="{{gr.aria}}" title="{{gr.name}}" style="position: absolute; padding: 3px 3px 0; box-sizing: border-box; border: 0; background: transparent; cursor: pointer; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; text-align: left; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.04em; text-transform: uppercase; line-height: 11px; {{gr.css}}">{{gr.label}}</button></sc-for>
 <div style="position: absolute; left: 602px; top: 230px; width: 100px; height: 150px; box-sizing: border-box; {{T.cellFrame}}">
-<span style="position: absolute; left: 6px; right: 6px; top: 20px; height: 20px; {{T.sony}}"></span>
+<!-- CD-spilleren: skuff, display og knapper; skuffen går ut når en CD settes på -->
+<button type="button" onClick="{{pickNow}}" aria-label="CD-spilleren" style="position: absolute; left: 2px; right: 2px; top: 12px; height: 42px; padding: 0; border: 0; background: transparent; cursor: pointer">
+<span style="position: absolute; left: 6px; top: 28px; width: 44px; height: 4px; border-radius: 0 0 2px 2px; background: linear-gradient(#5A5A5A, #2C2C2C); transform-origin: 50% 0; transition: transform 350ms ease-in-out; {{cdp.tray}}"></span>
+<span style="position: absolute; left: 0; right: 0; top: 4px; height: 26px; border-radius: 2px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.08); {{T.sony}}"></span>
+<span style="position: absolute; left: 6px; top: 12px; width: 44px; height: 3px; border-radius: 1px; background: #050505; box-shadow: 0 1px 0 rgba(255,255,255,0.08)"></span>
+<span style="position: absolute; left: 6px; top: 20px; font-family: 'IBM Plex Mono', monospace; font-size: 5px; letter-spacing: 0.12em; color: rgba(255,255,255,0.45); line-height: 6px">COMPACT DISC</span>
+<span style="position: absolute; right: 6px; top: 9px; width: 28px; height: 10px; border-radius: 1px; box-sizing: border-box; padding-left: 3px; display: flex; align-items: center; font-family: 'IBM Plex Mono', monospace; font-size: 6px; line-height: 6px; overflow: hidden; transition: background 300ms, box-shadow 300ms; {{cdp.disp}}">{{cdp.txt}}</span>
+<span style="position: absolute; right: 26px; top: 22px; width: 4px; height: 4px; border-radius: 9999px; background: #6B6B6B"></span><span style="position: absolute; right: 18px; top: 22px; width: 4px; height: 4px; border-radius: 9999px; background: #6B6B6B"></span><span style="position: absolute; right: 8px; top: 22px; width: 6px; height: 4px; border-radius: 1px; {{cdp.led}}"></span>
+</button>
 <span style="position: absolute; left: 0; right: 0; top: 70px; height: 6px; {{T.shelfBoard}}"></span>
 <span style="position: absolute; left: 4px; right: 4px; bottom: 4px; height: 56px; {{T.yamaha}}"></span>
 <span style="position: absolute; right: 12px; bottom: 22px; width: 16px; height: 16px; border-radius: 9999px; {{T.knob}}"></span>
@@ -376,7 +384,7 @@ body{margin:0}
 <div style="position: absolute; left: 32px; top: 300px; width: 1302px; height: 430px; pointer-events: none; {{flyTf}}">
 <!-- plata på vei fra cellen til platespilleren og «spiller nå»-hylla -->
 <sc-if value="{{fly.show}}" hint-placeholder-val="{{ false }}">
-<div style="position: absolute; z-index: 30; border-radius: 9999px; pointer-events: none; background: repeating-radial-gradient(circle, #0E0E0E 0 2px, #222 2px 3px); {{fly.disc}}"><span style="position: absolute; left: 33%; top: 33%; width: 34%; height: 34%; border-radius: 9999px; {{tt.label}}"></span></div>
+<div style="position: absolute; z-index: 30; border-radius: 9999px; pointer-events: none; background: repeating-radial-gradient(circle, #0E0E0E 0 2px, #222 2px 3px); {{fly.disc}}"><span style="position: absolute; left: 33%; top: 33%; width: 34%; height: 34%; border-radius: 9999px; {{tt.label}} {{fly.hub}}"></span></div>
 <div style="position: absolute; z-index: 31; overflow: hidden; pointer-events: none; box-shadow: 0 10px 24px rgba(0,0,0,0.45); {{fly.cover}} {{T.coverWrap}}">
 <sc-if value="{{fly.hasCover}}" hint-placeholder-val="{{ false }}"><img loading="lazy" decoding="async" src="{{fly.src}}" alt="" style="position: absolute; max-width: none; {{fly.imgCss}} {{T.coverImg}}"></sc-if>
 </div>
@@ -487,7 +495,7 @@ body{margin:0}
 <button type="button" onClick="{{prev}}" aria-label="Forrige plate" style="width: 48px; height: 48px; border-radius: 4px; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; {{T.btn}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg></button>
 <button type="button" onClick="{{next}}" aria-label="Neste plate" style="width: 48px; height: 48px; border-radius: 4px; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; {{T.btn}}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg></button>
 <button type="button" onClick="{{front.open}}" style="height: 48px; padding: 0 16px; border-radius: 4px; background: transparent; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 15px; {{T.btn}}">Åpne kortet</button>
-<button type="button" onClick="{{front.play}}" style="height: 48px; padding: 0 16px; border-radius: 4px; border: 0; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 15px; font-weight: 700; {{T.primary}}">Sett på platespilleren</button>
+<button type="button" onClick="{{front.play}}" style="height: 48px; padding: 0 16px; border-radius: 4px; border: 0; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 15px; font-weight: 700; {{T.primary}}">{{front.playLabel}}</button>
 </div>
 </div>
 <div style="position: absolute; left: 40px; right: 40px; bottom: 26px; display: flex; flex-direction: column; gap: 6px">
@@ -647,7 +655,7 @@ body{margin:0}
 <sc-if value="{{card.hasCover}}" hint-placeholder-val="{{ false }}"><img loading="lazy" decoding="async" src="{{card.src}}" alt="Omslaget til {{card.t}}" style="position: absolute; max-width: none; {{card.imgCss}} {{T.coverImg}}"></sc-if>
 <sc-if value="{{card.noCover}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; left: 18px; right: 18px; top: 18px; font-family: 'IBM Plex Mono', monospace; font-size: 15px; line-height: 20px; {{T.textC}}">{{card.a}} – {{card.t}}</span></sc-if>
 </div>
-<button type="button" onClick="{{card.play}}" style="flex: none; height: 48px; border-radius: 4px; border: 0; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 15px; font-weight: 700; {{T.primary}}">Sett på platespilleren</button>
+<button type="button" onClick="{{card.play}}" style="flex: none; height: 48px; border-radius: 4px; border: 0; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 15px; font-weight: 700; {{T.primary}}">{{card.playLabel}}</button>
 <div style="position: relative; box-sizing: border-box; padding: 4px 20px 20px; border-radius: 3px; {{T.ruled}}">
 <sc-if value="{{card.aplus}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; right: 18px; top: 14px; width: 60px; height: 60px; box-sizing: border-box; border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 18px; font-weight: 600; transform: rotate(-14deg); {{T.stampRing}}">A+</span></sc-if>
 <dl style="margin: 0; display: grid; grid-template-columns: 100px minmax(0, 1fr); column-gap: 12px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 28px">
@@ -1699,9 +1707,10 @@ class Component extends DCLogic {
     this.timers = [];
     const k = this.lastL ? this.lastL.where[i] : 0, P = this.PL[k] || {};
     const src = P.x !== undefined ? { x: P.x + P.w / 2 - 20, y: 262 } : k === 8 ? { x: 414, y: 140 } : k === 9 ? { x: 58, y: 110 } : { x: 145, y: 160 };
-    this.setState({ fly: { i, phase: 0, src }, playing: false });
-    this.timers.push(setTimeout(() => this.setState({ fly: { i, phase: 1, src } }), 40));
-    this.timers.push(setTimeout(() => this.setState({ fly: { i, phase: 2, src } }), 850));
+    const cd = !!(r && r.s === 'CD');
+    this.setState({ fly: { i, phase: 0, src, cd }, playing: false });
+    this.timers.push(setTimeout(() => this.setState({ fly: { i, phase: 1, src, cd } }), 40));
+    this.timers.push(setTimeout(() => this.setState({ fly: { i, phase: 2, src, cd } }), 850));
     this.timers.push(setTimeout(() => this.setState({ fly: null, np: i, playing: true }), 1650));
   }
 
@@ -1824,7 +1833,7 @@ class Component extends DCLogic {
       viewFlat: (st.view || this.props.visning) === 'corner' ? T.pillOff : T.pillOn, viewCorner: (st.view || this.props.visning) === 'corner' ? T.pillOn : T.pillOff,
     };
     if (!st.ready) {
-      return Object.assign(base, { loading: true, loadText: st.failed ? 'Fant ikke platedataene.' : 'Rydder i rommet …', cells: [], cellsLong: [], cellsEnd: [], andre: {}, roomBg: T.wallBg, isCorner: false, cornerFloor: '', cornerCeil: '', longTf: '', endTf: '', ticks: [], boxSpines: [], cdSpines: [], rackSpines: [], tabs: [], stack: [], cards: [], margin: { spines: [], label: '' }, front: {}, isBla: false, isKort: false, hasSel: false, card: {}, now: { noCover: false, hasCover: false, a: '' }, nowSleeve: 'display:none;', nyHar: false, nyAntall: '0', nyStabel: [], hots: [], hotLabels: [], fotoNow: { show: false }, detail: { hots: [], now: { show: false } }, pano: { css: '' }, form: {}, artistOptions: [], isWish: false, notWish: true, wishFilters: [], wishItems: [], wishAdd: {}, wishSort: {}, wishCount: '', tt: {}, fly: { show: false }, playing: false, nowText: '', stop: () => { if (window.stoppAv) window.stoppAv(); this.setState({ playing: false }); }, posters: { ape: {}, betty: {} }, sel: {}, moveText: '', hasMoves: false, gOptions: [], pOptions: [], modeBla: '', modeKort: '' });
+      return Object.assign(base, { loading: true, loadText: st.failed ? 'Fant ikke platedataene.' : 'Rydder i rommet …', cells: [], cellsLong: [], cellsEnd: [], andre: {}, roomBg: T.wallBg, isCorner: false, cornerFloor: '', cornerCeil: '', longTf: '', endTf: '', ticks: [], boxSpines: [], cdSpines: [], rackSpines: [], tabs: [], stack: [], cards: [], margin: { spines: [], label: '' }, front: {}, isBla: false, isKort: false, hasSel: false, card: {}, now: { noCover: false, hasCover: false, a: '' }, nowSleeve: 'display:none;', nyHar: false, nyAntall: '0', nyStabel: [], hots: [], hotLabels: [], fotoNow: { show: false }, detail: { hots: [], now: { show: false } }, pano: { css: '' }, form: {}, artistOptions: [], isWish: false, notWish: true, wishFilters: [], wishItems: [], wishAdd: {}, wishSort: {}, wishCount: '', tt: {}, cdp: {}, fly: { show: false }, playing: false, nowText: '', stop: () => { if (window.stoppAv) window.stoppAv(); this.setState({ playing: false }); }, posters: { ape: {}, betty: {} }, sel: {}, moveText: '', hasMoves: false, gOptions: [], pOptions: [], modeBla: '', modeKort: '' });
     }
     this.syncExtra(st.extra || []);
     // YouTube-lenker lagt inn fra platekortet går foran Discogs-videoene.
@@ -2004,7 +2013,7 @@ class Component extends DCLogic {
     const fr = fi !== undefined ? d.recs[fi] : null;
     const front = fr ? {
       a: fr.a, t: fr.t, meta: R[fi].meta + (L.where[fi] === 10 ? '' : ' · ' + name(L.g(fi))) + ' · ' + where(fi), pos: (idx + 1) + ' AV ' + list.length + ' · ' + title.toUpperCase(),
-      aplus: fr.r === 'A+', forslag: false, open: set({ sel: fi }), play: () => this.play(fi),
+      aplus: fr.r === 'A+', forslag: false, open: set({ sel: fi }), play: () => this.play(fi), playLabel: fr.s === 'CD' ? 'Sett i CD-spilleren' : 'Sett på platespilleren',
     } : { a: '', t: list.length ? '' : 'Ingen plater her', meta: '', pos: '', aplus: false, forslag: false };
     const mw = list.length;
     const margin = {
@@ -2019,6 +2028,7 @@ class Component extends DCLogic {
     // ---- spiller nå ----
     const np = st.np === undefined ? -1 : st.np;
     const npOk = np >= 0 && np < d.recs.length;
+    const cdNaa = npOk && d.recs[np].s === 'CD';
     // foto: cellene tegnet som flater over bildet (koordinater i originalbildet, 2576 px bredt)
     const K = 1366 / 2576, OY = 65;
     const HOT = [
@@ -2098,8 +2108,10 @@ class Component extends DCLogic {
     if (st.fly) {
       const F = st.fly, r = d.recs[F.i];
       // omslaget er alltid 80 px og skaleres, så bildet ikke hopper under animasjonen
-      const c = F.phase === 0 ? [F.src.x, F.src.y, 0.5] : F.phase === 1 ? [647, -40, 0.95] : [1393, -40, 1.15];
-      const dk = F.phase === 0 ? 'translate(' + (F.src.x + 2) + 'px,' + (F.src.y + 2) + 'px) scale(0.36)' : F.phase === 1 ? 'translate(694px,-34px) scale(0.7)' : 'translate(652px,180px) scale(1.25,0.35)';
+      const c = F.cd ? (F.phase === 0 ? [F.src.x, F.src.y, 0.5] : F.phase === 1 ? [708, 226, 0.55] : [1393, -40, 1.15])
+        : F.phase === 0 ? [F.src.x, F.src.y, 0.5] : F.phase === 1 ? [647, -40, 0.95] : [1393, -40, 1.15];
+      const dk = F.cd ? (F.phase === 0 ? 'translate(' + (F.src.x + 2) + 'px,' + (F.src.y + 2) + 'px) scale(0.3)' : F.phase === 1 ? 'translate(618px,232px) scale(0.4)' : 'translate(619px,281px) scale(0.38,0.05)')
+        : F.phase === 0 ? 'translate(' + (F.src.x + 2) + 'px,' + (F.src.y + 2) + 'px) scale(0.36)' : F.phase === 1 ? 'translate(694px,-34px) scale(0.7)' : 'translate(652px,180px) scale(1.25,0.35)';
       const tr = F.phase ? 'transition:transform 750ms cubic-bezier(.2,.8,.2,1);' : '';
       let dkCss = dk;
       if (corner) {
@@ -2112,7 +2124,9 @@ class Component extends DCLogic {
       fly = Object.assign({
         show: true,
         cover: 'left:0;top:0;width:80px;height:80px;transform-origin:0 0;transform:translate(' + c[0] + 'px,' + c[1] + 'px) scale(' + c[2] + ');' + tr,
-        disc: 'left:0;top:0;width:100px;height:100px;transform-origin:0 0;transform:' + dkCss + ';' + tr,
+        disc: 'left:0;top:0;width:100px;height:100px;transform-origin:0 0;transform:' + dkCss + ';' + tr
+          + (F.cd ? 'background:radial-gradient(circle, transparent 0 7%, rgba(255,255,255,0.55) 7% 9%, transparent 9% 16%, rgba(0,0,0,0) 16%), conic-gradient(from 20deg, #D9DDE3, #F4F6F8, #B9C7E8, #E9D2F0, #F7F1C9, #CDE9DA, #D9DDE3, #F4F6F8, #C8D0DD, #D9DDE3);box-shadow:0 0 0 1px rgba(0,0,0,0.25);' + (F.phase === 2 ? 'opacity:0.85;' : '') : ''),
+        hub: F.cd ? 'background:rgba(255,255,255,0.18);box-shadow:inset 0 0 0 1px rgba(255,255,255,0.5);' : '',
       }, this.img(r, 80));
     }
 
@@ -2145,7 +2159,7 @@ class Component extends DCLogic {
           const clean = (m) => { const o = {}; Object.keys(m || {}).forEach((k) => { if (+k < this.base) o[k] = m[k]; }); return o; };
           this.setState({ extra: ex, sel: -1, moved: clean(this.state.moved), placed: clean(this.state.placed), np: this.state.np >= this.base ? -1 : this.state.np });
         },
-        gval: String(gi), pval: String(p), play: () => { this.setState({ sel: -1 }); this.play(sel); },
+        gval: String(gi), pval: String(p), play: () => { this.setState({ sel: -1 }); this.play(sel); }, playLabel: r.s === 'CD' ? 'Sett i CD-spilleren' : 'Sett på platespilleren',
         moveG: (e) => { const to = parseInt(e.target.value, 10), m = Object.assign({}, moved); if (to === r.g) delete m[sel]; else m[sel] = to; this.setState({ moved: m }); },
         ytVal: (st.ytEdit && st.ytEdit.i === sel) ? st.ytEdit.v : ((st.ytFix || {})[this.ytKey(sel)] || ''),
         ytInfo: (() => {
@@ -2260,9 +2274,15 @@ class Component extends DCLogic {
       listenSp: npOk ? 'https://open.spotify.com/search/' + encodeURIComponent(d.recs[np].a + ' ' + d.recs[np].t) + '/albums' : '',
       listenYt: npOk && d.recs[np].yt && d.recs[np].yt.length ? this.lyttUrl(d.recs[np]) : npOk ? 'https://www.youtube.com/results?search_query=' + encodeURIComponent(d.recs[np].a + ' ' + d.recs[np].t + ' full album') : '',
       tt: {
-        label: 'background:' + (npOk ? R[np].col : '#C4532F') + ';',
-        disc: st.playing ? 'animation:spinn 1.8s linear infinite;' : '',
-        arm: st.playing ? 'transform:rotate(32deg);' : 'transform:rotate(-4deg);',
+        label: 'background:' + (npOk && !cdNaa ? R[np].col : '#C4532F') + ';',
+        disc: st.playing && !cdNaa ? 'animation:spinn 1.8s linear infinite;' : '',
+        arm: st.playing && !cdNaa ? 'transform:rotate(32deg);' : 'transform:rotate(-4deg);',
+      },
+      cdp: {
+        tray: st.fly && st.fly.cd && st.fly.phase >= 1 ? 'transform:translateY(5px) scaleY(2.6);' : 'transform:none;',
+        disp: st.playing && cdNaa ? 'background:#0E2418;color:#8CFFC0;box-shadow:0 0 6px rgba(120,255,170,0.55);' : st.fly && st.fly.cd ? 'background:#0E2418;color:#8CFFC0;' : 'background:#0C110E;color:#2B3A31;',
+        txt: st.playing && cdNaa ? '\u25B6 01' : st.fly && st.fly.cd ? 'OPEN' : '',
+        led: st.playing && cdNaa ? 'background:#8CFFC0;box-shadow:0 0 4px #8CFFC0;' : 'background:#3A3A3A;',
       },
       moveText: nm ? nm + (nm === 1 ? ' endring' : ' endringer') : '', hasMoves: nm > 0,
       hasSel: sel >= 0, card,
