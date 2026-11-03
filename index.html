@@ -229,7 +229,7 @@ body{margin:0}
 <div style="position: absolute; left: 32px; top: 300px; width: 1308px; height: 430px">
 
 <!-- lysbryter -->
-<button type="button" onClick="{{toggleAar}}" aria-label="{{bryter.aria}}" title="{{bryter.aria}}" aria-pressed="{{bryter.pressed}}" style="position: absolute; left: 58px; top: 14px; width: 70px; height: 50px; padding: 0; border: 0; background: transparent; cursor: pointer">
+<button type="button" onClick="{{toggleAar}}" aria-label="{{bryter.aria}}" title="{{bryter.aria}}" aria-pressed="{{bryter.pressed}}" style="position: absolute; left: 150px; top: 14px; width: 70px; height: 50px; padding: 0; border: 0; background: transparent; cursor: pointer">
 <span style="position: absolute; left: 10px; top: 8px; width: 18px; height: 28px; border-radius: 3px; box-sizing: border-box; box-shadow: 0 2px 4px rgba(0,0,0,0.35); {{T.switchCss}}"></span>
 <span style="position: absolute; left: 15px; width: 8px; height: 10px; border-radius: 2px; background: #CFC6B8; box-shadow: inset 0 -2px 0 rgba(0,0,0,0.25); transition: top 180ms ease; {{bryter.vipp}}"></span>
 <span style="position: absolute; left: 32px; top: 15px; padding: 1px 4px; border-radius: 2px; font-family: 'IBM Plex Mono', monospace; font-size: 8px; font-weight: 600; letter-spacing: 0.06em; background: rgba(241,233,223,0.9); color: #2A2016">{{bryter.lapp}}</span>
@@ -596,6 +596,18 @@ body{margin:0}
 <button type="button" onClick="{{wishAdd.save}}" style="height: 40px; padding: 0 14px; border-radius: 4px; border: 0; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 14px; font-weight: 700; {{T.primary}}">Legg til ønske</button>
 </div>
 <sc-if value="{{wishAdd.hasErr}}" hint-placeholder-val="{{ false }}"><p role="alert" style="margin: 0; font-size: 13px; {{T.accentC}}">{{wishAdd.err}}</p></sc-if>
+<sc-if value="{{norge.vis}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding: 12px 14px; border-radius: 6px; border: 1px solid rgba(255,122,89,0.45); background: rgba(255,122,89,0.06)">
+<div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+<b style="font-size: 14px">Til salgs fra Norge</b>
+<span style="font-size: 13px; line-height: 18px; {{T.mutedC}}">Åpne de norske vinylannonsene, sorter på nyeste, og trykk på bokmerket «Rommet: ønskelista». Det merker annonsene fra artistene på ønskelista. Bokmerket lager du én gang: dra knappen til bokmerkelinja, eller kopier koden og lim den inn som adressen i et nytt bokmerke (iPad).</span>
+<sc-if value="{{norge.hasMsg}}" hint-placeholder-val="{{ false }}"><span role="status" style="font-size: 13px; {{T.accentC}}">{{norge.msg}}</span></sc-if>
+</div>
+<a href="{{norge.url}}" target="_blank" rel="noopener" style="height: 40px; padding: 0 14px; border-radius: 4px; display: flex; align-items: center; text-decoration: none; font-size: 14px; font-weight: 700; {{T.primary}}">Åpne norske vinylannonser</a>
+<a href="{{norge.href}}" onClick="{{norge.klikk}}" title="Dra meg til bokmerkelinja" style="height: 40px; padding: 0 14px; border-radius: 4px; display: flex; align-items: center; text-decoration: none; font-size: 14px; cursor: grab; {{T.btn}}">Rommet: ønskelista</a>
+<button type="button" onClick="{{norge.kopier}}" style="height: 40px; padding: 0 14px; border-radius: 4px; background: transparent; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 14px; {{T.btn}}">Kopier bokmerkekoden</button>
+</div>
+</sc-if>
 <!-- prioritert liste: dra radene, eller bruk pilene -->
 <sc-if value="{{wishSort.isPrio}}" hint-placeholder-val="{{ true }}">
 <p style="margin: 0; font-size: 13px; {{T.mutedC}}">Øverst er det du ønsker deg mest. Dra en rad, eller bruk pilene.</p>
@@ -968,6 +980,7 @@ body{margin:0}
     const b = document.getElementById('spiller'); if (b) b.classList.add('skjult');
   };
   window.ATLAS = [0, 1, 2, 3, 4, 5, 6, 7].map((i) => 'covers/cover' + i + '.jpg');
+  window.NORGE_BM = "(function () {\n  var W = __W__;\n  function n(s) { return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\\s*\\(\\d+\\)\\s*/g, ' ').replace(/\\*/g, '').replace(/^the\\s+/, '').replace(/[^a-z0-9]+/g, ' ').trim(); }\n  var A = {}; W.forEach(function (w) { A[n(w.a)] = w; });\n  var gammel = document.getElementById('rommet-norge'); if (gammel) gammel.remove();\n  document.querySelectorAll('[data-rommet-treff]').forEach(function (e) { e.style.outline = ''; e.removeAttribute('data-rommet-treff'); });\n  var sett = {}, treff = [], antall = 0;\n  var lenker = Array.prototype.slice.call(document.querySelectorAll('a[href]')).filter(function (a) { return /\\/(sell|shop)\\/item\\/\\d+/.test(a.getAttribute('href')); });\n  lenker.forEach(function (a) {\n    var id = (a.getAttribute('href').match(/item\\/(\\d+)/) || [])[1]; if (!id) return;\n    var kort = a, k = 0;\n    while (kort.parentElement && k < 8 && !/(NOK|kr|\u20ac|\\$|\u00a3)\\s?\\d|\\d\\s?(kr|NOK)/.test(kort.textContent)) { kort = kort.parentElement; k++; }\n    if (!sett[id]) { sett[id] = { kort: kort, tekster: [] }; antall++; }\n    var t = (a.textContent || a.getAttribute('title') || a.getAttribute('aria-label') || '').trim();\n    if (t) sett[id].tekster.push(t);\n  });\n  Object.keys(sett).forEach(function (id) {\n    var s = sett[id], tittel = '', w = null;\n    var kandidater = s.tekster.concat([(s.kort.textContent || '').trim().split('\\n')[0]]);\n    for (var i = 0; i < kandidater.length && !w; i++) {\n      var t = kandidater[i], del = t.split(/\\s[-\u2013]\\s/);\n      if (del.length < 2) continue;\n      var artister = del[0].split(/\\s*(?:&|,|\\/|\\band\\b|\\bog\\b)\\s*/);\n      artister.push(del[0]);\n      for (var j = 0; j < artister.length; j++) if (A[n(artister[j])]) { w = A[n(artister[j])]; tittel = t; break; }\n    }\n    if (!w) return;\n    var tekst = s.kort.textContent.replace(/\\s+/g, ' ');\n    var pris = (tekst.match(/(NOK|kr)\\s?[\\d\\s.,]+\\d|[\\d\\s.,]*\\d\\s?(kr|NOK)|[\u20ac$\u00a3]\\s?[\\d.,]+\\d/) || [''])[0].trim();\n    var tit = n(tittel.split(/\\s[-\u2013]\\s/).slice(1).join(' - ').replace(/\\(.*$/, ''));\n    var har = w.h.some(function (h) { return h && (tit.indexOf(h) === 0 || h.indexOf(tit) === 0); });\n    s.kort.style.outline = '3px solid #FF7A59'; s.kort.setAttribute('data-rommet-treff', '1');\n    treff.push({ a: w.a, tags: w.tags, t: tittel, pris: pris, har: har, url: 'https://www.discogs.com/sell/item/' + id, kort: s.kort });\n  });\n  var p = document.createElement('div'); p.id = 'rommet-norge';\n  p.setAttribute('style', 'position:fixed;top:12px;right:12px;z-index:2147483647;width:340px;max-height:80vh;overflow:auto;background:#211C17;color:#F1E9DF;border:1px solid #FF7A59;border-radius:8px;padding:12px 14px;font:13px/1.4 system-ui,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.5)');\n  var h = '<div style=\"display:flex;justify-content:space-between;align-items:center;gap:8px\"><b style=\"font-size:14px\">\u00d8nskelista: ' + treff.length + ' treff<\/b><button id=\"rommet-norge-x\" style=\"background:none;border:0;color:#BFB2A3;font-size:20px;cursor:pointer\">\u00d7<\/button><\/div>';\n  h += '<div style=\"color:#BFB2A3;margin:2px 0 8px\">' + antall + ' annonser p\u00e5 denne siden ble sjekket.<\/div>';\n  if (!antall) h += '<p style=\"color:#FF9A7E\">Fant ingen annonser p\u00e5 siden. Har Discogs endret oppsettet? Si fra i chatten.<\/p>';\n  treff.forEach(function (x, i) {\n    h += '<div style=\"border-top:1px solid #3A322A;padding:6px 0\"><a href=\"' + x.url + '\" target=\"_blank\" style=\"color:#F1E9DF;font-weight:600\">' + x.t.replace(/<\/g, '&lt;') + '<\/a><br><span style=\"color:#BFB2A3\">' + (x.pris || '') + ' \u00b7 ' + x.tags.replace(/<\/g, '&lt;') + (x.har ? ' \u00b7 <b style=\"color:#E6D36C\">har du<\/b>' : '') + '<\/span> <button data-i=\"' + i + '\" style=\"margin-left:4px;background:none;border:1px solid #4A4036;color:#F1E9DF;border-radius:4px;cursor:pointer;font-size:11px\">vis<\/button><\/div>';\n  });\n  p.innerHTML = h; document.body.appendChild(p);\n  p.querySelector('#rommet-norge-x').onclick = function () { p.remove(); };\n  p.querySelectorAll('button[data-i]').forEach(function (b) { b.onclick = function () { treff[+b.dataset.i].kort.scrollIntoView({ behavior: 'smooth', block: 'center' }); }; });\n})();\n";
 
   const MAL = new DOMParser().parseFromString('<div id="m">' + document.getElementById('mal').textContent + '</div>', 'text/html').getElementById('m');
   const esc = (v) => String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -1979,6 +1992,25 @@ class Component extends DCLogic {
       else { r.yt = this.ytOrig[k].yt; r.ytListe = this.ytOrig[k].ytListe; }
     });
     this.curWish = st.wish || this.d.wish || [];
+    // bokmerket for norske annonser: ønskeartistene (ikke de som bare skal selges) og titlene du har av dem
+    let norge = { vis: false };
+    if (window.NORGE_BM && st.cont === 12) {
+      const nn = (x) => String(x || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s*\(\d+\)\s*/g, ' ').replace(/\*/g, '').replace(/^the\s+/, '').replace(/[^a-z0-9]+/g, ' ').trim();
+      const W = this.curWish.filter((w) => !/^\s*selge\b/i.test(w.tags || '') || /mer|original|vil ha/i.test(w.tags || '')).map((w) => ({
+        a: w.a, tags: w.tags || '', h: this.d.recs.filter((r) => nn(r.a) === nn(w.a)).map((r) => nn(String(r.t).replace(/\(.*$/, ''))),
+      }));
+      const kode = window.NORGE_BM.replace('__W__', JSON.stringify(W));
+      norge = {
+        vis: true, url: 'https://www.discogs.com/shop/list?formatName=Vinyl&shipsFrom=Norway', href: 'javascript:' + encodeURIComponent(kode),
+        hasMsg: !!st.norgeMsg, msg: st.norgeMsg || '',
+        klikk: (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ norgeMsg: 'Bokmerket virker på Discogs-siden, ikke her. Dra knappen til bokmerkelinja, eller kopier koden.' }); },
+        kopier: () => {
+          const ferdig = (ok) => this.setState({ norgeMsg: ok ? 'Koden er kopiert. Lag et nytt bokmerke og lim den inn som adresse.' : 'Kunne ikke kopiere automatisk. Dra knappen til bokmerkelinja i stedet.' });
+          try { navigator.clipboard.writeText('javascript:' + encodeURIComponent(kode)).then(() => ferdig(true), () => ferdig(false)); } catch (e) { ferdig(false); }
+        },
+      };
+    }
+    this._norge = norge;
     this.goneMap = st.gone || {};
     const d = this.d, R = this.recs, moved = st.moved || {}, placed = st.placed || {}, q = (st.q || '').trim().toLowerCase();
     const cont = st.cont === undefined || st.cont < 0 ? 0 : st.cont;
@@ -2393,7 +2425,7 @@ class Component extends DCLogic {
       cornerFloor: (() => { const a = this.cornerGeo().pt(1366, 430); return 'clip-path:polygon(912px 430px, ' + a[0] + 'px ' + a[1] + 'px, 1366px ' + a[1] + 'px, 1366px 430px);'; })(),
       cornerCeil: (() => { const a = this.cornerGeo().pt(1366, 0); return 'clip-path:polygon(912px 0, 1366px 0, 1366px ' + a[1] + 'px, ' + a[0] + 'px ' + a[1] + 'px);'; })(),
       loading: false, loadText: '', cells, boxSpines, cdSpines: cdFolders, rackSpines, tabs, stack, front, margin, cards,
-      isBla: mode === 'bla' && !(cont === 12 && !q), isKort: mode === 'kort' && !(cont === 12 && !q), isWish: cont === 12 && !q, notWish: !(cont === 12 && !q),
+      isBla: mode === 'bla' && !(cont === 12 && !q), isKort: mode === 'kort' && !(cont === 12 && !q), isWish: cont === 12 && !q, norge: this._norge || { vis: false }, notWish: !(cont === 12 && !q),
       wishFilters, wishItems, wishAdd, wishSort, wishCount: String(wishes.length), modeBla: mode === 'bla' ? T.pillOn : T.pillOff, modeKort: mode === 'kort' ? T.pillOn : T.pillOff,
       prev: go(idx - 1), next: go(idx + 1),
       sel: { boxes: cont === 9 ? T.selOutline : '', cd: cont === 10 ? T.selOutline : '', rack: cont === 8 ? T.selOutline : '', ny: cont === 11 ? T.selOutline : '', wish: cont === 12 ? T.selOutline : '' },
