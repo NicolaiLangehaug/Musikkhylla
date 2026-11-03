@@ -1692,7 +1692,7 @@ class Component extends DCLogic {
       box: BOXES.some((b) => r.a === b[0] && r.t.indexOf(b[1]) === 0),
       th: 1 + 0.55 * (Math.min(r.n, 4) - 1),
       col: r.sc || '#6E6A62',
-      meta: (r.y || '–') + ' · ' + (r.s === 'CD' ? 'CD' : (r.n > 1 ? r.n + '×' : '') + r.s) + (r.re ? ' · re' : ''),
+      meta: (r.y || '–') + ' · ' + (r.s === 'CD' ? 'CD' : (r.n > 1 ? r.n + '×' : '') + r.s),
     });
     this.recs = d.recs.map(this.mk);
     this.baseRecs = d.recs.slice();
