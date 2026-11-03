@@ -399,12 +399,12 @@ body{margin:0}
 </div>
 
 <!-- ønskelista: en lapp på kortveggen -->
-<button type="button" onClick="{{pickWish}}" aria-label="Ønskelista, {{wishCount}} artister" style="position: absolute; left: 898px; top: 66px; transform: scale(1.3); transform-origin: 0 0; width: 60px; height: 76px; padding: 7px 6px; box-sizing: border-box; border: 0; cursor: pointer; text-align: left; display: flex; flex-direction: column; gap: 4px; transform: rotate(-4deg); background: #F4EEE2; box-shadow: 0 3px 8px rgba(0,0,0,0.35); {{sel.wish}}">
+<sc-if value="{{visOnsker}}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{pickWish}}" aria-label="Ønskelista, {{wishCount}} artister" style="position: absolute; left: 898px; top: 66px; transform: scale(1.3); transform-origin: 0 0; width: 60px; height: 76px; padding: 7px 6px; box-sizing: border-box; border: 0; cursor: pointer; text-align: left; display: flex; flex-direction: column; gap: 4px; transform: rotate(-4deg); background: #F4EEE2; box-shadow: 0 3px 8px rgba(0,0,0,0.35); {{sel.wish}}">
 <span style="position: absolute; left: 25px; top: -4px; width: 10px; height: 10px; border-radius: 9999px; background: #E8692E"></span>
 <span style="font-family: 'IBM Plex Mono', monospace; font-size: 8px; font-weight: 600; letter-spacing: 0.06em; color: #2A2016">ØNSKER</span>
 <span style="height: 1px; background: #2A201640"></span><span style="height: 1px; background: #2A201640"></span><span style="height: 1px; background: #2A201640"></span><span style="height: 1px; background: #2A201640"></span>
 
-</button>
+</button></sc-if>
 
 <!-- nye plater, lent mot stolen til de får plass -->
 <sc-if value="{{nyHar}}" hint-placeholder-val="{{ false }}">
@@ -466,9 +466,9 @@ body{margin:0}
 <sc-if value="{{fotoNow.show}}" hint-placeholder-val="{{ false }}">
 <div style="position: absolute; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.45); {{fotoNow.css}} {{T.coverWrap}}"><img loading="lazy" decoding="async" src="{{fotoNow.src}}" alt="" style="position: absolute; max-width: none; {{fotoNow.imgCss}}"></div>
 </sc-if>
-<button type="button" onClick="{{pickWish}}" aria-label="Ønskelista, {{wishCount}} artister" style="position: absolute; left: 1046px; top: 96px; width: 46px; height: 58px; padding: 5px; box-sizing: border-box; border: 0; cursor: pointer; text-align: left; display: flex; flex-direction: column; gap: 3px; transform: rotate(-4deg); background: #F4EEE2; box-shadow: 0 3px 8px rgba(0,0,0,0.45); {{sel.wish}}">
+<sc-if value="{{visOnsker}}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{pickWish}}" aria-label="Ønskelista, {{wishCount}} artister" style="position: absolute; left: 1046px; top: 96px; width: 46px; height: 58px; padding: 5px; box-sizing: border-box; border: 0; cursor: pointer; text-align: left; display: flex; flex-direction: column; gap: 3px; transform: rotate(-4deg); background: #F4EEE2; box-shadow: 0 3px 8px rgba(0,0,0,0.45); {{sel.wish}}">
 <span style="font-family: 'IBM Plex Mono', monospace; font-size: 7px; font-weight: 600; color: #2A2016">ØNSKER</span><span style="height: 1px; background: #2A201640"></span><span style="height: 1px; background: #2A201640"></span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 8px; color: #2A2016">{{wishCount}}</span>
-</button>
+</button></sc-if>
 </div>
 <!-- detaljbildet av cellen du trykket på -->
 <div style="position: absolute; left: 0; top: 0; width: 1366px; height: 550px; overflow: hidden; background: #14110E; transition: opacity 400ms ease-in-out 120ms; {{detail.css}}">
@@ -587,6 +587,7 @@ body{margin:0}
 <button type="button" onClick="{{wishSort.prio}}" style="height: 34px; padding: 0 12px; border-radius: 9999px; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 13px; {{wishSort.prioCss}}">Prioritet</button>
 <button type="button" onClick="{{wishSort.az}}" style="height: 34px; padding: 0 12px; border-radius: 9999px; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 13px; {{wishSort.azCss}}">A–Å</button>
 </div>
+<sc-if value="{{norgeBryter.vis}}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{norgeBryter.klikk}}" aria-pressed="{{norgeBryter.pressed}}" title="Vis bare ønsker som er til salgs fra Norge" style="height: 34px; padding: 0 12px; margin-left: 12px; border-radius: 9999px; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 13px; {{norgeBryter.css}}">{{norgeBryter.tekst}} <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; opacity: 0.7">{{norgeBryter.n}}</span></button></sc-if>
 <label style="display: flex; align-items: center; gap: 6px; height: 34px; padding: 0 10px; margin-left: 8px; border-radius: 9999px; box-sizing: border-box; {{T.inputBox}}">
 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
 <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Søk i ønskelista</span>
@@ -610,6 +611,8 @@ body{margin:0}
 <div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 4px">
 <b style="font-size: 14px">Til salgs fra Norge</b>
 <span style="font-size: 13px; line-height: 18px; {{T.mutedC}}">Bokmerket «Rommet: ønskelista» lager du én gang: dra knappen til bokmerkelinja (Ctrl+Shift+B viser den), eller kopier koden og lim den inn som adressen i et nytt bokmerke. Trykk bokmerket for å åpne de norske vinylannonsene, og trykk igjen der for å se hvilke som er fra artistene på ønskelista.</span>
+<sc-if value="{{norge.hasStatus}}" hint-placeholder-val="{{ false }}"><span style="font-size: 13px; font-weight: 600">{{norge.status}}</span></sc-if>
+<sc-if value="{{norge.hasPaaminn}}" hint-placeholder-val="{{ false }}"><span style="font-size: 13px; {{T.accentC}}">{{norge.paaminn}}</span></sc-if>
 <sc-if value="{{norge.hasMsg}}" hint-placeholder-val="{{ false }}"><span role="status" style="font-size: 13px; {{T.accentC}}">{{norge.msg}}</span></sc-if>
 </div>
 <a href="{{norge.url}}" target="_blank" rel="noopener" style="height: 40px; padding: 0 14px; border-radius: 4px; display: flex; align-items: center; text-decoration: none; font-size: 14px; font-weight: 700; {{T.primary}}">Åpne norske vinylannonser</a>
@@ -623,18 +626,25 @@ body{margin:0}
 <p style="margin: 0; font-size: 13px; {{T.mutedC}}">Øverst er det du ønsker deg mest. Dra en rad, eller bruk pilene.</p>
 <ol style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px">
 <sc-for list="{{wishItems}}" as="wi" hint-placeholder-count="8">
-<li draggable="true" onDragStart="{{wi.dragStart}}" onDragOver="{{wi.dragOver}}" onDrop="{{wi.drop}}" style="display: flex; align-items: center; gap: 14px; padding: 8px 12px; border-radius: 3px; cursor: grab; {{T.indexCard}} {{wi.rowCss}}">
+<li draggable="true" onDragStart="{{wi.dragStart}}" onDragOver="{{wi.dragOver}}" onDrop="{{wi.drop}}" style="display: flex; flex-direction: column; gap: 8px; padding: 8px 12px; border-radius: 3px; cursor: grab; {{T.indexCard}} {{wi.rowCss}}">
+<div style="display: flex; align-items: center; gap: 14px">
 <span aria-hidden="true" style="display: flex; flex-direction: column; gap: 3px; opacity: 0.5"><span style="width: 14px; height: 2px; background: currentColor"></span><span style="width: 14px; height: 2px; background: currentColor"></span><span style="width: 14px; height: 2px; background: currentColor"></span></span>
 <span style="width: 40px; flex: none; font-family: 'IBM Plex Mono', monospace; font-size: 20px; font-weight: 600; {{wi.rankCss}}">{{wi.rank}}</span>
 <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
 <strong style="font-size: 15px">{{wi.a}}</strong>
 <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px"><span style="{{T.accentC}}">{{wi.tags}}</span><span style="{{T.mutedC}}"> · {{wi.have}}</span></span>
+<sc-if value="{{wi.harNorge}}" hint-placeholder-val="{{ false }}"><span style="display: flex; gap: 6px; align-items: center; margin-top: 2px"><button type="button" onClick="{{wi.norgeToggle}}" aria-label="{{wi.norgeAria}}" style="height: 26px; padding: 0 10px; border-radius: 9999px; border: 1px solid #FF7A59; background: rgba(255,122,89,0.12); color: inherit; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; font-weight: 600">{{wi.norgeTekst}}</button><sc-if value="{{wi.norgeNy}}" hint-placeholder-val="{{ false }}"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; {{T.accentC}}">{{wi.norgeNyTekst}}</span></sc-if></span></sc-if>
 </span>
 <button type="button" onClick="{{wi.top}}" aria-label="Flytt {{wi.a}} til toppen" style="height: 36px; padding: 0 10px; border-radius: 4px; cursor: pointer; background: transparent; font-family: 'Archivo', sans-serif; font-size: 13px; {{T.btn}}">Topp</button>
 <button type="button" onClick="{{wi.up}}" aria-label="Flytt {{wi.a}} opp" style="width: 36px; height: 36px; border-radius: 4px; cursor: pointer; background: transparent; display: flex; align-items: center; justify-content: center; {{T.btn}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 15l7-7 7 7"></path></svg></button>
 <button type="button" onClick="{{wi.down}}" aria-label="Flytt {{wi.a}} ned" style="width: 36px; height: 36px; border-radius: 4px; cursor: pointer; background: transparent; display: flex; align-items: center; justify-content: center; {{T.btn}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 9l7 7 7-7"></path></svg></button>
 <button type="button" onClick="{{wi.got}}" style="height: 36px; padding: 0 10px; border-radius: 4px; cursor: pointer; background: transparent; font-family: 'Archivo', sans-serif; font-size: 13px; {{T.btn}}">Fått den</button>
 <button type="button" onClick="{{wi.remove}}" aria-label="Fjern {{wi.a}} fra ønskelista" style="height: 36px; padding: 0 10px; border-radius: 4px; cursor: pointer; background: transparent; font-family: 'Archivo', sans-serif; font-size: 13px; {{T.btn}}">Fjern</button>
+</div>
+<sc-if value="{{wi.norgeÅpen}}" hint-placeholder-val="{{ false }}"><ul style="margin: 0 0 4px 68px; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; cursor: auto">
+<sc-for list="{{wi.norgeListe}}" as="nl" hint-placeholder-count="0"><li style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; padding: 6px 0; border-top: 1px solid rgba(241,233,223,0.1); font-size: 13px"><a href="{{nl.url}}" target="_blank" rel="noopener" style="color: inherit; font-weight: 600">{{nl.tittel}}</a><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; {{T.mutedC}}">{{nl.pris}} · {{nl.dato}}</span><sc-if value="{{nl.har}}" hint-placeholder-val="{{ false }}"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #E6D36C">har du</span></sc-if><sc-if value="{{nl.ny}}" hint-placeholder-val="{{ false }}"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; {{T.accentC}}">NY</span></sc-if></li></sc-for>
+<sc-if value="{{wi.norgeMer}}" hint-placeholder-val="{{ false }}"><li style="font-size: 12px; {{T.mutedC}}">{{wi.norgeMer}}</li></sc-if>
+</ul></sc-if>
 </li>
 </sc-for>
 </ol>
@@ -646,6 +656,8 @@ body{margin:0}
 <strong style="font-family: 'Archivo', sans-serif; font-size: 15px; line-height: 19px">{{wi.a}}</strong>
 <span style="{{T.accentC}}">{{wi.tags}}</span>
 <span style="{{T.mutedC}}">{{wi.have}} · nr. {{wi.rank}}</span>
+<sc-if value="{{wi.harNorge}}" hint-placeholder-val="{{ false }}"><span style="display: flex; gap: 6px; align-items: center; margin-top: 2px"><button type="button" onClick="{{wi.norgeToggle}}" aria-label="{{wi.norgeAria}}" style="height: 26px; padding: 0 10px; border-radius: 9999px; border: 1px solid #FF7A59; background: rgba(255,122,89,0.12); color: inherit; cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; font-weight: 600">{{wi.norgeTekst}}</button><sc-if value="{{wi.norgeNy}}" hint-placeholder-val="{{ false }}"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 700; {{T.accentC}}">{{wi.norgeNyTekst}}</span></sc-if></span></sc-if>
+<sc-if value="{{wi.norgeÅpen}}" hint-placeholder-val="{{ false }}"><sc-for list="{{wi.norgeListe}}" as="nl" hint-placeholder-count="0"><a href="{{nl.url}}" target="_blank" rel="noopener" style="color: inherit; display: block; padding-top: 4px; border-top: 1px solid rgba(241,233,223,0.1)">{{nl.tittel}} <span style="{{T.mutedC}}">{{nl.pris}}</span></a></sc-for></sc-if>
 <div style="display: flex; gap: 6px; margin-top: 4px">
 <button type="button" onClick="{{wi.got}}" style="height: 36px; padding: 0 10px; border-radius: 4px; cursor: pointer; background: transparent; font-family: 'Archivo', sans-serif; font-size: 13px; {{T.btn}}">Fått den</button>
 <button type="button" onClick="{{wi.remove}}" aria-label="Fjern {{wi.a}} fra ønskelista" style="height: 36px; padding: 0 10px; border-radius: 4px; cursor: pointer; background: transparent; font-family: 'Archivo', sans-serif; font-size: 13px; {{T.btn}}">Fjern</button>
@@ -738,7 +750,7 @@ body{margin:0}
 <dt style="{{T.mutedC}}">kat.nr.</dt><dd style="margin: 0">{{card.cat}}</dd>
 <dt style="{{T.mutedC}}">tilstand</dt><dd style="margin: 0">{{card.c}}</dd>
 <dt style="{{T.mutedC}}">vurdering</dt><dd style="margin: 0">{{card.r}}</dd>
-<dt style="{{T.mutedC}}">ønskeliste</dt><dd style="margin: 0">{{card.w}}</dd>
+<sc-if value="{{visOnsker}}" hint-placeholder-val="{{ true }}"><dt style="{{T.mutedC}}">ønskeliste</dt><dd style="margin: 0">{{card.w}}</dd></sc-if>
 </dl>
 </div>
 <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px">Flytt til sjanger
@@ -807,6 +819,21 @@ body{margin:0}
   // ---- norske vinylannonser: bokmerket på Discogs henter og lagrer oversikten via rommet ----
   // Oversikten ligger i et eget, privat repo (<repo>-data), som bare nøkkelen din har tilgang til.
   window.NORGE_API = '';
+  window.harNokkel = () => !!nokkel;
+  // rommet selv: hent Norge-oversikten (stor fil + lite tillegg) fra det private repoet for å vise treff i ønskelista
+  window.hentNorge = async () => {
+    if (!nokkel) throw new Error('Norge-treffene vises bare på enheter med GitHub-nøkkel.');
+    const les = async (sti) => {
+      const r = await fetch('https://api.github.com/repos/' + GH.eier + '/' + GH.repo + '-data/contents/' + sti, { cache: 'no-store', headers: { Accept: 'application/vnd.github.raw', 'X-GitHub-Api-Version': '2022-11-28', Authorization: 'Bearer ' + nokkel } });
+      if (r.status === 404) return null; if (!r.ok) throw new Error('Fikk ikke hentet ' + sti + ' (' + r.status + ').'); return r.json();
+    };
+    const [o, t] = await Promise.all([les('norge.json'), les('norge-nye.json')]);
+    if (!o) throw new Error('Ingen Norge-oversikt ennå. Kjør bokmerket på Discogs først.');
+    const tl = t && (!t.grunnlag || t.grunnlag === o.fullSveip) ? t : null;
+    const sett = {}, annonser = [];
+    (tl ? tl.annonser : []).concat(o.annonser || []).forEach((x) => { if (!sett[x.i]) { sett[x.i] = 1; annonser.push(x); } });
+    return { annonser, fullSveip: o.fullSveip, oppdatert: (tl && tl.oppdatert) || o.oppdatert, sist: Math.max(+o.sist || 0, tl ? +tl.sist || 0 : 0) };
+  };
   if (location.hash === '#norge-mottak' && window.opener) {
     const DISCOGS = 'https://www.discogs.com', DATA = GH.repo + '-data';
     const dataApi = (sti, opt) => fetch('https://api.github.com/repos/' + GH.eier + '/' + DATA + '/contents/' + sti, Object.assign({ cache: 'no-store' }, opt || {}, {
@@ -1068,7 +1095,7 @@ body{margin:0}
   };
   window.ATLAS = [0, 1, 2, 3, 4, 5, 6, 7].map((i) => 'covers/cover' + i + '.jpg');
   window.NORGE_BM = "(function () {\n  // Rommet: norske vinylannonser. F\u00f8rste gang: full sveip av hele lista. Senere: bare nye annonser.\n  // Oversikten lagres i repoet (data/norge.json) via rommet, s\u00e5 alle enheter deler den.\n  var LISTE = 'https://www.discogs.com/shop/list?formatName=Vinyl&shipsFrom=Norway';\n  if (!/(^|\\.)discogs\\.com$/.test(location.hostname)) { location.href = LISTE; return; }\n  var ROMMET = '__ROMMET__';\n  var W = __W__, H = __H__;\n  var MAKS_NY = 60, MAKS_FULL = 2000;\n\n  function n(s) { return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\\s*\\(\\d+\\)\\s*$/, '').replace(/\\*/g, '').replace(/^the\\s+/, '').replace(/[^a-z0-9]+/g, ' ').trim(); }\n  function esc(s) { return String(s || '').replace(/&/g, '&amp;').replace(/<\/g, '&lt;').replace(/\"/g, '&quot;'); }\n  function vent(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }\n  function hent(url, opt, ms) {\n    var ctl = window.AbortController ? new AbortController() : null, t = setTimeout(function () { if (ctl) ctl.abort(); }, ms || 6000);\n    return fetch(url, Object.assign({ cache: 'no-store' }, opt || {}, ctl ? { signal: ctl.signal } : {})).then(function (r) { clearTimeout(t); return r; }, function (e) { clearTimeout(t); throw e; });\n  }\n\n  var gammel = document.getElementById('rommet-norge'); if (gammel) gammel.remove();\n  var p = document.createElement('div'); p.id = 'rommet-norge';\n  p.setAttribute('style', 'position:fixed;top:12px;right:12px;z-index:2147483647;width:380px;max-height:85vh;overflow:auto;background:#211C17;color:#F1E9DF;border:1px solid #FF7A59;border-radius:8px;padding:12px 14px;font:13px/1.45 system-ui,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.5)');\n  document.body.appendChild(p);\n  var KN = 'background:none;border:1px solid #4A4036;color:#F1E9DF;border-radius:4px;cursor:pointer;padding:3px 8px;font:12px system-ui';\n  function status(html) { p.innerHTML = html; }\n\n  // ---- lese annonsekortene p\u00e5 siden ----\n  var annonser = {}, rekke = [], avbrutt = false;\n  function les() {\n    document.querySelectorAll('a[href*=\"/shop/item/\"], a[href*=\"/sell/item/\"]').forEach(function (a) {\n      var id = (a.getAttribute('href').match(/item\\/(\\d+)/) || [])[1]; if (!id || annonser[id]) return;\n      var kort = a.closest('article') || a.closest('li') || a.parentElement; if (!kort) return;\n      var tittelEl = kort.querySelector('[data-tracking=\"shop-list-item\"]') || kort.querySelector('a[href*=\"/item/\"]:not(.msr-listing-card-image)');\n      var art = Array.prototype.map.call(kort.querySelectorAll('a[href*=\"/artist/\"]'), function (x) {\n        return [x.textContent.trim(), ((x.getAttribute('href') || '').match(/artist\\/(\\d+)/) || [])[1] || ''];\n      });\n      var tekst = kort.textContent.replace(/\\s+/g, ' ');\n      var tittel = (tittelEl ? tittelEl.textContent : '').trim();\n      if (!art.length && / [-\u2013] /.test(tittel)) { var d = tittel.split(/ [-\u2013] /); art = d[0].split(/\\s*(?:&|,|\\/)\\s*/).map(function (x) { return [x, '']; }); tittel = d.slice(1).join(' - '); }\n      if (!art.length || !tittel) return;  // ikke tegnet ferdig enn\u00e5; leses ved neste runde\n      if (/ships from/i.test(tekst) && !/ships from\\s*norway/i.test(tekst)) return;  // sikring: bare annonser som sendes fra Norge\n      var pris = (tekst.match(/[\u20ac$\u00a3]\\s?[\\d.,]+|(?:NOK|kr|SEK|DKK)\\s?[\\d\\s.,]*\\d|[\\d.,]+\\s?(?:kr|NOK)/) || [''])[0].trim();\n      var lagt = (tekst.match(/Listed ([^\u2022|]*?) ago/) || ['', ''])[1];\n      annonser[id] = { i: +id, a: art, t: tittel, p: pris, d: dato(lagt) };\n      rekke.push(id);\n    });\n  }\n  // \u00ab20 minutes\u00bb / \u00ab3 days\u00bb / \u00ab2 weeks\u00bb \u2192 omtrentlig dato (\u00e5\u00e5\u00e5\u00e5-mm-dd)\n  function dato(lagt) {\n    var m = String(lagt).match(/(\\d+|an?|one)\\s+(minute|hour|day|week|month|year)/i), x = new Date();\n    if (m) {\n      var k = /^\\d+$/.test(m[1]) ? +m[1] : 1, e = m[2].toLowerCase();\n      x = new Date(Date.now() - k * { minute: 6e4, hour: 36e5, day: 864e5, week: 6048e5, month: 2592e6, year: 31536e6 }[e]);\n    }\n    return x.toISOString().slice(0, 10);\n  }\n  async function lesSide(nr) {\n    window.scrollTo(0, 0); await vent(200);\n    var y = 0, f\u00f8r = rekke.length;\n    for (var runde = 0; runde < 80 && !avbrutt; runde++) {\n      les();\n      var li = document.querySelector('li[aria-setsize]'), m\u00e5l = li ? +li.getAttribute('aria-setsize') : 0;\n      var liste = li ? li.parentElement : null;\n      var maks = liste ? Math.max(0, liste.getBoundingClientRect().bottom + window.scrollY - innerHeight + 50) : document.documentElement.scrollHeight - innerHeight;\n      if ((m\u00e5l && rekke.length - f\u00f8r >= m\u00e5l) || y >= maks) break;\n      y = Math.min(maks, y + Math.round(innerHeight * 0.8)); window.scrollTo(0, y);\n      await vent(180);\n    }\n    les();\n    return rekke.length - f\u00f8r;\n  }\n  function f\u00f8rsteId() { var a = document.querySelector('a[href*=\"/shop/item/\"], a[href*=\"/sell/item/\"]'); return a ? (a.getAttribute('href').match(/item\\/(\\d+)/) || [])[1] : ''; }\n\n  // ---- \u00f8nskelista (fersk fra rommet, ellers kopien) og eksisterende oversikt ----\n  var A = {}, kilde = 'kopien i bokmerket', oversikt = null, tillegg = null;\n  function byggA(liste) { A = {}; liste.forEach(function (w) { A[n(w.a)] = { a: w.a, tags: w.tags || '' }; }); }\n  byggA(W);\n  function lesJson(r) { return r && r.ok ? r.json() : null; }\n\n  // ---- kanal til rommet: rommet har n\u00f8kkelen og leser/skriver det private datarepoet ----\n  var fane = null, klar = false, venter = {};\n  function \u00e5pneRommet() {\n    if (fane && !fane.closed) return true;\n    klar = false; fane = window.open(ROMMET + '#norge-mottak', 'rommet-norge');\n    return !!fane;\n  }\n  window.addEventListener('message', function (e) {\n    if (e.origin !== new URL(ROMMET).origin || !e.data || typeof e.data !== 'object') return;\n    if (e.data.type === 'rommet-norge-klar') { klar = true; if (venter.klar) { var f = venter.klar; venter.klar = null; f(); } }\n    if (e.data.type === 'rommet-norge-data' && venter.data) { var g = venter.data; venter.data = null; g(e.data); }\n    if (e.data.type === 'rommet-norge-svar' && venter.svar) { var h = venter.svar; venter.svar = null; h(e.data); }\n  });\n  function sp\u00f8r(melding, svarType, ms) {\n    return new Promise(function (ok, feil) {\n      var t = setTimeout(function () { venter[svarType] = null; feil(new Error('Fikk ikke svar fra rommet.')); }, ms || 60000);\n      venter[svarType] = function (d) { clearTimeout(t); ok(d); };\n      var g\u00e5 = function () { try { fane.postMessage(melding, new URL(ROMMET).origin); } catch (e) { clearTimeout(t); feil(e); } };\n      if (klar) g\u00e5(); else { var t2 = setTimeout(function () { venter.klar = null; clearTimeout(t); feil(new Error('Fikk ikke kontakt med rommet. Er den nye versjonen lastet opp?')); }, 30000); venter.klar = function () { clearTimeout(t2); g\u00e5(); }; }\n    });\n  }\n\n  function forbered() {\n    status('<b>Norske vinylannonser<\/b><div style=\"color:#BFB2A3;margin:4px 0 8px\">Rommet \u00e5pnes i en egen fane for \u00e5 hente oversikten og \u00f8nskelista. La den fanen st\u00e5 \u00e5pen til du har lagret.<\/div><button id=\"rn-start\" style=\"' + KN + ';border-color:#FF7A59;background:#FF7A59;color:#1A0E06;font-weight:700\">Start<\/button> <button id=\"rn-x\" style=\"' + KN + '\">Avbryt<\/button>');\n    p.querySelector('#rn-x').onclick = function () { p.remove(); };\n    p.querySelector('#rn-start').onclick = async function () {\n      if (!\u00e5pneRommet()) { status('<span style=\"color:#FF9A7E\">Nettleseren stoppet vinduet. Tillat sprettoppvinduer for discogs.com og trykk bokmerket igjen.<\/span>'); return; }\n      status('<b>Henter oversikten fra rommet \u2026<\/b>');\n      try {\n        var d = await sp\u00f8r({ type: 'rommet-norge-hent' }, 'data', 120000);\n        if (!d.ok) { status('<span style=\"color:#FF9A7E\">' + esc(d.feil) + '<\/span>'); return; }\n        var liste = Array.isArray(d.wish) ? d.wish.filter(function (w) { return !/^\\s*selge\\b/i.test(w.tags || '') || /mer|original|vil ha/i.test(w.tags || ''); }) : null;\n        if (liste && liste.length) { byggA(liste); kilde = 'rommet'; }\n        oversikt = d.oversikt || null; tillegg = d.tillegg || null;\n      } catch (e) { status('<span style=\"color:#FF9A7E\">' + esc(e.message) + '<\/span>'); return; }\n      // tillegget gjelder bare opp\u00e5 den fulle sveipen det ble laget fra\n      if (tillegg && oversikt && tillegg.grunnlag && tillegg.grunnlag !== oversikt.fullSveip) tillegg = null;\n      if (oversikt && tillegg && +tillegg.sist > +oversikt.sist) oversikt.sist = +tillegg.sist;\n      var tvungen = false; try { tvungen = sessionStorage.getItem('rommet.norge.full') === '1'; sessionStorage.removeItem('rommet.norge.full'); } catch (e) {}\n      start(oversikt && oversikt.sist && !tvungen ? 'ny' : 'full');\n    };\n  }\n\n  async function start(modus) {\n    var sist = modus === 'ny' ? +oversikt.sist : 0, maks = modus === 'ny' ? MAKS_NY : MAKS_FULL, nr = 1, n\u00e5dd = false, tomme = 0;\n    var sort = document.querySelector('.hifi-select-value');\n    if (sort && !/date listed|dato/i.test(sort.textContent)) { status('<b>Sorter lista p\u00e5 \u00abDate Listed\u00bb (nyeste f\u00f8rst) og trykk igjen.<\/b>'); return; }\n    var t0 = Date.now();\n    while (!avbrutt) {\n      status('<b>' + (modus === 'full' ? 'Full sveip' : 'Nye annonser') + ': side ' + nr + ' \u2026<\/b> ' + rekke.length + ' annonser, ' + Math.round((Date.now() - t0) / 1000) + ' s ' +\n        '<button id=\"rn-stopp\" style=\"' + KN + ';margin-left:6px\">Stopp<\/button>');\n      p.querySelector('#rn-stopp').onclick = function () { avbrutt = true; };\n      var lest = await lesSide(nr);\n      tomme = lest ? 0 : tomme + 1;\n      if (sist && rekke.some(function (id) { return +id <= sist; })) { n\u00e5dd = true; break; }\n      if (nr >= maks || tomme >= 2) break;\n      var neste = document.querySelector('button[aria-label=\"Next page\"]:not([disabled])');\n      if (!neste) break;\n      var f\u00f8r = f\u00f8rsteId(); neste.click(); nr++;\n      for (var t = 0; t < 60 && f\u00f8rsteId() === f\u00f8r; t++) await vent(250);\n      if (f\u00f8rsteId() === f\u00f8r) break;\n      await vent(900);\n    }\n    var nye = rekke.filter(function (id) { return !sist || +id > sist; }).map(function (id) { return annonser[id]; });\n    var komplett = !avbrutt && (modus === 'full' ? !document.querySelector('button[aria-label=\"Next page\"]:not([disabled])') : n\u00e5dd);\n    ferdig({ modus: modus, nye: nye, sider: nr, sek: Math.round((Date.now() - t0) / 1000), komplett: komplett });\n  }\n\n  // ---- treff mot \u00f8nskelista (enkelt artistnavn; presentasjon og merkeregler kommer senere) ----\n  function treffI(liste) {\n    var ut = [];\n    liste.forEach(function (x) { var navn = ''; (x.a || []).forEach(function (ar) { if (!navn && A[n(ar[0])]) navn = ar[0]; }); if (navn) ut.push({ x: x, navn: navn, w: A[n(navn)] }); });\n    return ut;\n  }\n\n  function ferdig(r) {\n    var nyeIds = {}; r.nye.forEach(function (x) { nyeIds[x.i] = 1; });\n    // tidligere tillegg (siden full sveip) + det som er lest n\u00e5; hele oversikten = grunnlag + tillegg\n    var forrigeTillegg = r.modus === 'ny' && tillegg && tillegg.annonser ? tillegg.annonser.filter(function (x) { return !nyeIds[x.i]; }) : [];\n    r.tillegg = r.modus === 'ny' ? r.nye.concat(forrigeTillegg) : [];\n    var tSett = {}; r.tillegg.forEach(function (x) { tSett[x.i] = 1; });\n    var gamle = oversikt && oversikt.annonser ? oversikt.annonser.filter(function (x) { return !tSett[x.i]; }) : [];\n    var alle = r.modus === 'full' ? r.nye : r.tillegg.concat(gamle);\n    var tNye = treffI(r.nye), tAlle = treffI(alle);\n    var h = '<div style=\"display:flex;justify-content:space-between;gap:8px\"><b style=\"font-size:14px\">' + (r.modus === 'full' ? 'Full sveip' : 'Nye annonser') + (avbrutt ? ' \u2013 stoppet' : '') + '<\/b><button id=\"rn-x\" style=\"background:none;border:0;color:#BFB2A3;font-size:20px;cursor:pointer\">\u00d7<\/button><\/div>';\n    h += '<div style=\"color:#BFB2A3;margin:4px 0 8px\">' + r.nye.length + ' annonser lest p\u00e5 ' + r.sider + ' sider (' + r.sek + ' s).';\n    if (r.modus === 'ny') h += ' ' + (r.komplett ? 'N\u00e5dde forrige sjekk.' : 'N\u00e5dde <b>ikke<\/b> forrige sjekk innen ' + MAKS_NY + ' sider.');\n    if (r.modus === 'full') h += ' ' + (r.komplett ? 'Kom til siste side.' : 'Kom <b>ikke<\/b> til siste side.');\n    h += '<br>Oversikten blir ' + alle.length + ' annonser. ' + Object.keys(A).length + ' \u00f8nskeartister fra ' + kilde + '.<\/div>';\n    h += '<div style=\"margin:6px 0\">Treff blant de nye: <b>' + tNye.length + '<\/b> \u00b7 i hele oversikten: <b>' + tAlle.length + '<\/b><\/div>';\n    tNye.slice(0, 30).forEach(function (t) { h += '<div style=\"border-top:1px solid #3A322A;padding:4px 0\"><a href=\"https://www.discogs.com/shop/item/' + t.x.i + '\" target=\"_blank\" style=\"color:#F1E9DF\">' + esc(t.navn + ' \u2013 ' + t.x.t) + '<\/a> <span style=\"color:#BFB2A3\">' + esc(t.x.p) + '<\/span><\/div>'; });\n    var kanLagre = r.nye.length && (r.modus === 'ny' ? r.komplett : true);\n    h += '<div style=\"border-top:1px solid #3A322A;margin-top:8px;padding-top:8px;display:flex;gap:6px;flex-wrap:wrap;align-items:center\">';\n    if (kanLagre) h += '<button id=\"rn-lagre\" style=\"' + KN + ';border-color:#FF7A59;background:#FF7A59;color:#1A0E06;font-weight:700\">Lagre i rommet<\/button>';\n    else if (r.modus === 'ny' && !r.komplett) h += '<span style=\"color:#FF9A7E\">Kan ikke lagre uten \u00e5 n\u00e5 forrige sjekk, da ville det blitt et hull i oversikten. Kj\u00f8r full sveip.<\/span>';\n    if (r.modus === 'ny' && !avbrutt) h += '<button id=\"rn-full\" style=\"' + KN + '\">Kj\u00f8r full sveip<\/button>';\n    h += '<\/div><div id=\"rn-lagring\" style=\"margin-top:6px;color:#BFB2A3\"><\/div>';\n    status(h);\n    p.querySelector('#rn-x').onclick = function () { p.remove(); };\n    var f = p.querySelector('#rn-full'); if (f) f.onclick = function () { try { sessionStorage.setItem('rommet.norge.full', '1'); } catch (e) {} status('<b>Laster lista p\u00e5 nytt. Trykk bokmerket igjen n\u00e5r den er lastet for \u00e5 starte full sveip.<\/b>'); setTimeout(function () { location.href = LISTE; }, 900); };\n    var l = p.querySelector('#rn-lagre'); if (l) l.onclick = function () { send(r, alle); };\n  }\n\n  function lastNed(data, navn) {\n    var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(data)], { type: 'application/json' })); a.download = navn || 'norge.json';\n    document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 2000);\n  }\n  // ---- sende til rommet, som lagrer i repoet med n\u00f8kkelen sin ----\n  function send(r, alle) {\n    var ut = p.querySelector('#rn-lagring');\n    var sist = 0; alle.forEach(function (x) { if (x.i > sist) sist = x.i; });\n    var n\u00e5 = new Date().toISOString();\n    // full sveip: hele oversikten i norge.json (og tillegget t\u00f8mmes). Ellers: bare den lille norge-nye.json\n    var last = r.modus === 'full' ? {\n      type: 'rommet-norge', versjon: 2, fil: 'full',\n      data: { versjon: 2, sist: sist, oppdatert: n\u00e5, fullSveip: n\u00e5, fullKomplett: r.komplett, antall: alle.length, annonser: alle.sort(function (a, b) { return b.i - a.i; }) },\n    } : {\n      type: 'rommet-norge', versjon: 2, fil: 'nye',\n      data: { versjon: 2, sist: sist, oppdatert: n\u00e5, grunnlag: (oversikt && oversikt.fullSveip) || null, antall: r.tillegg.length, annonser: r.tillegg.sort(function (a, b) { return b.i - a.i; }) },\n    };\n    if (!\u00e5pneRommet()) { ut.innerHTML = '<span style=\"color:#FF9A7E\">Nettleseren stoppet vinduet. Tillat sprettoppvinduer for discogs.com og trykk igjen.<\/span>'; return; }\n    ut.textContent = 'Lagrer ' + last.data.annonser.length + ' annonser via rommet \u2026';\n    sp\u00f8r(last, 'svar', 300000).then(function (d) {\n      ut.innerHTML = d.ok ? '<b style=\"color:#9FD39A\">Lagret: ' + d.antall + ' annonser i ' + esc(d.fil) + '.<\/b>' : '<span style=\"color:#FF9A7E\">Ikke lagret: ' + esc(d.feil) + '<\/span> <button id=\"rn-fil\" style=\"' + KN + '\">Last ned fila i stedet<\/button>';\n      var f = p.querySelector('#rn-fil'); if (f) f.onclick = function () { lastNed(last.data, last.fil === 'full' ? 'norge.json' : 'norge-nye.json'); };\n    }, function (e) {\n      ut.innerHTML = '<span style=\"color:#FF9A7E\">' + esc(e.message) + '<\/span> <button id=\"rn-fil\" style=\"' + KN + '\">Last ned fila i stedet<\/button>';\n      p.querySelector('#rn-fil').onclick = function () { lastNed(last.data, last.fil === 'full' ? 'norge.json' : 'norge-nye.json'); };\n    });\n  }\n\n  forbered();\n})();\n";
-  window.ROMMET_VERSJON = '1.0.0';
+  window.ROMMET_VERSJON = '1.1.1';
 
   const MAL = new DOMParser().parseFromString('<div id="m">' + document.getElementById('mal').textContent + '</div>', 'text/html').getElementById('m');
   const esc = (v) => String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -2043,6 +2070,8 @@ class Component extends DCLogic {
     const toggleAar = () => this.settAar(!this.state.aar);  // å åpne noe nytt nullstiller markeringen fra sjangerlista
     // bredden følger vinduet (minst 1366); høyden er alltid 1024
     const appW = Math.max(1366, this.props.bredde || 1366);
+    // ønskelista vises bare på enheter med GitHub-nøkkel (kosmetisk: dataene ligger fortsatt i de offentlige filene)
+    const visOnsker = !window.harNokkel || window.harNokkel();
     const big = !st.panel, S2 = big ? (968 - 24) / 670 : Math.min(appW / 1366, 1.3); // med panelet åpent må infoen få plass under rommet
     const roomH = big ? 968 : Math.round(430 * S2), coverS = Math.max(150, Math.min(300, 1024 - 56 - roomH - 54 - 172));
     this.coverS = coverS;
@@ -2054,7 +2083,7 @@ class Component extends DCLogic {
       T, styleName: T.name, onSearch: (e) => this.setState(e.target.value ? { q: e.target.value, idx: 0, panel: true } : { q: '', idx: 0 }), undoAll: set({ moved: {}, placed: {}, gone: {} }),
       toggleAar, bryter: { aria: st.aar ? 'Sortert etter år. Trykk for å sortere etter sjanger' : 'Sortert etter sjanger. Trykk for å sortere etter år', pressed: st.aar ? 'true' : 'false', lapp: st.aar ? 'ÅR' : 'SJANGER', vipp: st.aar ? 'top: 24px;' : 'top: 10px;' }, blinkCss: st.blink ? 'opacity: 0.55;' : 'opacity: 0;',
       versjon: window.ROMMET_VERSJON ? 'v' + window.ROMMET_VERSJON : '',
-      closeCard: set({ sel: -1, goneAsk: null }), pickNow: set({ cont: -2 }), pickBoxes: open({ cont: 9, gsel: -1, idx: 0 }), pickCD: open({ cont: 10, gsel: -1, idx: 0 }), pickRack: open({ cont: 8, gsel: -1, idx: 0 }),
+      visOnsker, closeCard: set({ sel: -1, goneAsk: null }), pickNow: set({ cont: -2 }), pickBoxes: open({ cont: 9, gsel: -1, idx: 0 }), pickCD: open({ cont: 10, gsel: -1, idx: 0 }), pickRack: open({ cont: 8, gsel: -1, idx: 0 }),
       setBla: set({ mode: 'bla' }), setKort: set({ mode: 'kort' }),
       openDiscogs: () => { if (window.discogsÅpne) window.discogsÅpne(); }, openSjangre: () => { if (window.sjangreÅpne) window.sjangreÅpne(); }, openForm: set({ form: { s: 'LP', n: 1 }, sel: -1 }), closeForm: set({ form: null }), pickNy: open({ cont: 11, gsel: -1, idx: 0 }), pickWish: open({ cont: 12, gsel: -1, idx: 0, q: '' }),
       formOpen: !!st.form,
@@ -2198,8 +2227,73 @@ class Component extends DCLogic {
     // ---- ønskelista ----
     const wishes = this.curWish;
     const wf = st.wf || 'Alle';
+    // ---- norske annonser: oversikten hentes fra det private datarepoet når ønskelista åpnes ----
+    if (cont === 12 && !this._norgeStart && window.hentNorge) {
+      this._norgeStart = true;
+      window.hentNorge().then((d) => { this._norgeData = d; this._norgeIdx = null; this.setState({ norgeTick: Date.now() }); },
+        (e) => { this._norgeData = { feil: String((e && e.message) || e) }; this.setState({ norgeTick: Date.now() }); });
+    }
+    const ND = this._norgeData && !this._norgeData.feil && this._norgeData.annonser ? this._norgeData : null;
+    const nn = (x) => String(x || '').normalize('NFKD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s*\(\d+\)\s*$/, '').replace(/\*/g, '').replace(/^the\s+/, '').replace(/[^a-z0-9]+/g, ' ').trim();
+    const nt = (x) => nn(String(x || '').replace(/\s*\(.*$/, ''));
+    const likTittel = (a, b) => !!a && !!b && (a === b || (a.length >= 4 && b.length >= 4 && (a.indexOf(b) === 0 || b.indexOf(a) === 0)));
+    if (ND && !this._norgeIdx) {
+      // annonser per artistnavn (uten Discogs-nummer), og hva som er «nytt siden sist» på denne enheten
+      const idx = {};
+      ND.annonser.forEach((x) => (x.a || []).forEach((ar) => { const k = nn(ar[0]); (idx[k] = idx[k] || []).push(x); }));
+      let sett = 0; try { sett = +localStorage.getItem('rommet.norge.sett') || 0; } catch (e) {}
+      let maks = 0; ND.annonser.forEach((x) => { if (x.i > maks) maks = x.i; });
+      try { localStorage.setItem('rommet.norge.sett', String(maks)); } catch (e) {}
+      this._norgeIdx = { idx, sett, cache: {} };
+    }
+    // merkereglene: Original = titler du har, Mer/Vil ha = titler du mangler, «Type: tittel» = bare den tittelen, Selge = aldri
+    const norgeTreff = (w) => {
+      if (!ND) return null;
+      const NI = this._norgeIdx, nøkkel = w.a + '|' + (w.tags || '');
+      if (NI.cache[nøkkel]) return NI.cache[nøkkel];
+      const ka = nn(w.a), kand = NI.idx[ka] || [];
+      const eier = this.d.recs.filter((r) => nn(r.a) === ka).map((r) => nt(r.t));
+      const har = (t) => eier.some((h) => likTittel(t, h));
+      const deler = String(w.tags || '').split(' · ').map((x) => {
+        const m = x.match(/^\s*(Mer|Original|Selge|Vil ha)\s*(?::\s*(.+))?$/i); if (!m) return null;
+        let tit = (m[2] || '').trim(); if (/^✓/.test(tit)) tit = '';
+        return { type: m[1].toLowerCase(), tit: tit ? (/^s\/t$/i.test(tit) ? ka : nt(tit)) : '' };
+      }).filter(Boolean);
+      // samme navn, annen artist: «Locust (4)» godtas bare hvis den artist-ID-en har en tittel du eier
+      const egneId = {};
+      kand.forEach((x) => (x.a || []).forEach((ar) => { if (nn(ar[0]) === ka && ar[1] && har(nt(x.t))) egneId[ar[1]] = 1; }));
+      const ut = [];
+      kand.forEach((x) => {
+        const ar = (x.a || []).find((y) => nn(y[0]) === ka); if (!ar) return;
+        if (/\(\d+\)\s*$/.test(ar[0]) && !/\(\d+\)\s*$/.test(w.a) && !egneId[ar[1]]) return;
+        const t = nt(x.t), h = har(t);
+        const ok = deler.some((d) => d.type !== 'selge' && (d.tit ? likTittel(t, d.tit) : d.type === 'original' ? h : !h));
+        if (ok) ut.push({ x, har: h, ny: x.i > NI.sett });
+      });
+      ut.sort((a, b) => b.x.i - a.x.i);
+      return (NI.cache[nøkkel] = ut);
+    };
     const TYPES = ['Alle', 'Mer', 'Original', 'Selge', 'Vil ha'];
     const isType = (w, t) => t === 'Alle' || w.tags.split(' · ').some((x) => x === t || x.indexOf(t + ':') === 0);
+    // av/på: bare ønsker som har annonser ute i Norge (kan kombineres med filtrene over)
+    const barNorge = !!st.wNorge && !!ND;
+    const antNorge = ND ? this.curWish.filter((w) => (norgeTreff(w) || []).length).length : 0;
+    const nB = this._norge || { vis: false };
+    if (nB.vis) {
+      const D = this._norgeData;
+      if (!D) nB.status = window.hentNorge ? 'Henter Norge-oversikten …' : '';
+      else if (D.feil) nB.status = D.feil;
+      else {
+        const alle = this.curWish.map((w) => norgeTreff(w) || []), tot = alle.reduce((a, l) => a + l.length, 0), art = alle.filter((l) => l.length).length;
+        const nye = alle.reduce((a, l) => a + l.filter((t) => t.ny).length, 0);
+        const dager = D.fullSveip ? Math.floor((Date.now() - new Date(D.fullSveip)) / 864e5) : null;
+        nB.status = D.annonser.length.toLocaleString('nb-NO') + ' norske annonser i oversikten, oppdatert ' + new Date(D.oppdatert || D.fullSveip).toLocaleString('nb-NO', { dateStyle: 'short', timeStyle: 'short' }) +
+          '. ' + tot + ' treff fra ' + art + ' artister' + (nye ? ', ' + nye + ' nye siden sist' : '') + '.';
+        nB.paaminn = dager !== null && dager > 30 ? 'Siste fulle sveip er ' + dager + ' dager gammel. Ta en ny (knappen «Kjør full sveip» i boksen på Discogs) for å rydde bort solgte plater.' : '';
+      }
+      nB.hasStatus = !!nB.status; nB.hasPaaminn = !!nB.paaminn;
+    }
+
     const wishFilters = TYPES.map((t) => ({ name: t, n: String(wishes.filter((w) => isType(w, t)).length), pick: set({ wf: t }), css: wf === t ? T.pillOn : T.pillOff }));
     const haveOf = {};
     this.baseRecs.concat(st.extra || []).forEach((r, i) => { if (L.where[i] === 13) return; const k = this.norm(r.a); (haveOf[k] = haveOf[k] || []).push(i); });
@@ -2207,7 +2301,7 @@ class Component extends DCLogic {
     const wishSort = { isPrio: prio, isAz: !prio, prio: set({ ws: 'prio' }), az: set({ ws: 'az' }), prioCss: prio ? T.pillOn : T.pillOff, azCss: prio ? T.pillOff : T.pillOn };
     // søk i ønskelista: treffer artist og alt som står i merkene (typer og titler)
     const wq = this.norm(st.wishQ || '').replace(/\s+/g, '');
-    const visible = (w) => isType(w, wf) && (!wq || this.norm(w.a + ' ' + (w.tags || '')).indexOf(wq) >= 0);
+    const visible = (w) => isType(w, wf) && (!wq || this.norm(w.a + ' ' + (w.tags || '')).indexOf(wq) >= 0) && (!barNorge || (norgeTreff(w) || []).length > 0);
     // flytt et ønske til en ny plass i hele lista; med filter på hopper den over skjulte ønsker
     const moveWish = (w, to) => {
       const l = this.curWish.slice(), from = l.indexOf(w);
@@ -2222,8 +2316,10 @@ class Component extends DCLogic {
     };
     let ordered = wishes.filter(visible);
     if (!prio) ordered = ordered.slice().sort((x, y) => this.norm(x.a).localeCompare(this.norm(y.a)));
+    const fmtDato = (d) => { if (!d) return ''; const [y, m, dd] = d.split('-'); return +dd + '.' + +m + '.' + String(y).slice(2); };
     const wishItems = ordered.map((w) => {
       const ids = haveOf[this.norm(w.a)] || [];
+      const tr = norgeTreff(w) || [], nyeN = tr.filter((t) => t.ny).length, åpen = st.norgeÅpen === w.a;
       const cells = Array.from(new Set(ids.map((i) => (L.where[i] !== undefined ? this.PL[L.where[i]].name : '')))).filter(Boolean);
       return {
         a: w.a, tags: w.tags || '–',
@@ -2233,6 +2329,14 @@ class Component extends DCLogic {
         rank: String(wishes.indexOf(w) + 1),
         rankCss: wishes.indexOf(w) < 10 ? T.accentC : T.mutedC,
         rowCss: st.wishFlash === w.a ? 'outline:2px solid #FF7A59;outline-offset:2px;' : '',
+        harNorge: tr.length > 0, norgeTekst: tr.length + ' til salgs' + (åpen ? ' ▴' : ' ▾'), norgeNy: nyeN > 0, norgeNyTekst: nyeN + ' NY',
+        norgeAria: (åpen ? 'Skjul' : 'Vis') + ' ' + tr.length + ' norske annonser for ' + w.a, norgeÅpen: åpen && tr.length > 0,
+        norgeToggle: () => this.setState({ norgeÅpen: åpen ? '' : w.a }),
+        norgeListe: tr.slice(0, 40).map((t) => ({
+          tittel: t.x.t, url: 'https://www.discogs.com/shop/item/' + t.x.i, pris: t.x.p || '', dato: fmtDato(t.x.d),
+          artist: ((t.x.a || []).find((y) => nn(y[0]) === nn(w.a)) || [w.a])[0], har: t.har, ny: t.ny,
+        })),
+        norgeMer: tr.length > 40 ? '… og ' + (tr.length - 40) + ' til' : '',
         up: () => step(w, -1), down: () => step(w, 1), top: () => moveWish(w, 0),
         dragStart: (e) => { this.dragWish = w; try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', w.a); } catch (x) {} },
         dragOver: (e) => { e.preventDefault(); },
@@ -2358,7 +2462,7 @@ class Component extends DCLogic {
     const nowSleeve = npOk ? T.coverWrap : 'display:none;';
     const nyList = L.lists[11];
     const nyStabel = nyList.slice(-3).map((i, j) => Object.assign({ a: d.recs[i].a + ' – ' + d.recs[i].t, css: 'left:' + (j * 12) + 'px;transform:rotate(' + (-14 + j * 6) + 'deg);' }, this.img(d.recs[i], 70)));
-    const artistOptions = (this.curWish || []).map((w) => ({ v: w.a, note: 'ønskeliste' }))
+    const artistOptions = (visOnsker ? this.curWish || [] : []).map((w) => ({ v: w.a, note: 'ønskeliste' }))
       .concat(Array.from(new Set(this.baseRecs.map((r) => r.a))).sort().map((a) => ({ v: a, note: '' })));
     const corner = false; // hjørnevisningen er slått av inntil vinkelen er riktig
     let fly = { show: false };
@@ -2519,8 +2623,9 @@ class Component extends DCLogic {
       cornerFloor: (() => { const a = this.cornerGeo().pt(1366, 430); return 'clip-path:polygon(912px 430px, ' + a[0] + 'px ' + a[1] + 'px, 1366px ' + a[1] + 'px, 1366px 430px);'; })(),
       cornerCeil: (() => { const a = this.cornerGeo().pt(1366, 0); return 'clip-path:polygon(912px 0, 1366px 0, 1366px ' + a[1] + 'px, ' + a[0] + 'px ' + a[1] + 'px);'; })(),
       loading: false, loadText: '', cells, boxSpines, cdSpines: cdFolders, rackSpines, tabs, stack, front, margin, cards,
-      isBla: mode === 'bla' && !(cont === 12 && !q), isKort: mode === 'kort' && !(cont === 12 && !q), isWish: cont === 12 && !q, norge: this._norge || { vis: false }, notWish: !(cont === 12 && !q),
-      wishFilters, wishItems, wishAdd, wishSort, wishSok: (e) => this.setState({ wishQ: e.target.value }), wishTom: wq && !wishItems.length, wishTomTekst: 'Ingen ønsker passer «' + (st.wishQ || '') + '».', wishCount: String(wishes.length), modeBla: mode === 'bla' ? T.pillOn : T.pillOff, modeKort: mode === 'kort' ? T.pillOn : T.pillOff,
+      isBla: mode === 'bla' && !(cont === 12 && !q), isKort: mode === 'kort' && !(cont === 12 && !q), isWish: cont === 12 && !q && visOnsker, norge: this._norge || { vis: false }, notWish: !(cont === 12 && !q),
+      norgeBryter: { vis: !!ND, css: barNorge ? T.pillOn : T.pillOff, pressed: barNorge ? 'true' : 'false', tekst: 'Til salgs', n: String(antNorge), klikk: () => this.setState({ wNorge: !st.wNorge }) },
+      wishFilters, wishItems, wishAdd, wishSort, wishSok: (e) => this.setState({ wishQ: e.target.value }), wishTom: (wq || barNorge) && !wishItems.length, wishTomTekst: wq ? 'Ingen ønsker passer «' + (st.wishQ || '') + '».' : 'Ingen ønsker med annonser i Norge akkurat nå.', wishCount: String(wishes.length), modeBla: mode === 'bla' ? T.pillOn : T.pillOff, modeKort: mode === 'kort' ? T.pillOn : T.pillOff,
       prev: go(idx - 1), next: go(idx + 1),
       sel: { boxes: cont === 9 ? T.selOutline : '', cd: cont === 10 ? T.selOutline : '', rack: cont === 8 ? T.selOutline : '', ny: cont === 11 ? T.selOutline : '', wish: cont === 12 ? T.selOutline : '' },
       hots, hotLabels, fotoNow, detail, pano: { css: pano },
