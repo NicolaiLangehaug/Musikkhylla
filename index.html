@@ -233,7 +233,7 @@ body.mobil:has(#spiller:not(.skjult)) [data-m="bla-knapper"]{padding-bottom:150p
 </div>
 </sc-if>
 <div style="flex: 1"></div>
-<button type="button" onClick="{{openVelger}}" aria-label="Hva skal jeg høre på?" style="flex: none; white-space: nowrap; height: 40px; padding: 0 14px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 6px; background: transparent; font-family: 'Archivo', sans-serif; font-size: 14px; font-weight: 700; {{T.btn}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16l-6 8v6l-4 2v-8z"></path></svg>Hva skal jeg høre på?</button>
+<button type="button" onClick="{{openVelger}}" aria-label="Veileder for platevalg" style="flex: none; white-space: nowrap; height: 40px; padding: 0 14px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 6px; background: transparent; font-family: 'Archivo', sans-serif; font-size: 14px; font-weight: 700; {{T.btn}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16l-6 8v6l-4 2v-8z"></path></svg>Veileder for platevalg</button>
 <button type="button" onClick="{{openSjangre}}" style="flex: none; white-space: nowrap; height: 40px; padding: 0 14px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 6px; background: transparent; font-family: 'Archivo', sans-serif; font-size: 14px; font-weight: 700; {{T.btn}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h6"></path></svg>Sjangre</button>
 <button type="button" onClick="{{openDiscogs}}" style="flex: none; white-space: nowrap; height: 40px; padding: 0 14px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; gap: 6px; background: transparent; font-family: 'Archivo', sans-serif; font-size: 14px; font-weight: 700; {{T.btn}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="2.5"></circle></svg>Discogs</button>
 <button type="button" onClick="{{openForm}}" style="flex: none; white-space: nowrap; height: 40px; padding: 0 14px; border-radius: 4px; border: 0; cursor: pointer; display: flex; align-items: center; gap: 6px; font-family: 'Archivo', sans-serif; font-size: 14px; font-weight: 700; {{T.primary}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Ny plate</button>
@@ -1199,7 +1199,7 @@ body.mobil:has(#spiller:not(.skjult)) [data-m="bla-knapper"]{padding-bottom:150p
   };
   window.ATLAS = [0, 1, 2, 3, 4, 5, 6, 7].map((i) => 'covers/cover' + i + '.jpg');
   window.NORGE_BM = "(function () {\n  // Rommet: norske vinylannonser. F\u00f8rste gang: full sveip av hele lista. Senere: bare nye annonser.\n  // Oversikten lagres i repoet (data/norge.json) via rommet, s\u00e5 alle enheter deler den.\n  var LISTE = 'https://www.discogs.com/shop/list?formatName=Vinyl&shipsFrom=Norway&size=250';\n  if (!/(^|\\.)discogs\\.com$/.test(location.hostname)) { location.href = LISTE; return; }\n  // riktig liste med 250 annonser per side (ellers blir det tusenvis av sider); trykk bokmerket igjen n\u00e5r den er lastet\n  if (!/\\/shop\\/list/.test(location.pathname) || !/[?&]size=250\\b/.test(location.search) || !/shipsFrom=Norway/.test(location.search) || !/formatName=Vinyl/.test(location.search)) {\n    try { alert('Rommet: \u00e5pner lista med 250 norske vinylannonser per side. Trykk bokmerket igjen n\u00e5r den er lastet.'); } catch (e) {}\n    location.href = LISTE; return;\n  }\n  var ROMMET = '__ROMMET__';\n  var W = __W__, H = __H__;\n  var MAKS_NY = 60, MAKS_FULL = 2000;\n\n  function n(s) { return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\\s*\\(\\d+\\)\\s*$/, '').replace(/\\*/g, '').replace(/^the\\s+/, '').replace(/[^a-z0-9]+/g, ' ').trim(); }\n  function esc(s) { return String(s || '').replace(/&/g, '&amp;').replace(/<\/g, '&lt;').replace(/\"/g, '&quot;'); }\n  function vent(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }\n  function hent(url, opt, ms) {\n    var ctl = window.AbortController ? new AbortController() : null, t = setTimeout(function () { if (ctl) ctl.abort(); }, ms || 6000);\n    return fetch(url, Object.assign({ cache: 'no-store' }, opt || {}, ctl ? { signal: ctl.signal } : {})).then(function (r) { clearTimeout(t); return r; }, function (e) { clearTimeout(t); throw e; });\n  }\n\n  var gammel = document.getElementById('rommet-norge'); if (gammel) gammel.remove();\n  var p = document.createElement('div'); p.id = 'rommet-norge';\n  p.setAttribute('style', 'position:fixed;top:12px;right:12px;z-index:2147483647;width:380px;max-height:85vh;overflow:auto;background:#211C17;color:#F1E9DF;border:1px solid #FF7A59;border-radius:8px;padding:12px 14px;font:13px/1.45 system-ui,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.5)');\n  document.body.appendChild(p);\n  var KN = 'background:none;border:1px solid #4A4036;color:#F1E9DF;border-radius:4px;cursor:pointer;padding:3px 8px;font:12px system-ui';\n  function status(html) { p.innerHTML = html; }\n\n  // ---- lese annonsekortene p\u00e5 siden ----\n  var annonser = {}, rekke = [], avbrutt = false;\n  function les() {\n    document.querySelectorAll('a[href*=\"/shop/item/\"], a[href*=\"/sell/item/\"]').forEach(function (a) {\n      var id = (a.getAttribute('href').match(/item\\/(\\d+)/) || [])[1]; if (!id || annonser[id]) return;\n      var kort = a.closest('article') || a.closest('li') || a.parentElement; if (!kort) return;\n      var tittelEl = kort.querySelector('[data-tracking=\"shop-list-item\"]') || kort.querySelector('a[href*=\"/item/\"]:not(.msr-listing-card-image)');\n      var art = Array.prototype.map.call(kort.querySelectorAll('a[href*=\"/artist/\"]'), function (x) {\n        return [x.textContent.trim(), ((x.getAttribute('href') || '').match(/artist\\/(\\d+)/) || [])[1] || ''];\n      });\n      var tekst = kort.textContent.replace(/\\s+/g, ' ');\n      var tittel = (tittelEl ? tittelEl.textContent : '').trim();\n      if (!art.length && / [-\u2013] /.test(tittel)) { var d = tittel.split(/ [-\u2013] /); art = d[0].split(/\\s*(?:&|,|\\/)\\s*/).map(function (x) { return [x, '']; }); tittel = d.slice(1).join(' - '); }\n      if (!art.length || !tittel) return;  // ikke tegnet ferdig enn\u00e5; leses ved neste runde\n      if (/ships from/i.test(tekst) && !/ships from\\s*norway/i.test(tekst)) return;  // sikring: bare annonser som sendes fra Norge\n      var pris = (tekst.match(/[\u20ac$\u00a3]\\s?[\\d.,]+|(?:NOK|kr|SEK|DKK)\\s?[\\d\\s.,]*\\d|[\\d.,]+\\s?(?:kr|NOK)/) || [''])[0].trim();\n      var lagt = (tekst.match(/Listed ([^\u2022|]*?) ago/) || ['', ''])[1];\n      var rel = kort.querySelector('a[href*=\"/release/\"]'), r = rel ? +(((rel.getAttribute('href') || '').match(/release\\/(\\d+)/) || [])[1] || 0) : 0;\n      annonser[id] = { i: +id, a: art, t: tittel, p: pris, d: dato(lagt) };\n      if (r) annonser[id].r = r;  // pressingen (Discogs release-ID), s\u00e5 \u00f8nskelista kan skille p\u00e5 utgave\n      var yel = kort.querySelector('.msr-listing-card-year'), y = yel ? +((yel.textContent.match(/\\b(?:19|20)\\d\\d\\b/) || [])[0] || 0) : 0;\n      if (y) annonser[id].y = y;  // \u00e5ret pressingen kom ut\n      rekke.push(id);\n    });\n  }\n  // \u00ab20 minutes\u00bb / \u00ab3 days\u00bb / \u00ab2 weeks\u00bb \u2192 omtrentlig dato (\u00e5\u00e5\u00e5\u00e5-mm-dd)\n  function dato(lagt) {\n    var m = String(lagt).match(/(\\d+|an?|one)\\s+(minute|hour|day|week|month|year)/i), x = new Date();\n    if (m) {\n      var k = /^\\d+$/.test(m[1]) ? +m[1] : 1, e = m[2].toLowerCase();\n      x = new Date(Date.now() - k * { minute: 6e4, hour: 36e5, day: 864e5, week: 6048e5, month: 2592e6, year: 31536e6 }[e]);\n    }\n    return x.toISOString().slice(0, 10);\n  }\n  async function lesSide(nr) {\n    window.scrollTo(0, 0); await vent(200);\n    var y = 0, f\u00f8r = rekke.length;\n    for (var runde = 0; runde < 400 && !avbrutt; runde++) {\n      les();\n      var li = document.querySelector('li[aria-setsize]'), m\u00e5l = li ? +li.getAttribute('aria-setsize') : 0;\n      var liste = li ? li.parentElement : null;\n      var maks = liste ? Math.max(0, liste.getBoundingClientRect().bottom + window.scrollY - innerHeight + 50) : document.documentElement.scrollHeight - innerHeight;\n      if ((m\u00e5l && rekke.length - f\u00f8r >= m\u00e5l) || y >= maks) break;\n      y = Math.min(maks, y + Math.round(innerHeight * 0.8)); window.scrollTo(0, y);\n      await vent(180);\n    }\n    les();\n    return rekke.length - f\u00f8r;\n  }\n  function f\u00f8rsteId() { var a = document.querySelector('a[href*=\"/shop/item/\"], a[href*=\"/sell/item/\"]'); return a ? (a.getAttribute('href').match(/item\\/(\\d+)/) || [])[1] : ''; }\n\n  // ---- \u00f8nskelista (fersk fra rommet, ellers kopien) og eksisterende oversikt ----\n  var A = {}, kilde = 'kopien i bokmerket', oversikt = null, tillegg = null;\n  function byggA(liste) { A = {}; liste.forEach(function (w) { A[n(w.a)] = { a: w.a, tags: w.tags || '' }; }); }\n  byggA(W);\n  function lesJson(r) { return r && r.ok ? r.json() : null; }\n\n  // ---- kanal til rommet: rommet har n\u00f8kkelen og leser/skriver det private datarepoet ----\n  var fane = null, klar = false, venter = {};\n  function \u00e5pneRommet() {\n    if (fane && !fane.closed) return true;\n    klar = false; fane = window.open(ROMMET + '#norge-mottak', 'rommet-norge');\n    return !!fane;\n  }\n  window.addEventListener('message', function (e) {\n    if (e.origin !== new URL(ROMMET).origin || !e.data || typeof e.data !== 'object') return;\n    if (e.data.type === 'rommet-norge-klar') { klar = true; if (venter.klar) { var f = venter.klar; venter.klar = null; f(); } }\n    if (e.data.type === 'rommet-norge-data' && venter.data) { var g = venter.data; venter.data = null; g(e.data); }\n    if (e.data.type === 'rommet-norge-svar' && venter.svar) { var h = venter.svar; venter.svar = null; h(e.data); }\n  });\n  function sp\u00f8r(melding, svarType, ms) {\n    return new Promise(function (ok, feil) {\n      var t = setTimeout(function () { venter[svarType] = null; feil(new Error('Fikk ikke svar fra rommet.')); }, ms || 60000);\n      venter[svarType] = function (d) { clearTimeout(t); ok(d); };\n      var g\u00e5 = function () { try { fane.postMessage(melding, new URL(ROMMET).origin); } catch (e) { clearTimeout(t); feil(e); } };\n      if (klar) g\u00e5(); else { var t2 = setTimeout(function () { venter.klar = null; clearTimeout(t); feil(new Error('Fikk ikke kontakt med rommet. Er den nye versjonen lastet opp?')); }, 30000); venter.klar = function () { clearTimeout(t2); g\u00e5(); }; }\n    });\n  }\n\n  function forbered() {\n    status('<b>Norske vinylannonser<\/b><div style=\"color:#BFB2A3;margin:4px 0 8px\">Rommet \u00e5pnes i en egen fane for \u00e5 hente oversikten og \u00f8nskelista. La den fanen st\u00e5 \u00e5pen til du har lagret.<\/div><button id=\"rn-start\" style=\"' + KN + ';border-color:#FF7A59;background:#FF7A59;color:#1A0E06;font-weight:700\">Start<\/button> <button id=\"rn-x\" style=\"' + KN + '\">Avbryt<\/button>');\n    p.querySelector('#rn-x').onclick = function () { p.remove(); };\n    p.querySelector('#rn-start').onclick = async function () {\n      if (!\u00e5pneRommet()) { status('<span style=\"color:#FF9A7E\">Nettleseren stoppet vinduet. Tillat sprettoppvinduer for discogs.com og trykk bokmerket igjen.<\/span>'); return; }\n      status('<b>Henter oversikten fra rommet \u2026<\/b>');\n      try {\n        var d = await sp\u00f8r({ type: 'rommet-norge-hent' }, 'data', 120000);\n        if (!d.ok) { status('<span style=\"color:#FF9A7E\">' + esc(d.feil) + '<\/span>'); return; }\n        var liste = Array.isArray(d.wish) ? d.wish.filter(function (w) { return !/^\\s*selge\\b/i.test(w.tags || '') || /mer|original|vil ha/i.test(w.tags || ''); }) : null;\n        if (liste && liste.length) { byggA(liste); kilde = 'rommet'; }\n        oversikt = d.oversikt || null; tillegg = d.tillegg || null;\n      } catch (e) { status('<span style=\"color:#FF9A7E\">' + esc(e.message) + '<\/span>'); return; }\n      // tillegget gjelder bare opp\u00e5 den fulle sveipen det ble laget fra\n      if (tillegg && oversikt && tillegg.grunnlag && tillegg.grunnlag !== oversikt.fullSveip) tillegg = null;\n      if (oversikt && tillegg && +tillegg.sist > +oversikt.sist) oversikt.sist = +tillegg.sist;\n      var tvungen = false; try { tvungen = sessionStorage.getItem('rommet.norge.full') === '1'; sessionStorage.removeItem('rommet.norge.full'); } catch (e) {}\n      start(oversikt && oversikt.sist && !tvungen ? 'ny' : 'full');\n    };\n  }\n\n  async function start(modus) {\n    var sist = modus === 'ny' ? +oversikt.sist : 0, maks = modus === 'ny' ? MAKS_NY : MAKS_FULL, nr = 1, n\u00e5dd = false, tomme = 0;\n    var sort = document.querySelector('.hifi-select-value');\n    if (sort && !/date listed|dato/i.test(sort.textContent)) { status('<b>Sorter lista p\u00e5 \u00abDate Listed\u00bb (nyeste f\u00f8rst) og trykk igjen.<\/b>'); return; }\n    var t0 = Date.now();\n    while (!avbrutt) {\n      status('<b>' + (modus === 'full' ? 'Full sveip' : 'Nye annonser') + ': side ' + nr + ' \u2026<\/b> ' + rekke.length + ' annonser, ' + Math.round((Date.now() - t0) / 1000) + ' s ' +\n        '<button id=\"rn-stopp\" style=\"' + KN + ';margin-left:6px\">Stopp<\/button>');\n      p.querySelector('#rn-stopp').onclick = function () { avbrutt = true; };\n      var lest = await lesSide(nr);\n      tomme = lest ? 0 : tomme + 1;\n      if (sist && rekke.some(function (id) { return +id <= sist; })) { n\u00e5dd = true; break; }\n      if (nr >= maks || tomme >= 2) break;\n      var neste = document.querySelector('button[aria-label=\"Next page\"]:not([disabled])');\n      if (!neste) break;\n      var f\u00f8r = f\u00f8rsteId(); neste.click(); nr++;\n      for (var t = 0; t < 60 && f\u00f8rsteId() === f\u00f8r; t++) await vent(250);\n      if (f\u00f8rsteId() === f\u00f8r) break;\n      await vent(900);\n    }\n    var nye = rekke.filter(function (id) { return !sist || +id > sist; }).map(function (id) { return annonser[id]; });\n    var komplett = !avbrutt && (modus === 'full' ? !document.querySelector('button[aria-label=\"Next page\"]:not([disabled])') : n\u00e5dd);\n    ferdig({ modus: modus, nye: nye, sider: nr, sek: Math.round((Date.now() - t0) / 1000), komplett: komplett });\n  }\n\n  // ---- treff mot \u00f8nskelista (enkelt artistnavn; presentasjon og merkeregler kommer senere) ----\n  function treffI(liste) {\n    var ut = [];\n    liste.forEach(function (x) { var navn = ''; (x.a || []).forEach(function (ar) { if (!navn && A[n(ar[0])]) navn = ar[0]; }); if (navn) ut.push({ x: x, navn: navn, w: A[n(navn)] }); });\n    return ut;\n  }\n\n  function ferdig(r) {\n    var nyeIds = {}; r.nye.forEach(function (x) { nyeIds[x.i] = 1; });\n    // tidligere tillegg (siden full sveip) + det som er lest n\u00e5; hele oversikten = grunnlag + tillegg\n    var forrigeTillegg = r.modus === 'ny' && tillegg && tillegg.annonser ? tillegg.annonser.filter(function (x) { return !nyeIds[x.i]; }) : [];\n    r.tillegg = r.modus === 'ny' ? r.nye.concat(forrigeTillegg) : [];\n    var tSett = {}; r.tillegg.forEach(function (x) { tSett[x.i] = 1; });\n    var gamle = oversikt && oversikt.annonser ? oversikt.annonser.filter(function (x) { return !tSett[x.i]; }) : [];\n    var alle = r.modus === 'full' ? r.nye : r.tillegg.concat(gamle);\n    // full sveip som stoppet f\u00f8r siste side: behold de eldre annonsene fra forrige oversikt, s\u00e5 ingenting forsvinner\n    r.beholdt = 0;\n    if (r.modus === 'full' && !r.komplett && r.nye.length) {\n      // alle tidligere annonser som ikke ble lest n\u00e5 (ogs\u00e5 de som l\u00e5 mellom to leste sider), s\u00e5 det ikke blir hull\n      var sett = {}; r.nye.forEach(function (x) { sett[x.i] = 1; });\n      var eldre = ((tillegg && tillegg.annonser) || []).concat((oversikt && oversikt.annonser) || []).filter(function (x) { if (sett[x.i]) return false; sett[x.i] = 1; return true; });\n      r.beholdt = eldre.length; alle = r.nye.concat(eldre);\n    }\n    var tNye = treffI(r.nye), tAlle = treffI(alle);\n    var h = '<div style=\"display:flex;justify-content:space-between;gap:8px\"><b style=\"font-size:14px\">' + (r.modus === 'full' ? 'Full sveip' : 'Nye annonser') + (avbrutt ? ' \u2013 stoppet' : '') + '<\/b><button id=\"rn-x\" style=\"background:none;border:0;color:#BFB2A3;font-size:20px;cursor:pointer\">\u00d7<\/button><\/div>';\n    h += '<div style=\"color:#BFB2A3;margin:4px 0 8px\">' + r.nye.length + ' annonser lest p\u00e5 ' + r.sider + ' sider (' + r.sek + ' s).';\n    if (r.modus === 'ny') h += ' ' + (r.komplett ? 'N\u00e5dde forrige sjekk.' : 'N\u00e5dde <b>ikke<\/b> forrige sjekk innen ' + MAKS_NY + ' sider.');\n    if (r.modus === 'full') h += ' ' + (r.komplett ? 'Kom til siste side.' : 'Kom <b>ikke<\/b> til siste side' + (r.beholdt ? ', s\u00e5 ' + r.beholdt + ' annonser fra forrige oversikt beholdes.' : '.'));\n    h += '<br>Oversikten blir ' + alle.length + ' annonser. ' + Object.keys(A).length + ' \u00f8nskeartister fra ' + kilde + '.<\/div>';\n    h += '<div style=\"margin:6px 0\">Treff blant de nye: <b>' + tNye.length + '<\/b> \u00b7 i hele oversikten: <b>' + tAlle.length + '<\/b><\/div>';\n    tNye.slice(0, 30).forEach(function (t) { h += '<div style=\"border-top:1px solid #3A322A;padding:4px 0\"><a href=\"https://www.discogs.com/shop/item/' + t.x.i + '\" target=\"_blank\" style=\"color:#F1E9DF\">' + esc(t.navn + ' \u2013 ' + t.x.t) + '<\/a> <span style=\"color:#BFB2A3\">' + esc(t.x.p) + '<\/span><\/div>'; });\n    var kanLagre = r.nye.length && (r.modus === 'ny' ? r.komplett : true);\n    h += '<div style=\"border-top:1px solid #3A322A;margin-top:8px;padding-top:8px;display:flex;gap:6px;flex-wrap:wrap;align-items:center\">';\n    if (kanLagre) h += '<button id=\"rn-lagre\" style=\"' + KN + ';border-color:#FF7A59;background:#FF7A59;color:#1A0E06;font-weight:700\">Lagre i rommet<\/button>';\n    else if (r.modus === 'ny' && !r.komplett) h += '<span style=\"color:#FF9A7E\">Kan ikke lagre uten \u00e5 n\u00e5 forrige sjekk, da ville det blitt et hull i oversikten. Kj\u00f8r full sveip.<\/span>';\n    if (r.modus === 'ny' && !avbrutt) h += '<button id=\"rn-full\" style=\"' + KN + '\">Kj\u00f8r full sveip<\/button>';\n    h += '<\/div><div id=\"rn-lagring\" style=\"margin-top:6px;color:#BFB2A3\"><\/div>';\n    status(h);\n    p.querySelector('#rn-x').onclick = function () { p.remove(); };\n    var f = p.querySelector('#rn-full'); if (f) f.onclick = function () { try { sessionStorage.setItem('rommet.norge.full', '1'); } catch (e) {} status('<b>Laster lista p\u00e5 nytt. Trykk bokmerket igjen n\u00e5r den er lastet for \u00e5 starte full sveip.<\/b>'); setTimeout(function () { location.href = LISTE; }, 900); };\n    var l = p.querySelector('#rn-lagre'); if (l) l.onclick = function () { send(r, alle); };\n  }\n\n  function lastNed(data, navn) {\n    var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(data)], { type: 'application/json' })); a.download = navn || 'norge.json';\n    document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 2000);\n  }\n  // ---- sende til rommet, som lagrer i repoet med n\u00f8kkelen sin ----\n  function send(r, alle) {\n    var ut = p.querySelector('#rn-lagring');\n    var sist = 0; alle.forEach(function (x) { if (x.i > sist) sist = x.i; });\n    var n\u00e5 = new Date().toISOString();\n    // full sveip: hele oversikten i norge.json (og tillegget t\u00f8mmes). Ellers: bare den lille norge-nye.json\n    var last = r.modus === 'full' ? {\n      type: 'rommet-norge', versjon: 2, fil: 'full',\n      data: { versjon: 2, sist: sist, oppdatert: n\u00e5, fullSveip: n\u00e5, fullKomplett: r.komplett, antall: alle.length, annonser: alle.sort(function (a, b) { return b.i - a.i; }) },\n    } : {\n      type: 'rommet-norge', versjon: 2, fil: 'nye',\n      data: { versjon: 2, sist: sist, oppdatert: n\u00e5, grunnlag: (oversikt && oversikt.fullSveip) || null, antall: r.tillegg.length, annonser: r.tillegg.sort(function (a, b) { return b.i - a.i; }) },\n    };\n    if (!\u00e5pneRommet()) { ut.innerHTML = '<span style=\"color:#FF9A7E\">Nettleseren stoppet vinduet. Tillat sprettoppvinduer for discogs.com og trykk igjen.<\/span>'; return; }\n    ut.textContent = 'Lagrer ' + last.data.annonser.length + ' annonser via rommet \u2026';\n    sp\u00f8r(last, 'svar', 300000).then(function (d) {\n      ut.innerHTML = d.ok ? '<b style=\"color:#9FD39A\">Lagret: ' + d.antall + ' annonser i ' + esc(d.fil) + '.<\/b>' : '<span style=\"color:#FF9A7E\">Ikke lagret: ' + esc(d.feil) + '<\/span> <button id=\"rn-fil\" style=\"' + KN + '\">Last ned fila i stedet<\/button>';\n      var f = p.querySelector('#rn-fil'); if (f) f.onclick = function () { lastNed(last.data, last.fil === 'full' ? 'norge.json' : 'norge-nye.json'); };\n    }, function (e) {\n      ut.innerHTML = '<span style=\"color:#FF9A7E\">' + esc(e.message) + '<\/span> <button id=\"rn-fil\" style=\"' + KN + '\">Last ned fila i stedet<\/button>';\n      p.querySelector('#rn-fil').onclick = function () { lastNed(last.data, last.fil === 'full' ? 'norge.json' : 'norge-nye.json'); };\n    });\n  }\n\n  forbered();\n})();\n";
-  window.ROMMET_VERSJON = '1.2.4';
+  window.ROMMET_VERSJON = '1.2.5';
 
   const MAL = new DOMParser().parseFromString('<div id="m">' + document.getElementById('mal').textContent + '</div>', 'text/html').getElementById('m');
   const esc = (v) => String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -1748,35 +1748,36 @@ body.mobil:has(#spiller:not(.skjult)) [data-m="bla-knapper"]{padding-bottom:150p
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') lukkInfo(); });
   document.addEventListener('scroll', lukkInfo, true);
   window.addEventListener('resize', lukkInfo);
-  // ---------- «Hva skal jeg høre på?»: spørsmål som snevrer inn hele samlingen til noen få forslag ----------
+  // ---------- «Veileder for platevalg»: spørsmål som snevrer inn hele samlingen til noen få forslag ----------
   // Spørsmålene velges underveis: etter stemningen kommer det spørsmålet som deler platene som er igjen best,
-  // og svarene i mange av dem lages av det som faktisk er igjen (årstall, sjangre, bokstaver, plass i rommet).
+  // og noen svar lages av det som faktisk er igjen (som tiårene). Alt bygger på sjangrene, årene og formatene i samlingen.
   // Bildet: alle platene som små fargebrikker (omslagets farge). For hvert svar forsvinner de som ikke passer,
   // og resten vokser. Når få er igjen, blir brikkene til omslag.
   const VG = { open: false, hist: [], cur: null, forslag: [], sett: new Set(), laaser: false };
-  const MAKS_SPM = 10, NOK = 3;
+  // NOK forslag vises til slutt; spørsmålene stopper når utvalget er lite nok til at et valg gir mening (NOK_IGJEN),
+  // og et svar vises bare hvis det gir minst MIN_SVAR plater å velge mellom
+  const MAKS_SPM = 10, NOK = 3, NOK_IGJEN = 15, MIN_SVAR = 4;
   const vEsc = (v) => String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-  // stemning ut fra sjangeren (navnet i sjangertabellen)
-  const STEMNING = {
-    rolig: ['Ambient/minimalisme', 'Post-rock', 'Lav Gitar/Folk', 'Jazz-gammel'],
-    nikk: ['Rocksteady', 'HipHop/TripHop', 'Electro', 'Jazz-ny', 'Jazz rock', 'Indie/Pop', 'Rock-proggy'],
-    hoyt: ['Pønk', 'Hardt-lett', 'Hardt-kaos', 'Hardt-seigt', 'Rock-bøtta'],
+  // musikalske kjennetegn per sjanger (navnene i sjangertabellen): stemning, vokal, lydbilde, låtform og lyd
+  //   e: rolig | nikk | hoyt   v: vokal | instr | begge   lyd: gitar | maskin | blaas   form: kort | lang | midt   raa: raa | pen | midt
+  const SJ_TREKK = {
+    'Pønk':                { e: 'hoyt',  v: 'vokal', lyd: 'gitar',  form: 'kort', raa: 'raa',  fam: 'hardt' },
+    'Hardt-lett':          { e: 'hoyt',  v: 'vokal', lyd: 'gitar',  form: 'midt', raa: 'midt', fam: 'hardt' },
+    'Hardt-kaos':          { e: 'hoyt',  v: 'vokal', lyd: 'gitar',  form: 'kort', raa: 'raa',  fam: 'hardt' },
+    'Hardt-seigt':         { e: 'hoyt',  v: 'vokal', lyd: 'gitar',  form: 'lang', raa: 'raa',  fam: 'hardt' },
+    'Rock-bøtta':          { e: 'hoyt',  v: 'vokal', lyd: 'gitar',  form: 'midt', raa: 'raa',  fam: 'rock' },
+    'Rock-proggy':         { e: 'nikk',  v: 'vokal', lyd: 'gitar',  form: 'lang', raa: 'midt', fam: 'rock' },
+    'Post-rock':           { e: 'rolig', v: 'instr', lyd: 'gitar',  form: 'lang', raa: 'midt', fam: 'flyt' },
+    'Ambient/minimalisme': { e: 'rolig', v: 'instr', lyd: 'maskin', form: 'lang', raa: 'pen',  fam: 'flyt' },
+    'Lav Gitar/Folk':      { e: 'rolig', v: 'vokal', lyd: 'gitar',  form: 'midt', raa: 'midt', fam: 'folk' },
+    'Jazz-gammel':         { e: 'rolig', v: 'instr', lyd: 'blaas',  form: 'midt', raa: 'midt', fam: 'jazz' },
+    'Jazz-ny':             { e: 'nikk',  v: 'instr', lyd: 'blaas',  form: 'lang', raa: 'pen',  fam: 'jazz' },
+    'Jazz rock':           { e: 'nikk',  v: 'instr', lyd: 'blaas',  form: 'lang', raa: 'midt', fam: 'jazz' },
+    'Electro':             { e: 'nikk',  v: 'begge', lyd: 'maskin', form: 'midt', raa: 'pen',  fam: 'groove' },
+    'HipHop/TripHop':      { e: 'nikk',  v: 'vokal', lyd: 'maskin', form: 'midt', raa: 'pen',  fam: 'groove' },
+    'Rocksteady':          { e: 'nikk',  v: 'vokal', lyd: 'blaas',  form: 'kort', raa: 'midt', fam: 'groove' },
+    'Indie/Pop':           { e: 'nikk',  v: 'vokal', lyd: 'gitar',  form: 'kort', raa: 'pen',  fam: 'groove' },
   };
-  function farge(hex) {
-    const m = String(hex || '').match(/^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i); if (!m) return null;
-    const r = parseInt(m[1], 16) / 255, g = parseInt(m[2], 16) / 255, b = parseInt(m[3], 16) / 255;
-    const mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, d = mx - mn;
-    let h = 0; if (d) h = mx === r ? ((g - b) / d) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4;
-    h = (h * 60 + 360) % 360; const s = d ? d / (1 - Math.abs(2 * l - 1)) : 0;
-    return { h, s, l };
-  }
-  const fargeGruppe = (hex) => {
-    const f = farge(hex); if (!f) return '';
-    if (f.l < 0.2) return 'mork'; if (f.l > 0.75 || f.s < 0.12) return 'lys';
-    if (f.h < 50 || f.h >= 320) return 'varm'; if (f.h < 170) return 'gronn'; return 'kald';
-  };
-  const bokstav = (a) => { const s = String(a || '').replace(/^the\s+/i, '').normalize('NFKD').replace(/[̀-ͯ]/g, '').toUpperCase(); const c = s.charAt(0); return /[A-ZÆØÅ]/.test(c) ? c : '#'; };
-  const ABC = '#ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ';
   // alle platene i rommet (ikke de du har fjernet), med det spørsmålene trenger
   function vPlater() {
     const d = komp.d, L = komp.lastL; if (!L) return [];
@@ -1786,77 +1787,72 @@ body.mobil:has(#spiller:not(.skjult)) [data-m="bla-knapper"]{padding-bottom:150p
       if (L.where[i] === 13) return;
       const gi = L.where[i] === 10 ? r.g : L.g(i), gn = d.genres[gi] ? d.genres[gi].name : '';
       const fmt = String(r.fmt || ''), kort = r.s === '7"' || r.s === '10"' || /\b(EP|Single|Mini-Album)\b/.test(fmt);
-      ut.push({ i, r, gn, gi, aar: komp.aarAv(r) || r.y || 0, kort, lang: !kort && (r.n || 1) >= 2, antall: per[komp.norm(r.a)] || 1,
-        farge: fargeGruppe(r.sc), col: r.sc || '#6E6A62', ord: String(r.t || '').trim().split(/\s+/).length, b: bokstav(r.a),
-        cd: r.s === 'CD', liten: r.s === '7"' || r.s === '10"', sted: L.where[i], live: /\bLive\b/.test(fmt), samle: /Compilation/.test(fmt) });
+      ut.push(Object.assign({ i, r, gn, aar: komp.aarAv(r) || r.y || 0, kort, lang: !kort && (r.n || 1) >= 2, antall: per[komp.norm(r.a)] || 1,
+        col: r.sc || '#6E6A62', live: /\bLive\b/.test(fmt) }, SJ_TREKK[gn] || {}));
     });
     return ut;
   }
-  // del en sortert verdi i 2–4 like store grupper (grensene hentes fra platene som er igjen)
-  function kvantiler(l, verdi, antall, navn) {
-    const v = l.map(verdi).filter((x) => x !== null && x !== undefined && x !== '').sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
-    if (v.length < 2) return [];
-    const ut = []; let fra = 0;
-    for (let k = 1; k <= antall; k++) {
-      let til = Math.round(v.length * k / antall) - 1; if (til < fra) continue;
-      while (til + 1 < v.length && v[til + 1] === v[til]) til++;  // samme verdi havner i samme gruppe
-      const a = v[fra], b = v[til]; ut.push([navn(a, b), (p) => { const x = verdi(p); return x !== null && x !== undefined && x !== '' && x >= a && x <= b; }]);
-      fra = til + 1; if (fra >= v.length) break;
-    }
-    return ut;
-  }
-  // spørsmålsbanken: valg(l) lager svarene ut fra platene som er igjen
+  const er = (k, v) => (p) => p[k] === v;
+  // spørsmålsbanken. valg(l) lager svarene ut fra platene som er igjen; svar uten plater vises ikke.
+  //   gjelder(l): bare når spørsmålet gir mening (f.eks. når det meste som er igjen er jazz)
+  //   etter: tidligst som spørsmål nummer …   vekt: hvor gjerne det stilles
+  const andel = (l, f) => l.filter(f).length / Math.max(1, l.length);
   const BANK = [
-    { id: 'stemning', sp: 'Hvordan er stemningen i rommet?', fast: 0, valg: () => [
-      ['Stille og inni meg', (p) => STEMNING.rolig.includes(p.gn)],
-      ['Noe å nikke til', (p) => STEMNING.nikk.includes(p.gn)],
-      ['Skru opp!', (p) => STEMNING.hoyt.includes(p.gn)]] },
-    { id: 'tid', sp: 'Hvor mye tid har dere?', valg: () => [
-      ['Bare en kjapp en', (p) => p.kort],
-      ['Ett album', (p) => !p.kort && !p.lang],
-      ['Hele kvelden', (p) => p.lang]] },
-    { id: 'venn', sp: 'Gammel venn eller enslig svale?', under: 'En artist du har mye av, eller en du bare har én plate med.', valg: () => [
-      ['Gammel venn', (p) => p.antall >= 4],
-      ['Litt av hvert', (p) => p.antall >= 2 && p.antall <= 3],
-      ['Enslig svale', (p) => p.antall === 1]] },
-    { id: 'farge', sp: 'Pek på en farge', under: 'Fargen på omslaget.', farger: true, valg: () => [
-      ['Mørk', (p) => p.farge === 'mork', '#1E1B19'], ['Lys', (p) => p.farge === 'lys', '#E9E2D6'],
-      ['Varm', (p) => p.farge === 'varm', '#C8552F'], ['Grønn', (p) => p.farge === 'gronn', '#5E7B45'], ['Blå og lilla', (p) => p.farge === 'kald', '#3F5C86']] },
-    { id: 'aar', sp: 'Hvor skal tidsmaskinen?', valg: (l) => kvantiler(l, (p) => p.aar || null, l.length > 40 ? 4 : 3, (a, b) => (a === b ? String(a) : a + '–' + b)) },
-    { id: 'sjanger', sp: 'Hvilket hjørne av samlingen?', valg: (l) => {
-      const n = {}; l.forEach((p) => { if (p.gn && p.gn !== 'Uplassert') n[p.gn] = (n[p.gn] || 0) + 1; });
-      return Object.keys(n).sort((a, b) => n[b] - n[a]).slice(0, 5).map((g) => [g, (p) => p.gn === g]);
+    { id: 'stemning', sp: 'Hvordan er stemningen i rommet?', valg: () => [
+      ['Stille og inni meg', er('e', 'rolig')], ['Noe å nikke til', er('e', 'nikk')], ['Skru opp!', er('e', 'hoyt')]] },
+    { id: 'vokal', sp: 'Skal noen synge?', vekt: 1.5, valg: () => [
+      ['Ja, stemmer i front', (p) => p.v === 'vokal' || p.v === 'begge'], ['Helst instrumentalt', (p) => p.v === 'instr' || p.v === 'begge']] },
+    { id: 'lyd', sp: 'Hva skal bære musikken?', vekt: 1.1, valg: () => [
+      ['Gitarer', er('lyd', 'gitar')], ['Synther og beats', er('lyd', 'maskin')], ['Blås og tangenter', er('lyd', 'blaas')]] },
+    { id: 'form', sp: 'Korte låter eller lange reiser?', valg: () => [
+      ['Rett på sak', er('form', 'kort')], ['Litt av begge', er('form', 'midt')], ['Lange stykker som tar sin tid', er('form', 'lang')]] },
+    { id: 'raa', sp: 'Hvordan skal det låte?', valg: () => [
+      ['Rått og skittent', er('raa', 'raa')], ['Rent og pent', er('raa', 'pen')]] },
+    { id: 'hardt', sp: 'Hvilken kant av det harde?', vekt: 1.6, gjelder: (l) => andel(l, er('fam', 'hardt')) > 0.6, valg: () => [
+      ['Fengende og melodisk', (p) => p.gn === 'Hardt-lett'], ['Kort, kjapt og sint', (p) => p.gn === 'Pønk'],
+      ['Kaotisk og teknisk', (p) => p.gn === 'Hardt-kaos'], ['Seigt og tungt', (p) => p.gn === 'Hardt-seigt']] },
+    { id: 'jazz', sp: 'Hva slags jazz?', vekt: 1.6, gjelder: (l) => andel(l, er('fam', 'jazz')) > 0.6, valg: () => [
+      ['De gamle mestrene', (p) => p.gn === 'Jazz-gammel'], ['Moderne og nordisk', (p) => p.gn === 'Jazz-ny'], ['Jazz som rocker', (p) => p.gn === 'Jazz rock']] },
+    { id: 'rock', sp: 'Rett fram eller på langtur?', vekt: 1.6, gjelder: (l) => andel(l, er('fam', 'rock')) > 0.6, valg: () => [
+      ['Rett fram rock', (p) => p.gn === 'Rock-bøtta'], ['Prog, svinger og lange soloer', (p) => p.gn === 'Rock-proggy']] },
+    { id: 'flyt', sp: 'Svevende eller bølger?', vekt: 1.6, gjelder: (l) => andel(l, er('fam', 'flyt')) > 0.6, valg: () => [
+      ['Svevende flater uten trommer', (p) => p.gn === 'Ambient/minimalisme'], ['Bygger seg opp til et crescendo', (p) => p.gn === 'Post-rock']] },
+    { id: 'groove', sp: 'Hvor skal rytmen komme fra?', vekt: 1.6, gjelder: (l) => andel(l, er('fam', 'groove')) > 0.6, valg: () => [
+      ['Offbeat og sol', (p) => p.gn === 'Rocksteady'], ['Beats og samples', (p) => p.gn === 'HipHop/TripHop'],
+      ['Maskiner og dansegulv', (p) => p.gn === 'Electro'], ['Gitarpop', (p) => p.gn === 'Indie/Pop']] },
+    { id: 'venn', sp: 'Gammel kjenning eller en sjelden gjest?', etter: 2, valg: () => [
+      ['Et band jeg har fulgt lenge', (p) => p.antall >= 4], ['Noen jeg har et par plater med', (p) => p.antall >= 2 && p.antall <= 3], ['Et band jeg bare har én plate med', (p) => p.antall === 1]] },
+    { id: 'tid', sp: 'Hvor mye tid har dere?', etter: 2, valg: () => [
+      ['Bare en kjapp en', (p) => p.kort], ['Ett album', (p) => !p.kort && !p.lang], ['Hele kvelden', (p) => p.lang]] },
+    { id: 'aar', sp: 'Fra hvilken tid skal det låte?', etter: 3, valg: (l) => {
+      const n = {}; l.forEach((p) => { if (p.aar) { const k = Math.max(1960, Math.floor(p.aar / 10) * 10); n[k] = (n[k] || 0) + 1; } });
+      const navn = (k) => (k === 1960 ? '60-tallet og eldre' : k >= 2000 ? k + '-tallet' : String(k).slice(2) + '-tallet');
+      return Object.keys(n).map(Number).sort((a, b) => a - b).map((k) => [navn(k), (p) => p.aar && Math.max(1960, Math.floor(p.aar / 10) * 10) === k]);
     } },
-    { id: 'bokstav', sp: 'Velg en bit av alfabetet', under: 'Etter artistens navn.', valg: (l) => kvantiler(l, (p) => ABC.indexOf(p.b), 3, (a, b) => ABC[a] + (a === b ? '' : '–' + ABC[b])) },
-    { id: 'format', sp: 'Hva skal i spilleren?', valg: () => [
-      ['Stor vinyl', (p) => !p.cd && !p.liten], ['Liten vinyl', (p) => p.liten], ['CD', (p) => p.cd]] },
-    { id: 'sted', sp: 'Hvor i rommet skal vi lete?', valg: (l) => {
-      const n = {}; l.forEach((p) => { n[p.sted] = (n[p.sted] || 0) + 1; });
-      return Object.keys(n).map(Number).sort((a, b) => n[b] - n[a]).slice(0, 5).sort((a, b) => a - b).map((k) => [komp.PL[k] ? komp.PL[k].name : 'Ukjent', (p) => p.sted === k]);
-    } },
-    { id: 'tittel', sp: 'Kort eller lang tittel?', valg: () => [
-      ['Ett ord', (p) => p.ord === 1], ['To–tre ord', (p) => p.ord >= 2 && p.ord <= 3], ['Lang og kronglete', (p) => p.ord >= 4]] },
-    { id: 'type', sp: 'Studio, scene eller samling?', valg: () => [
-      ['Vanlig plate', (p) => !p.live && !p.samle], ['Live', (p) => p.live], ['Samleplate', (p) => p.samle]] },
+    { id: 'live', sp: 'Studio eller scene?', vekt: 0.6, gjelder: (l) => l.filter((p) => p.live).length >= 3, valg: () => [
+      ['Studioinnspilling', (p) => !p.live], ['Live, med publikum', (p) => p.live]] },
   ];
   function igjen() { let l = vPlater(); VG.hist.forEach((h) => { if (h.f) l = l.filter(h.f); }); return l; }
-  // velg neste spørsmål: stemningen først, deretter det som deler platene som er igjen jevnest (litt tilfeldig blant de beste)
+  // neste spørsmål: stemningen først; deretter det som deler platene jevnest (vektet), med litt tilfeldighet blant de beste
   function nesteSpm(l) {
     const brukt = new Set(VG.hist.map((h) => h.id));
-    const kand = BANK.filter((q) => !brukt.has(q.id)).map((q) => {
-      const valg = q.valg(l).map((v) => [v[0], v[1], v[2], l.filter(v[1]).length]);
-      const n = valg.map((v) => v[3]).filter((x) => x > 0), sum = n.reduce((a, b) => a + b, 0);
-      const ent = n.length < 2 ? -1 : -n.reduce((s, x) => s + (x / sum) * Math.log(x / sum), 0);
-      return { q, valg, score: q.fast === 0 && !VG.hist.length ? 99 : ent };
+    const kand = BANK.filter((q) => !brukt.has(q.id) && (!q.etter || VG.hist.length >= q.etter) && (!q.gjelder || q.gjelder(l))).map((q) => {
+      const valg = q.valg(l).map((v) => [v[0], v[1], v[2], l.filter(v[1]).length]).filter((v) => v[3] >= MIN_SVAR);
+      const n = valg.map((v) => v[3]), sum = l.length;
+      // et svar som rommer nesten alt, deler ingenting
+      const ent = valg.length < 2 || Math.max(...n) > sum * 0.92 ? -1 : -n.reduce((s, x) => s + (x / sum) * Math.log(x / sum), 0);
+      return { q, valg, score: q.id === 'stemning' && !VG.hist.length ? 99 : ent * (q.vekt || 1) };
     }).filter((x) => x.score > 0).sort((a, b) => b.score - a.score);
     if (!kand.length) return null;
-    const x = kand[VG.hist.length && kand.length > 1 && Math.random() < 0.4 ? 1 : 0];  // første spørsmål er alltid stemningen
-    return { id: x.q.id, sp: x.q.sp, under: x.q.under, farger: x.q.farger, valg: x.valg };
+    const x = kand[VG.hist.length && kand.length > 1 && Math.random() < 0.35 ? 1 : 0];  // første spørsmål er alltid stemningen
+    return { id: x.q.id, sp: x.q.sp, under: x.q.under, valg: x.valg };
   }
   function trekk(l) {
     const pool = l.filter((p) => !VG.sett.has(p.i)), fra = pool.length >= Math.min(NOK, l.length) ? pool : l;
     const a = fra.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
-    VG.forslag = a.slice(0, NOK).map((p) => p.i); VG.forslag.forEach((i) => VG.sett.add(i));
+    // samme plate i flere eksemplarer skal bare foreslås én gang
+    const set = new Set(), unik = a.filter((p) => { const k = komp.norm(p.r.a) + '|' + komp.norm(p.r.t); if (set.has(k)) return false; set.add(k); return true; });
+    VG.forslag = unik.slice(0, NOK).map((p) => p.i); VG.forslag.forEach((i) => VG.sett.add(i));
   }
   function tegnVG(animer) {
     let el = document.getElementById('vg');
@@ -1864,11 +1860,11 @@ body.mobil:has(#spiller:not(.skjult)) [data-m="bla-knapper"]{padding-bottom:150p
     el.hidden = !VG.open;
     if (!VG.open || !komp || !komp.d) return;
     const l = igjen(), n = l.length;
-    if (!VG.ferdig && !VG.cur && n > NOK && VG.hist.length < MAKS_SPM) VG.cur = nesteSpm(l);
-    const ferdig = VG.ferdig || n <= NOK || !VG.cur;
+    if (!VG.ferdig && !VG.cur && n > NOK_IGJEN && VG.hist.length < MAKS_SPM) VG.cur = nesteSpm(l);
+    const ferdig = VG.ferdig || n <= NOK_IGJEN || !VG.cur;
     if (ferdig && !VG.forslag.length) trekk(l);
     let h = '<div class="vg-kort" role="dialog" aria-modal="true" aria-labelledby="vg-t">';
-    h += '<div class="vg-topp"><h2 id="vg-t">Hva skal jeg høre på?</h2><button type="button" class="vg-x" data-vg="lukk" aria-label="Lukk">×</button></div>';
+    h += '<div class="vg-topp"><h2 id="vg-t">Veileder for platevalg</h2><button type="button" class="vg-x" data-vg="lukk" aria-label="Lukk">×</button></div>';
     if (!ferdig) {
       // brikkestørrelsen fyller feltet: jo færre plater, jo større brikker
       const W = Math.min(640, window.innerWidth - 32) - 48, Hf = 150;
@@ -1877,18 +1873,17 @@ body.mobil:has(#spiller:not(.skjult)) [data-m="bla-knapper"]{padding-bottom:150p
         const src = n <= 24 ? komp.img(p.r, 60).src : '';
         return src ? '<span class="vg-b vg-om" style="background-image:url(' + vEsc(src) + ')"></span>' : '<span class="vg-b" style="background:' + vEsc(p.col) + '"></span>';
       }).join('') + '</div>';
-      h += '<p class="vg-tall" aria-live="polite"><b>' + n + '</b> ' + (n === 1 ? 'plate' : 'plater') + ' igjen</p>';
       const q = VG.cur;
       h += '<p class="vg-sp">' + vEsc(q.sp) + '</p>' + (q.under ? '<p class="vg-under">' + vEsc(q.under) + '</p>' : '');
       h += '<div class="vg-valg' + (q.farger ? ' vg-farger' : '') + '">';
       q.valg.forEach(([navn, f, col, m], k) => {
-        h += '<button type="button" data-vg-valg="' + k + '"' + (m ? '' : ' disabled') + '>' + (col ? '<span class="vg-prikk" style="background:' + col + '"></span>' : '') + vEsc(navn) + ' <span class="vg-n">' + m + '</span></button>';
+        h += '<button type="button" data-vg-valg="' + k + '"' + '>' + vEsc(navn) + '</button>';
       });
       h += '<button type="button" class="vg-likegyldig" data-vg-valg="-1">Spiller ingen rolle</button></div>';
       h += '<div class="vg-fot"><span>Spørsmål ' + (VG.hist.length + 1) + '</span>' + (VG.hist.length ? '<button type="button" data-vg="tilbake">← Tilbake</button>' : '') + '<button type="button" data-vg="trekk">Gi meg forslag nå</button></div>';
     } else {
       const R = VG.forslag.map((i) => komp.d.recs[i]);
-      h += '<p class="vg-tall">' + (n <= NOK ? (n === 1 ? 'Det ble denne:' : 'Det ble disse:') : 'Tre trukket fra ' + n + ' plater:') + '</p>';
+      h += '<p class="vg-tall">' + (n === 1 ? 'Det ble denne:' : n <= NOK ? 'Det ble disse:' : 'Tre forslag til deg:') + '</p>';
       h += '<ul class="vg-forslag' + (animer ? ' vg-inn' : '') + '">';
       VG.forslag.forEach((i, k) => {
         const r = R[k], im = komp.img(r, 240), aar = komp.aarAv(r) || r.y;
