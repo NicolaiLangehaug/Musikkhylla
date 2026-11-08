@@ -226,6 +226,27 @@ body.mobil:has(#spiller:not(.skjult)) [data-m="bla-knapper"]{padding-bottom:150p
 .vg-hø{right:-4px;top:50%;transform:translateY(-50%) rotate(90deg)}
 .vg-valg button.vg-med{flex-direction:column;justify-content:center;gap:1px;border-radius:14px;padding:8px 16px;min-height:54px;line-height:1.2}
 .vg-valg button.vg-med small{font:500 12px 'Archivo',sans-serif;color:#BFB2A3}
+/* veilederens fire måter å velge på */
+.vg-moduser{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
+.vg-moduser button{display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-height:96px;padding:14px 16px;border-radius:10px;border:1px solid #4A4036;background:#2A241E;color:#F1E9DF;font:inherit;text-align:left;cursor:pointer}
+.vg-moduser button:hover{border-color:#FF7A59}
+.vg-moduser b{font-size:17px;font-weight:800}
+.vg-moduser small{font-size:13px;line-height:1.35;color:#BFB2A3}
+.vg-covers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+.vg-cover{position:relative;display:block;padding:0;border:0;border-radius:4px;overflow:hidden;aspect-ratio:1/1;background:#2A241E;cursor:pointer;color:#F1E9DF;transition:transform 150ms ease,box-shadow 150ms ease}
+.vg-cover:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,.5)}
+.vg-cover img{width:100%;height:100%;object-fit:cover;display:block}
+.vg-cover>span{position:absolute;left:0;right:0;bottom:0;padding:18px 8px 6px;background:linear-gradient(transparent,rgba(10,8,6,.9));font:600 12px/1.25 'Archivo',sans-serif;text-align:left;opacity:0;transition:opacity 150ms}
+.vg-cover>span small{display:block;font-weight:400;color:#D8CEC2}
+.vg-cover:hover>span,.vg-cover:focus-visible>span{opacity:1}
+.vg-covers.vg-inn .vg-cover,.vg-duell.vg-inn .vg-cover{animation:vg-inn 380ms ease both;animation-delay:var(--d)}
+.vg-duell{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:12px;margin-top:14px}
+.vg-duell .vg-cover>span{opacity:1}
+.vg-mot{font:700 13px 'IBM Plex Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:#FF7A59}
+.vg-hjul{display:flex;justify-content:center;margin:16px 0 6px}
+.vg-hjul img{width:min(260px,70vw);aspect-ratio:1/1;object-fit:cover;border-radius:4px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.vg-forslag.vg-en{grid-template-columns:minmax(0,260px)}
+@media (max-width:600px){.vg-moduser{grid-template-columns:minmax(0,1fr)}.vg-moduser button{min-height:0}.vg-covers{grid-template-columns:repeat(2,minmax(0,1fr))}.vg-cover>span{opacity:1}}
 
 </style>
 <script src="https://www.youtube.com/iframe_api" async></script>
@@ -1219,7 +1240,7 @@ body.mobil:has(#spiller:not(.skjult)) [data-m="bla-knapper"]{padding-bottom:150p
   };
   window.ATLAS = [0, 1, 2, 3, 4, 5, 6, 7].map((i) => 'covers/cover' + i + '.jpg');
   window.NORGE_BM = "(function () {\n  // Rommet: norske vinylannonser. F\u00f8rste gang: full sveip av hele lista. Senere: bare nye annonser.\n  // Oversikten lagres i repoet (data/norge.json) via rommet, s\u00e5 alle enheter deler den.\n  var LISTE = 'https://www.discogs.com/shop/list?formatName=Vinyl&shipsFrom=Norway&size=250';\n  if (!/(^|\\.)discogs\\.com$/.test(location.hostname)) { location.href = LISTE; return; }\n  // riktig liste med 250 annonser per side (ellers blir det tusenvis av sider); trykk bokmerket igjen n\u00e5r den er lastet\n  if (!/\\/shop\\/list/.test(location.pathname) || !/[?&]size=250\\b/.test(location.search) || !/shipsFrom=Norway/.test(location.search) || !/formatName=Vinyl/.test(location.search)) {\n    try { alert('Rommet: \u00e5pner lista med 250 norske vinylannonser per side. Trykk bokmerket igjen n\u00e5r den er lastet.'); } catch (e) {}\n    location.href = LISTE; return;\n  }\n  var ROMMET = '__ROMMET__';\n  var W = __W__, H = __H__;\n  var MAKS_NY = 60, MAKS_FULL = 2000;\n\n  function n(s) { return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\\s*\\(\\d+\\)\\s*$/, '').replace(/\\*/g, '').replace(/^the\\s+/, '').replace(/[^a-z0-9]+/g, ' ').trim(); }\n  function esc(s) { return String(s || '').replace(/&/g, '&amp;').replace(/<\/g, '&lt;').replace(/\"/g, '&quot;'); }\n  function vent(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }\n  function hent(url, opt, ms) {\n    var ctl = window.AbortController ? new AbortController() : null, t = setTimeout(function () { if (ctl) ctl.abort(); }, ms || 6000);\n    return fetch(url, Object.assign({ cache: 'no-store' }, opt || {}, ctl ? { signal: ctl.signal } : {})).then(function (r) { clearTimeout(t); return r; }, function (e) { clearTimeout(t); throw e; });\n  }\n\n  var gammel = document.getElementById('rommet-norge'); if (gammel) gammel.remove();\n  var p = document.createElement('div'); p.id = 'rommet-norge';\n  p.setAttribute('style', 'position:fixed;top:12px;right:12px;z-index:2147483647;width:380px;max-height:85vh;overflow:auto;background:#211C17;color:#F1E9DF;border:1px solid #FF7A59;border-radius:8px;padding:12px 14px;font:13px/1.45 system-ui,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.5)');\n  document.body.appendChild(p);\n  var KN = 'background:none;border:1px solid #4A4036;color:#F1E9DF;border-radius:4px;cursor:pointer;padding:3px 8px;font:12px system-ui';\n  function status(html) { p.innerHTML = html; }\n\n  // ---- lese annonsekortene p\u00e5 siden ----\n  var annonser = {}, rekke = [], avbrutt = false;\n  function les() {\n    document.querySelectorAll('a[href*=\"/shop/item/\"], a[href*=\"/sell/item/\"]').forEach(function (a) {\n      var id = (a.getAttribute('href').match(/item\\/(\\d+)/) || [])[1]; if (!id || annonser[id]) return;\n      var kort = a.closest('article') || a.closest('li') || a.parentElement; if (!kort) return;\n      var tittelEl = kort.querySelector('[data-tracking=\"shop-list-item\"]') || kort.querySelector('a[href*=\"/item/\"]:not(.msr-listing-card-image)');\n      var art = Array.prototype.map.call(kort.querySelectorAll('a[href*=\"/artist/\"]'), function (x) {\n        return [x.textContent.trim(), ((x.getAttribute('href') || '').match(/artist\\/(\\d+)/) || [])[1] || ''];\n      });\n      var tekst = kort.textContent.replace(/\\s+/g, ' ');\n      var tittel = (tittelEl ? tittelEl.textContent : '').trim();\n      if (!art.length && / [-\u2013] /.test(tittel)) { var d = tittel.split(/ [-\u2013] /); art = d[0].split(/\\s*(?:&|,|\\/)\\s*/).map(function (x) { return [x, '']; }); tittel = d.slice(1).join(' - '); }\n      if (!art.length || !tittel) return;  // ikke tegnet ferdig enn\u00e5; leses ved neste runde\n      if (/ships from/i.test(tekst) && !/ships from\\s*norway/i.test(tekst)) return;  // sikring: bare annonser som sendes fra Norge\n      var pris = (tekst.match(/[\u20ac$\u00a3]\\s?[\\d.,]+|(?:NOK|kr|SEK|DKK)\\s?[\\d\\s.,]*\\d|[\\d.,]+\\s?(?:kr|NOK)/) || [''])[0].trim();\n      var lagt = (tekst.match(/Listed ([^\u2022|]*?) ago/) || ['', ''])[1];\n      var rel = kort.querySelector('a[href*=\"/release/\"]'), r = rel ? +(((rel.getAttribute('href') || '').match(/release\\/(\\d+)/) || [])[1] || 0) : 0;\n      annonser[id] = { i: +id, a: art, t: tittel, p: pris, d: dato(lagt) };\n      if (r) annonser[id].r = r;  // pressingen (Discogs release-ID), s\u00e5 \u00f8nskelista kan skille p\u00e5 utgave\n      var yel = kort.querySelector('.msr-listing-card-year'), y = yel ? +((yel.textContent.match(/\\b(?:19|20)\\d\\d\\b/) || [])[0] || 0) : 0;\n      if (y) annonser[id].y = y;  // \u00e5ret pressingen kom ut\n      rekke.push(id);\n    });\n  }\n  // \u00ab20 minutes\u00bb / \u00ab3 days\u00bb / \u00ab2 weeks\u00bb \u2192 omtrentlig dato (\u00e5\u00e5\u00e5\u00e5-mm-dd)\n  function dato(lagt) {\n    var m = String(lagt).match(/(\\d+|an?|one)\\s+(minute|hour|day|week|month|year)/i), x = new Date();\n    if (m) {\n      var k = /^\\d+$/.test(m[1]) ? +m[1] : 1, e = m[2].toLowerCase();\n      x = new Date(Date.now() - k * { minute: 6e4, hour: 36e5, day: 864e5, week: 6048e5, month: 2592e6, year: 31536e6 }[e]);\n    }\n    return x.toISOString().slice(0, 10);\n  }\n  async function lesSide(nr) {\n    window.scrollTo(0, 0); await vent(200);\n    var y = 0, f\u00f8r = rekke.length;\n    for (var runde = 0; runde < 400 && !avbrutt; runde++) {\n      les();\n      var li = document.querySelector('li[aria-setsize]'), m\u00e5l = li ? +li.getAttribute('aria-setsize') : 0;\n      var liste = li ? li.parentElement : null;\n      var maks = liste ? Math.max(0, liste.getBoundingClientRect().bottom + window.scrollY - innerHeight + 50) : document.documentElement.scrollHeight - innerHeight;\n      if ((m\u00e5l && rekke.length - f\u00f8r >= m\u00e5l) || y >= maks) break;\n      y = Math.min(maks, y + Math.round(innerHeight * 0.8)); window.scrollTo(0, y);\n      await vent(180);\n    }\n    les();\n    return rekke.length - f\u00f8r;\n  }\n  function f\u00f8rsteId() { var a = document.querySelector('a[href*=\"/shop/item/\"], a[href*=\"/sell/item/\"]'); return a ? (a.getAttribute('href').match(/item\\/(\\d+)/) || [])[1] : ''; }\n\n  // ---- \u00f8nskelista (fersk fra rommet, ellers kopien) og eksisterende oversikt ----\n  var A = {}, kilde = 'kopien i bokmerket', oversikt = null, tillegg = null;\n  function byggA(liste) { A = {}; liste.forEach(function (w) { A[n(w.a)] = { a: w.a, tags: w.tags || '' }; }); }\n  byggA(W);\n  function lesJson(r) { return r && r.ok ? r.json() : null; }\n\n  // ---- kanal til rommet: rommet har n\u00f8kkelen og leser/skriver det private datarepoet ----\n  var fane = null, klar = false, venter = {};\n  function \u00e5pneRommet() {\n    if (fane && !fane.closed) return true;\n    klar = false; fane = window.open(ROMMET + '#norge-mottak', 'rommet-norge');\n    return !!fane;\n  }\n  window.addEventListener('message', function (e) {\n    if (e.origin !== new URL(ROMMET).origin || !e.data || typeof e.data !== 'object') return;\n    if (e.data.type === 'rommet-norge-klar') { klar = true; if (venter.klar) { var f = venter.klar; venter.klar = null; f(); } }\n    if (e.data.type === 'rommet-norge-data' && venter.data) { var g = venter.data; venter.data = null; g(e.data); }\n    if (e.data.type === 'rommet-norge-svar' && venter.svar) { var h = venter.svar; venter.svar = null; h(e.data); }\n  });\n  function sp\u00f8r(melding, svarType, ms) {\n    return new Promise(function (ok, feil) {\n      var t = setTimeout(function () { venter[svarType] = null; feil(new Error('Fikk ikke svar fra rommet.')); }, ms || 60000);\n      venter[svarType] = function (d) { clearTimeout(t); ok(d); };\n      var g\u00e5 = function () { try { fane.postMessage(melding, new URL(ROMMET).origin); } catch (e) { clearTimeout(t); feil(e); } };\n      if (klar) g\u00e5(); else { var t2 = setTimeout(function () { venter.klar = null; clearTimeout(t); feil(new Error('Fikk ikke kontakt med rommet. Er den nye versjonen lastet opp?')); }, 30000); venter.klar = function () { clearTimeout(t2); g\u00e5(); }; }\n    });\n  }\n\n  function forbered() {\n    status('<b>Norske vinylannonser<\/b><div style=\"color:#BFB2A3;margin:4px 0 8px\">Rommet \u00e5pnes i en egen fane for \u00e5 hente oversikten og \u00f8nskelista. La den fanen st\u00e5 \u00e5pen til du har lagret.<\/div><button id=\"rn-start\" style=\"' + KN + ';border-color:#FF7A59;background:#FF7A59;color:#1A0E06;font-weight:700\">Start<\/button> <button id=\"rn-x\" style=\"' + KN + '\">Avbryt<\/button>');\n    p.querySelector('#rn-x').onclick = function () { p.remove(); };\n    p.querySelector('#rn-start').onclick = async function () {\n      if (!\u00e5pneRommet()) { status('<span style=\"color:#FF9A7E\">Nettleseren stoppet vinduet. Tillat sprettoppvinduer for discogs.com og trykk bokmerket igjen.<\/span>'); return; }\n      status('<b>Henter oversikten fra rommet \u2026<\/b>');\n      try {\n        var d = await sp\u00f8r({ type: 'rommet-norge-hent' }, 'data', 120000);\n        if (!d.ok) { status('<span style=\"color:#FF9A7E\">' + esc(d.feil) + '<\/span>'); return; }\n        var liste = Array.isArray(d.wish) ? d.wish.filter(function (w) { return !/^\\s*selge\\b/i.test(w.tags || '') || /mer|original|vil ha/i.test(w.tags || ''); }) : null;\n        if (liste && liste.length) { byggA(liste); kilde = 'rommet'; }\n        oversikt = d.oversikt || null; tillegg = d.tillegg || null;\n      } catch (e) { status('<span style=\"color:#FF9A7E\">' + esc(e.message) + '<\/span>'); return; }\n      // tillegget gjelder bare opp\u00e5 den fulle sveipen det ble laget fra\n      if (tillegg && oversikt && tillegg.grunnlag && tillegg.grunnlag !== oversikt.fullSveip) tillegg = null;\n      if (oversikt && tillegg && +tillegg.sist > +oversikt.sist) oversikt.sist = +tillegg.sist;\n      var tvungen = false; try { tvungen = sessionStorage.getItem('rommet.norge.full') === '1'; sessionStorage.removeItem('rommet.norge.full'); } catch (e) {}\n      start(oversikt && oversikt.sist && !tvungen ? 'ny' : 'full');\n    };\n  }\n\n  async function start(modus) {\n    var sist = modus === 'ny' ? +oversikt.sist : 0, maks = modus === 'ny' ? MAKS_NY : MAKS_FULL, nr = 1, n\u00e5dd = false, tomme = 0;\n    var sort = document.querySelector('.hifi-select-value');\n    if (sort && !/date listed|dato/i.test(sort.textContent)) { status('<b>Sorter lista p\u00e5 \u00abDate Listed\u00bb (nyeste f\u00f8rst) og trykk igjen.<\/b>'); return; }\n    var t0 = Date.now();\n    while (!avbrutt) {\n      status('<b>' + (modus === 'full' ? 'Full sveip' : 'Nye annonser') + ': side ' + nr + ' \u2026<\/b> ' + rekke.length + ' annonser, ' + Math.round((Date.now() - t0) / 1000) + ' s ' +\n        '<button id=\"rn-stopp\" style=\"' + KN + ';margin-left:6px\">Stopp<\/button>');\n      p.querySelector('#rn-stopp').onclick = function () { avbrutt = true; };\n      var lest = await lesSide(nr);\n      tomme = lest ? 0 : tomme + 1;\n      if (sist && rekke.some(function (id) { return +id <= sist; })) { n\u00e5dd = true; break; }\n      if (nr >= maks || tomme >= 2) break;\n      var neste = document.querySelector('button[aria-label=\"Next page\"]:not([disabled])');\n      if (!neste) break;\n      var f\u00f8r = f\u00f8rsteId(); neste.click(); nr++;\n      for (var t = 0; t < 60 && f\u00f8rsteId() === f\u00f8r; t++) await vent(250);\n      if (f\u00f8rsteId() === f\u00f8r) break;\n      await vent(900);\n    }\n    var nye = rekke.filter(function (id) { return !sist || +id > sist; }).map(function (id) { return annonser[id]; });\n    var komplett = !avbrutt && (modus === 'full' ? !document.querySelector('button[aria-label=\"Next page\"]:not([disabled])') : n\u00e5dd);\n    ferdig({ modus: modus, nye: nye, sider: nr, sek: Math.round((Date.now() - t0) / 1000), komplett: komplett });\n  }\n\n  // ---- treff mot \u00f8nskelista (enkelt artistnavn; presentasjon og merkeregler kommer senere) ----\n  function treffI(liste) {\n    var ut = [];\n    liste.forEach(function (x) { var navn = ''; (x.a || []).forEach(function (ar) { if (!navn && A[n(ar[0])]) navn = ar[0]; }); if (navn) ut.push({ x: x, navn: navn, w: A[n(navn)] }); });\n    return ut;\n  }\n\n  function ferdig(r) {\n    var nyeIds = {}; r.nye.forEach(function (x) { nyeIds[x.i] = 1; });\n    // tidligere tillegg (siden full sveip) + det som er lest n\u00e5; hele oversikten = grunnlag + tillegg\n    var forrigeTillegg = r.modus === 'ny' && tillegg && tillegg.annonser ? tillegg.annonser.filter(function (x) { return !nyeIds[x.i]; }) : [];\n    r.tillegg = r.modus === 'ny' ? r.nye.concat(forrigeTillegg) : [];\n    var tSett = {}; r.tillegg.forEach(function (x) { tSett[x.i] = 1; });\n    var gamle = oversikt && oversikt.annonser ? oversikt.annonser.filter(function (x) { return !tSett[x.i]; }) : [];\n    var alle = r.modus === 'full' ? r.nye : r.tillegg.concat(gamle);\n    // full sveip som stoppet f\u00f8r siste side: behold de eldre annonsene fra forrige oversikt, s\u00e5 ingenting forsvinner\n    r.beholdt = 0;\n    if (r.modus === 'full' && !r.komplett && r.nye.length) {\n      // alle tidligere annonser som ikke ble lest n\u00e5 (ogs\u00e5 de som l\u00e5 mellom to leste sider), s\u00e5 det ikke blir hull\n      var sett = {}; r.nye.forEach(function (x) { sett[x.i] = 1; });\n      var eldre = ((tillegg && tillegg.annonser) || []).concat((oversikt && oversikt.annonser) || []).filter(function (x) { if (sett[x.i]) return false; sett[x.i] = 1; return true; });\n      r.beholdt = eldre.length; alle = r.nye.concat(eldre);\n    }\n    var tNye = treffI(r.nye), tAlle = treffI(alle);\n    var h = '<div style=\"display:flex;justify-content:space-between;gap:8px\"><b style=\"font-size:14px\">' + (r.modus === 'full' ? 'Full sveip' : 'Nye annonser') + (avbrutt ? ' \u2013 stoppet' : '') + '<\/b><button id=\"rn-x\" style=\"background:none;border:0;color:#BFB2A3;font-size:20px;cursor:pointer\">\u00d7<\/button><\/div>';\n    h += '<div style=\"color:#BFB2A3;margin:4px 0 8px\">' + r.nye.length + ' annonser lest p\u00e5 ' + r.sider + ' sider (' + r.sek + ' s).';\n    if (r.modus === 'ny') h += ' ' + (r.komplett ? 'N\u00e5dde forrige sjekk.' : 'N\u00e5dde <b>ikke<\/b> forrige sjekk innen ' + MAKS_NY + ' sider.');\n    if (r.modus === 'full') h += ' ' + (r.komplett ? 'Kom til siste side.' : 'Kom <b>ikke<\/b> til siste side' + (r.beholdt ? ', s\u00e5 ' + r.beholdt + ' annonser fra forrige oversikt beholdes.' : '.'));\n    h += '<br>Oversikten blir ' + alle.length + ' annonser. ' + Object.keys(A).length + ' \u00f8nskeartister fra ' + kilde + '.<\/div>';\n    h += '<div style=\"margin:6px 0\">Treff blant de nye: <b>' + tNye.length + '<\/b> \u00b7 i hele oversikten: <b>' + tAlle.length + '<\/b><\/div>';\n    tNye.slice(0, 30).forEach(function (t) { h += '<div style=\"border-top:1px solid #3A322A;padding:4px 0\"><a href=\"https://www.discogs.com/shop/item/' + t.x.i + '\" target=\"_blank\" style=\"color:#F1E9DF\">' + esc(t.navn + ' \u2013 ' + t.x.t) + '<\/a> <span style=\"color:#BFB2A3\">' + esc(t.x.p) + '<\/span><\/div>'; });\n    var kanLagre = r.nye.length && (r.modus === 'ny' ? r.komplett : true);\n    h += '<div style=\"border-top:1px solid #3A322A;margin-top:8px;padding-top:8px;display:flex;gap:6px;flex-wrap:wrap;align-items:center\">';\n    if (kanLagre) h += '<button id=\"rn-lagre\" style=\"' + KN + ';border-color:#FF7A59;background:#FF7A59;color:#1A0E06;font-weight:700\">Lagre i rommet<\/button>';\n    else if (r.modus === 'ny' && !r.komplett) h += '<span style=\"color:#FF9A7E\">Kan ikke lagre uten \u00e5 n\u00e5 forrige sjekk, da ville det blitt et hull i oversikten. Kj\u00f8r full sveip.<\/span>';\n    if (r.modus === 'ny' && !avbrutt) h += '<button id=\"rn-full\" style=\"' + KN + '\">Kj\u00f8r full sveip<\/button>';\n    h += '<\/div><div id=\"rn-lagring\" style=\"margin-top:6px;color:#BFB2A3\"><\/div>';\n    status(h);\n    p.querySelector('#rn-x').onclick = function () { p.remove(); };\n    var f = p.querySelector('#rn-full'); if (f) f.onclick = function () { try { sessionStorage.setItem('rommet.norge.full', '1'); } catch (e) {} status('<b>Laster lista p\u00e5 nytt. Trykk bokmerket igjen n\u00e5r den er lastet for \u00e5 starte full sveip.<\/b>'); setTimeout(function () { location.href = LISTE; }, 900); };\n    var l = p.querySelector('#rn-lagre'); if (l) l.onclick = function () { send(r, alle); };\n  }\n\n  function lastNed(data, navn) {\n    var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(data)], { type: 'application/json' })); a.download = navn || 'norge.json';\n    document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 2000);\n  }\n  // ---- sende til rommet, som lagrer i repoet med n\u00f8kkelen sin ----\n  function send(r, alle) {\n    var ut = p.querySelector('#rn-lagring');\n    var sist = 0; alle.forEach(function (x) { if (x.i > sist) sist = x.i; });\n    var n\u00e5 = new Date().toISOString();\n    // full sveip: hele oversikten i norge.json (og tillegget t\u00f8mmes). Ellers: bare den lille norge-nye.json\n    var last = r.modus === 'full' ? {\n      type: 'rommet-norge', versjon: 2, fil: 'full',\n      data: { versjon: 2, sist: sist, oppdatert: n\u00e5, fullSveip: n\u00e5, fullKomplett: r.komplett, antall: alle.length, annonser: alle.sort(function (a, b) { return b.i - a.i; }) },\n    } : {\n      type: 'rommet-norge', versjon: 2, fil: 'nye',\n      data: { versjon: 2, sist: sist, oppdatert: n\u00e5, grunnlag: (oversikt && oversikt.fullSveip) || null, antall: r.tillegg.length, annonser: r.tillegg.sort(function (a, b) { return b.i - a.i; }) },\n    };\n    if (!\u00e5pneRommet()) { ut.innerHTML = '<span style=\"color:#FF9A7E\">Nettleseren stoppet vinduet. Tillat sprettoppvinduer for discogs.com og trykk igjen.<\/span>'; return; }\n    ut.textContent = 'Lagrer ' + last.data.annonser.length + ' annonser via rommet \u2026';\n    sp\u00f8r(last, 'svar', 300000).then(function (d) {\n      ut.innerHTML = d.ok ? '<b style=\"color:#9FD39A\">Lagret: ' + d.antall + ' annonser i ' + esc(d.fil) + '.<\/b>' : '<span style=\"color:#FF9A7E\">Ikke lagret: ' + esc(d.feil) + '<\/span> <button id=\"rn-fil\" style=\"' + KN + '\">Last ned fila i stedet<\/button>';\n      var f = p.querySelector('#rn-fil'); if (f) f.onclick = function () { lastNed(last.data, last.fil === 'full' ? 'norge.json' : 'norge-nye.json'); };\n    }, function (e) {\n      ut.innerHTML = '<span style=\"color:#FF9A7E\">' + esc(e.message) + '<\/span> <button id=\"rn-fil\" style=\"' + KN + '\">Last ned fila i stedet<\/button>';\n      p.querySelector('#rn-fil').onclick = function () { lastNed(last.data, last.fil === 'full' ? 'norge.json' : 'norge-nye.json'); };\n    });\n  }\n\n  forbered();\n})();\n";
-  window.ROMMET_VERSJON = '1.2.8';
+  window.ROMMET_VERSJON = '1.2.9';
 
   const MAL = new DOMParser().parseFromString('<div id="m">' + document.getElementById('mal').textContent + '</div>', 'text/html').getElementById('m');
   const esc = (v) => String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -1824,6 +1845,13 @@ body.mobil:has(#spiller:not(.skjult)) [data-m="bla-knapper"]{padding-bottom:150p
       ['Feststemt', (p) => p.en === 'hoy' && p.ly === 'lys', 'fart, glede, allsang'],
       ['Ettertenksomt', (p) => p.en === 'lav' && p.ly === 'mork', 'drømmende, melankolsk, natt'],
       ['Lunt', (p) => p.en === 'lav' && p.ly === 'lys', 'varmt, avslappet, søndag']] },
+    { id: 'situasjon', sp: 'Hva skjer i rommet?', under: 'Velg det som ligner mest.', valg: () => [
+      ['Middag med venner', (p) => p.en === 'lav' && p.ly === 'lys' || p.klang === 'piano', 'prat, glass og god lyd i bakgrunnen'],
+      ['Vorspiel', (p) => p.en === 'hoy' && p.ly === 'lys', 'opp med volumet før vi går'],
+      ['Sen kveld, lyset av', (p) => p.en === 'lav' && p.ly === 'mork', 'stearinlys og lange tanker'],
+      ['Søndag med kaffe', (p) => ['akustisk', 'blaas', 'piano', 'bass'].includes(p.klang), 'avis, sofa og ingen planer'],
+      ['Ut med frustrasjonen', (p) => p.en === 'hoy' && p.ly === 'mork', 'høyt, hardt og befriende'],
+      ['Jobbe eller lese', (p) => p.v === 'instr', 'musikk uten ord som ikke forstyrrer']] },
     { id: 'vokal', sp: 'Skal noen synge?', vekt: 1.5, krever: 'alle', valg: () => [
       ['Ja, stemmer i front', (p) => p.v === 'vokal' || p.v === 'begge', 'noen å synge med på'], ['Helst instrumentalt', (p) => p.v === 'instr' || p.v === 'begge', 'la musikken snakke']] },
     { id: 'lyd', sp: 'Hvilken lyd skal fylle rommet?', vekt: 1.3, valg: () => [
@@ -1866,6 +1894,8 @@ body.mobil:has(#spiller:not(.skjult)) [data-m="bla-knapper"]{padding-bottom:150p
   // neste spørsmål: stemningen først; deretter det som deler platene jevnest (vektet), med litt tilfeldighet blant de beste
   function nesteSpm(l) {
     const brukt = new Set(VG.hist.map((h) => h.id));
+    // stemningskartet og situasjonen er to måter å starte på; bare én av dem brukes, og hvilken varierer
+    brukt.add(VG.start === 'stemning' ? 'situasjon' : 'stemning');
     const kand = BANK.filter((q) => !brukt.has(q.id) && (!q.etter || VG.hist.length >= q.etter) && (!q.gjelder || q.gjelder(l))).map((q) => {
       const alle = q.valg(l).map((v) => [v[0], v[1], v[2], l.filter(v[1]).length]), valg = alle.filter((v) => v[3] >= MIN_SVAR);
       // spørsmål som er en skala mellom to ytterpunkter stilles bare når begge sider finnes (ellers blir det skjevt)
@@ -1874,10 +1904,10 @@ body.mobil:has(#spiller:not(.skjult)) [data-m="bla-knapper"]{padding-bottom:150p
       const n = valg.map((v) => v[3]), sum = l.length;
       // et svar som rommer nesten alt, deler ingenting
       const ent = valg.length < 2 || Math.max(...n) > sum * 0.92 ? -1 : -n.reduce((s, x) => s + (x / sum) * Math.log(x / sum), 0);
-      return { q, valg, score: q.id === 'stemning' && !VG.hist.length ? 99 : ent * (q.vekt || 1) };
+      return { q, valg, score: q.id === VG.start && !VG.hist.length ? 99 : ent * (q.vekt || 1) };
     }).filter((x) => x.score > 0).sort((a, b) => b.score - a.score);
     if (!kand.length) return null;
-    const x = kand[VG.hist.length && kand.length > 1 && Math.random() < 0.35 ? 1 : 0];  // første spørsmål er alltid stemningen
+    const x = kand[VG.hist.length && kand.length > 1 && Math.random() < 0.35 ? 1 : 0];  // første spørsmål er alltid startspørsmålet
     return { id: x.q.id, sp: x.q.sp, under: x.q.under, kart: x.q.kart, valg: x.valg };
   }
   function trekk(l) {
@@ -1887,17 +1917,46 @@ body.mobil:has(#spiller:not(.skjult)) [data-m="bla-knapper"]{padding-bottom:150p
     const set = new Set(), unik = a.filter((p) => { const k = komp.norm(p.r.a) + '|' + komp.norm(p.r.t); if (set.has(k)) return false; set.add(k); return true; });
     VG.forslag = unik.slice(0, NOK).map((p) => p.i); VG.forslag.forEach((i) => VG.sett.add(i));
   }
+  // felles visning av forslag (omslag, tittel, artist, år og knapper)
+  function forslagHtml(ids, tittel, animer) {
+    let h = '<p class="vg-tall">' + vEsc(tittel) + '</p><ul class="vg-forslag' + (ids.length === 1 ? ' vg-en' : '') + (animer ? ' vg-inn' : '') + '">';
+    ids.forEach((i, k) => {
+      const r = komp.d.recs[i], im = komp.img(r, 300), aar = komp.aarAv(r) || r.y;
+      h += '<li style="--d:' + k * 120 + 'ms"><div class="vg-omslag">' + (im.src ? '<img src="' + vEsc(im.src) + '" alt="">' : '<span>' + vEsc(r.a + ' – ' + r.t) + '</span>') + '</div>' +
+        '<b>' + vEsc(r.t) + '</b><span>' + vEsc(r.a) + (aar ? ' · ' + aar : '') + '</span>' +
+        '<div class="vg-knapper"><button type="button" class="vg-prim" data-vg-spill="' + i + '">' + (r.s === 'CD' ? 'Sett i CD-spilleren' : 'Sett på platespilleren') + '</button><button type="button" data-vg-kort="' + i + '">Åpne kortet</button></div></li>';
+    });
+    return h + '</ul>';
+  }
+  const MODUSER = [
+    ['spm', 'Still meg noen spørsmål', 'Stemning, lyd og situasjon. Noen få spørsmål, så tre forslag.'],
+    ['jakt', 'Omslagsjakt', 'Velg omslaget som frister mest, tre ganger. Forslagene ligner på det du trakk mot.'],
+    ['duell', 'Duell', 'Åtte plater, to og to mot hverandre. Vinneren går på.'],
+    ['spinn', 'Snurr hjulet', 'Ingen spørsmål. La tilfeldighetene bestemme.'],
+  ];
   function tegnVG(animer) {
     let el = document.getElementById('vg');
     if (!el) { el = document.createElement('div'); el.id = 'vg'; document.body.appendChild(el); }
     el.hidden = !VG.open;
     if (!VG.open || !komp || !komp.d) return;
+    let h = '<div class="vg-kort" role="dialog" aria-modal="true" aria-labelledby="vg-t">';
+    h += '<div class="vg-topp"><h2 id="vg-t">Veileder for platevalg</h2><button type="button" class="vg-x" data-vg="lukk" aria-label="Lukk">×</button></div>';
+    if (!VG.modus) {
+      h += '<p class="vg-sp">Hvordan vil du velge i kveld?</p><div class="vg-moduser">' +
+        MODUSER.map(([id, navn, tekst]) => '<button type="button" data-vg-modus="' + id + '"><b>' + vEsc(navn) + '</b><small>' + vEsc(tekst) + '</small></button>').join('') + '</div>';
+    } else if (VG.modus === 'jakt') h += jaktHtml(animer);
+    else if (VG.modus === 'duell') h += duellHtml(animer);
+    else if (VG.modus === 'spinn') h += spinnHtml(animer);
+    else h += spmHtml(animer);
+    h += '</div>';
+    el.innerHTML = h;
+  }
+  function spmHtml(animer) {
+    let h = '';
     const l = igjen(), n = l.length;
     if (!VG.ferdig && !VG.cur && n > NOK_IGJEN && VG.hist.length < MAKS_SPM) VG.cur = nesteSpm(l);
     const ferdig = VG.ferdig || n <= NOK_IGJEN || !VG.cur;
     if (ferdig && !VG.forslag.length) trekk(l);
-    let h = '<div class="vg-kort" role="dialog" aria-modal="true" aria-labelledby="vg-t">';
-    h += '<div class="vg-topp"><h2 id="vg-t">Veileder for platevalg</h2><button type="button" class="vg-x" data-vg="lukk" aria-label="Lukk">×</button></div>';
     if (!ferdig) {
       // brikkestørrelsen fyller feltet: jo færre plater, jo større brikker
       const W = Math.min(640, window.innerWidth - 32) - 48, Hf = 150;
@@ -1921,21 +1980,98 @@ body.mobil:has(#spiller:not(.skjult)) [data-m="bla-knapper"]{padding-bottom:150p
         q.valg.forEach(([navn, f, und], k) => { h += '<button type="button" data-vg-valg="' + k + '"' + (und ? ' class="vg-med"' : '') + '><span>' + vEsc(navn) + '</span>' + (und ? '<small>' + vEsc(und) + '</small>' : '') + '</button>'; });
       }
       h += '<button type="button" class="vg-likegyldig" data-vg-valg="-1">Spiller ingen rolle</button></div>';
-      h += '<div class="vg-fot"><span>Spørsmål ' + (VG.hist.length + 1) + '</span>' + (VG.hist.length ? '<button type="button" data-vg="tilbake">← Tilbake</button>' : '') + '<button type="button" data-vg="trekk">Gi meg forslag nå</button></div>';
+      h += '<div class="vg-fot"><span>Spørsmål ' + (VG.hist.length + 1) + '</span>' + (VG.hist.length ? '<button type="button" data-vg="tilbake">← Tilbake</button>' : '<button type="button" data-vg="ny">← Andre måter</button>') + '<button type="button" data-vg="trekk">Gi meg forslag nå</button></div>';
     } else {
-      const R = VG.forslag.map((i) => komp.d.recs[i]);
-      h += '<p class="vg-tall">' + (n === 1 ? 'Det ble denne:' : n <= NOK ? 'Det ble disse:' : 'Tre forslag til deg:') + '</p>';
-      h += '<ul class="vg-forslag' + (animer ? ' vg-inn' : '') + '">';
-      VG.forslag.forEach((i, k) => {
-        const r = R[k], im = komp.img(r, 240), aar = komp.aarAv(r) || r.y;
-        h += '<li style="--d:' + k * 120 + 'ms"><div class="vg-omslag">' + (im.src ? '<img src="' + vEsc(im.src) + '" alt="">' : '<span>' + vEsc(r.a + ' – ' + r.t) + '</span>') + '</div>' +
-          '<b>' + vEsc(r.t) + '</b><span>' + vEsc(r.a) + (aar ? ' · ' + aar : '') + '</span>' +
-          '<div class="vg-knapper"><button type="button" class="vg-prim" data-vg-spill="' + i + '">' + (r.s === 'CD' ? 'Sett i CD-spilleren' : 'Sett på platespilleren') + '</button><button type="button" data-vg-kort="' + i + '">Åpne kortet</button></div></li>';
-      });
-      h += '</ul><div class="vg-fot">' + (VG.hist.length ? '<button type="button" data-vg="tilbake">← Tilbake</button>' : '') + (n > NOK ? '<button type="button" data-vg="snurr">Snurr igjen</button>' : '') + '<button type="button" data-vg="ny">Start på nytt</button></div>';
+      h += forslagHtml(VG.forslag, n === 1 ? 'Det ble denne:' : n <= NOK ? 'Det ble disse:' : 'Tre forslag til deg:', animer);
+      h += '<div class="vg-fot">' + (VG.hist.length ? '<button type="button" data-vg="tilbake">← Tilbake</button>' : '') + (n > NOK ? '<button type="button" data-vg="snurr">Snurr igjen</button>' : '') + '<button type="button" data-vg="ny">Andre måter å velge</button></div>';
     }
-    h += '</div>';
-    el.innerHTML = h;
+    return h;
+  }
+
+  // ---- felles: plater med omslag, tilfeldig og variert utvalg ----
+  const bland = (a) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const medOmslag = () => vPlater().filter((p) => komp.img(p.r, 60).src);
+  // n plater, helst fra ulike hjørner av samlingen (ulik sjangerfamilie og lyd), og hver plate bare én gang
+  function variert(l, n, unntatt) {
+    const ut = [], fam = new Set(), tit = new Set(unntatt || []);
+    const nøk = (p) => komp.norm(p.r.a) + '|' + komp.norm(p.r.t);
+    for (const runde of [0, 1]) for (const p of bland(l)) {
+      if (ut.length >= n) break; const k = nøk(p); if (tit.has(k)) continue;
+      const f = (p.fam || p.gn) + '|' + (p.klang || ''); if (!runde && fam.has(f)) continue;
+      fam.add(f); tit.add(k); ut.push(p);
+    }
+    return ut;
+  }
+  const omslagKnapp = (p, attr, stor) => '<button type="button" class="vg-cover' + (stor ? ' vg-stor' : '') + '" ' + attr + ' aria-label="' + vEsc(p.r.a + ' – ' + p.r.t) + '"><img src="' + vEsc(komp.img(p.r, stor ? 300 : 200).src) + '" alt=""><span>' + vEsc(p.r.t) + '<small>' + vEsc(p.r.a) + '</small></span></button>';
+
+  // ---- omslagsjakt: tre runder med seks omslag; utvalget krymper mot det du velger ----
+  const likhet = (a, b) => (a.fam && a.fam === b.fam ? 2 : 0) + (a.gn === b.gn ? 1 : 0) + (a.en === b.en && a.ly === b.ly ? 1.5 : 0) +
+    (a.klang && a.klang === b.klang ? 1 : 0) + (a.aar && b.aar && Math.abs(a.aar - b.aar) <= 8 ? 1 : 0) + (a.v === b.v ? 0.5 : 0);
+  function jaktHtml(animer) {
+    const J = VG.jakt;
+    if (J.runde >= 3) {
+      if (!J.forslag) J.forslag = variert(J.pool, NOK).map((p) => p.i);
+      return forslagHtml(J.forslag, 'Ut fra omslagene du falt for:', animer) +
+        '<div class="vg-fot"><button type="button" data-vg="jakt-igjen">Tre andre</button><button type="button" data-vg="ny">Andre måter å velge</button></div>';
+    }
+    if (!J.vist) J.vist = variert(J.pool, 6, J.sett);
+    const sp = ['Hvilket omslag frister mest?', 'Og hvilket av disse?', 'Siste runde. Hvilket?'][J.runde];
+    return '<p class="vg-sp">' + sp + '</p><p class="vg-under">Døm platen etter coveret.</p><div class="vg-covers' + (animer ? ' vg-inn' : '') + '">' +
+      J.vist.map((p, k) => omslagKnapp(p, 'data-vg-jakt="' + k + '" style="--d:' + k * 60 + 'ms"')).join('') + '</div>' +
+      '<div class="vg-fot"><span>Runde ' + (J.runde + 1) + ' av 3</span><button type="button" data-vg="jakt-nye">Vis seks andre</button><button type="button" data-vg="ny">Andre måter å velge</button></div>';
+  }
+  function jaktVelg(k) {
+    const J = VG.jakt, p = J.vist[k]; if (!p) return;
+    J.valgt.push(p); J.vist.forEach((x) => J.sett.push(komp.norm(x.r.a) + '|' + komp.norm(x.r.t)));
+    // behold det som ligner mest på alt du har valgt så langt (minst 15, ellers drøyt en tredel)
+    const sk = (x) => J.valgt.reduce((s, v) => s + likhet(x, v), 0) + Math.random() * 0.5;
+    const sortert = J.pool.map((x) => [x, sk(x)]).sort((a, b) => b[1] - a[1]).map((x) => x[0]);
+    J.pool = sortert.slice(0, Math.max(15, Math.ceil(J.pool.length * 0.35)));
+    if (!J.pool.some((x) => x.i === p.i)) J.pool.push(p);
+    J.runde++; J.vist = null; J.forslag = null;
+  }
+
+  // ---- duell: åtte plater i utslagsrunder ----
+  function duellHtml(animer) {
+    const D = VG.duell;
+    if (D.felt.length === 1) {
+      const v = D.felt[0];
+      return forslagHtml([v.i], 'Vinneren er …', animer) +
+        (D.finale ? '<p class="vg-under">Slo ut ' + vEsc(D.finale.r.a + ' – ' + D.finale.r.t) + ' i finalen.</p>' : '') +
+        '<div class="vg-fot"><button type="button" data-vg="duell-ny">Ny duell</button><button type="button" data-vg="ny">Andre måter å velge</button></div>';
+    }
+    const a = D.felt[D.pos * 2], b = D.felt[D.pos * 2 + 1], kamper = D.felt.length / 2;
+    const fase = kamper === 4 ? 'Kvartfinale ' + (D.pos + 1) + ' av 4' : kamper === 2 ? 'Semifinale ' + (D.pos + 1) + ' av 2' : 'Finale';
+    return '<p class="vg-sp">' + fase + '</p><p class="vg-under">Hvilken vil du heller høre nå?</p><div class="vg-duell' + (animer ? ' vg-inn' : '') + '">' +
+      omslagKnapp(a, 'data-vg-duell="0" style="--d:0ms"', true) + '<span class="vg-mot">mot</span>' + omslagKnapp(b, 'data-vg-duell="1" style="--d:120ms"', true) + '</div>' +
+      '<div class="vg-fot"><button type="button" data-vg="duell-ny">Ny duell</button><button type="button" data-vg="ny">Andre måter å velge</button></div>';
+  }
+  function duellVelg(k) {
+    const D = VG.duell, a = D.felt[D.pos * 2], b = D.felt[D.pos * 2 + 1];
+    D.vinnere.push(k ? b : a); if (D.felt.length === 2) D.finale = k ? a : b;
+    D.pos++;
+    if (D.pos * 2 >= D.felt.length) { D.felt = D.vinnere; D.vinnere = []; D.pos = 0; }
+  }
+
+  // ---- snurr hjulet: omslagene ruller forbi og stopper på én ----
+  function spinnHtml(animer) {
+    const S = VG.spinn;
+    if (S.ferdig) return forslagHtml([S.ferdig.i], 'Hjulet stoppet på:', animer) +
+      '<div class="vg-fot"><button type="button" data-vg="spinn">Snurr igjen</button><button type="button" data-vg="ny">Andre måter å velge</button></div>';
+    return '<p class="vg-sp">Snurrer …</p><div class="vg-hjul"><img id="vg-hjul" src="' + vEsc(S.vis ? komp.img(S.vis.r, 300).src : '') + '" alt=""></div>';
+  }
+  function snurr() {
+    const l = medOmslag(); if (!l.length) return;
+    const vinner = l[Math.floor(Math.random() * l.length)], rull = bland(l).slice(0, 22).concat([vinner]);
+    VG.spinn = { ferdig: null, vis: rull[0] }; tegnVG();
+    const ro = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let k = 0, pause = 50;
+    const steg = () => {
+      k++; const img = document.getElementById('vg-hjul');
+      if (k >= rull.length || ro || !img) { VG.spinn.ferdig = vinner; return tegnVG(true); }
+      img.src = komp.img(rull[k].r, 300).src; pause *= 1.13; VG.spinnTimer = setTimeout(steg, pause);
+    };
+    VG.spinnTimer = setTimeout(steg, pause);
   }
   function vgSvar(k) {
     const q = VG.cur; if (!q) return;
@@ -1950,17 +2086,35 @@ body.mobil:has(#spiller:not(.skjult)) [data-m="bla-knapper"]{padding-bottom:150p
       setTimeout(() => { VG.laaser = false; tegnVG(true); }, 420);
     } else tegnVG(true);
   }
-  function vgNullstill() { VG.hist = []; VG.cur = null; VG.forslag = []; VG.sett = new Set(); VG.ferdig = false; VG.laaser = false; }
+  function vgNullstill() {
+    clearTimeout(VG.spinnTimer);
+    VG.modus = null; VG.hist = []; VG.cur = null; VG.forslag = []; VG.sett = new Set(); VG.ferdig = false; VG.laaser = false;
+    VG.start = Math.random() < 0.5 ? 'stemning' : 'situasjon';
+  }
+  function startModus(m) {
+    vgNullstill(); VG.modus = m;
+    if (m === 'jakt') VG.jakt = { runde: 0, pool: medOmslag(), valgt: [], sett: [], vist: null, forslag: null };
+    if (m === 'duell') VG.duell = { felt: bland(variert(medOmslag(), 8)), vinnere: [], pos: 0, finale: null };
+    if (m === 'spinn') return snurr();
+    tegnVG(true);
+  }
   document.addEventListener('click', (e) => {
     const vg = document.getElementById('vg'); if (!vg || vg.hidden || !e.target.closest) return;
     if (e.target === vg) { VG.open = false; return tegnVG(); }
     if (VG.laaser) return;
     const b = e.target.closest('#vg button'); if (!b) return;
     if (b.hasAttribute('data-vg-valg')) return vgSvar(+b.getAttribute('data-vg-valg'));
+    if (b.hasAttribute('data-vg-modus')) return startModus(b.getAttribute('data-vg-modus'));
+    if (b.hasAttribute('data-vg-jakt')) { jaktVelg(+b.getAttribute('data-vg-jakt')); return tegnVG(true); }
+    if (b.hasAttribute('data-vg-duell')) { duellVelg(+b.getAttribute('data-vg-duell')); return tegnVG(true); }
     if (b.hasAttribute('data-vg-spill')) { const i = +b.getAttribute('data-vg-spill'); VG.open = false; tegnVG(); komp.play(i); return; }
     if (b.hasAttribute('data-vg-kort')) { const i = +b.getAttribute('data-vg-kort'); VG.open = false; tegnVG(); komp.setState({ sel: i }); return; }
     const a = b.getAttribute('data-vg');
-    if (a === 'lukk') VG.open = false;
+    if (a === 'lukk') { VG.open = false; clearTimeout(VG.spinnTimer); }
+    if (a === 'jakt-nye') { const J = VG.jakt; J.vist.forEach((x) => J.sett.push(komp.norm(x.r.a) + '|' + komp.norm(x.r.t))); J.vist = null; return tegnVG(true); }
+    if (a === 'jakt-igjen') { const J = VG.jakt; J.sett = J.sett.concat(J.forslag.map((i) => komp.norm(komp.d.recs[i].a) + '|' + komp.norm(komp.d.recs[i].t))); J.forslag = variert(J.pool, NOK, J.sett).map((p) => p.i); if (!J.forslag.length) J.forslag = variert(J.pool, NOK).map((p) => p.i); return tegnVG(true); }
+    if (a === 'duell-ny') return startModus('duell');
+    if (a === 'spinn') return snurr();
     if (a === 'tilbake') {
       // fra forslagene etter «Gi meg forslag nå»: tilbake til spørsmålet du var på; ellers: angre siste svar
       if (VG.ferdig && VG.cur) { VG.ferdig = false; VG.forslag = []; }
@@ -1971,7 +2125,7 @@ body.mobil:has(#spiller:not(.skjult)) [data-m="bla-knapper"]{padding-bottom:150p
     if (a === 'ny') vgNullstill();
     tegnVG(a === 'trekk');
   });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && VG.open) { VG.open = false; tegnVG(); } });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && VG.open) { VG.open = false; clearTimeout(VG.spinnTimer); tegnVG(); } });
   window.velgerÅpne = () => { VG.open = true; vgNullstill(); tegnVG(); };
 
   function start() {
