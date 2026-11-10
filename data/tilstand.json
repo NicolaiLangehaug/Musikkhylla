@@ -4,8 +4,6 @@
   "ignorert": {},
   "leggTil": {},
   "rids": [
-   "2245110",
-   "38930095",
    "24934064",
    "15953433",
    "18648064",
@@ -774,6 +772,7 @@
    "2940876",
    "1361007",
    "2085011",
+   "30078016",
    "3773978",
    "4168622",
    "2480630",
@@ -801,7 +800,7 @@
    "3744728",
    "2285589"
   ],
-  "sist": "2026-11-06T20:16:21+00:00"
+  "sist": "2026-10-31T09:56:26+00:00"
  },
  "extra": [
   {
@@ -1055,68 +1054,6 @@
    "w": "Mer",
    "y": 2006,
    "yt": []
-  },
-  {
-   "a": "Red Sparowes",
-   "c": "Near Mint (NM or M-)",
-   "cat": "CORE088",
-   "cc": "Very Good Plus (VG+)",
-   "cv": null,
-   "fmt": "Vinyl, LP, Album, Limited Edition",
-   "g": 4,
-   "homed": false,
-   "iDiscogs": true,
-   "id": "2245110",
-   "kj": "Fra Discogs 6. november 2026",
-   "lb": "Conspiracy Records (2)",
-   "n": 1,
-   "nid": 1794172484788,
-   "ny": true,
-   "nyImg": "gh:1794172484788",
-   "oy": 2010,
-   "r": "",
-   "re": false,
-   "s": "LP",
-   "sc": "#424337",
-   "st": 0,
-   "t": "The Fear Is Excruciating, But Therein Lies The Answer",
-   "url": "https://www.discogs.com/release/2245110",
-   "w": "",
-   "y": 2010,
-   "yt": [
-    "xdz78NOLNp0",
-    "xZY_Bbat1EM",
-    "VXZi37D7OzY"
-   ]
-  },
-  {
-   "a": "Cult Of Luna",
-   "c": "Near Mint (NM or M-)",
-   "cat": "SVN020LP",
-   "cc": "Near Mint (NM or M-)",
-   "cv": null,
-   "fmt": "2 x Vinyl, LP, Album",
-   "g": 3,
-   "homed": false,
-   "iDiscogs": true,
-   "id": "38930095",
-   "kj": "Fra Discogs 6. november 2026",
-   "lb": "Red Creek",
-   "n": 2,
-   "nid": 1794172484789,
-   "ny": true,
-   "nyImg": "gh:1794172484789",
-   "oy": 2026,
-   "r": "",
-   "re": false,
-   "s": "LP",
-   "sc": "#6a7d89",
-   "st": 0,
-   "t": "In The Shadow Of Your Shadow",
-   "url": "https://www.discogs.com/release/38930095",
-   "w": "",
-   "y": 2026,
-   "yt": []
   }
  ],
  "gone": {
@@ -1154,7 +1091,7 @@
   "786": 4,
   "799": 16
  },
- "np": 450,
+ "np": 586,
  "placed": {
   "53": 3,
   "797": 10,
@@ -1165,11 +1102,11 @@
  "wish": [
   {
    "a": "Aera",
-   "tags": "Vil ha: Aera"
+   "tags": "Vil ha: Hand Und Fuß"
   },
   {
    "a": "Charles Mingus",
-   "tags": "Vil ha"
+   "tags": ""
   },
   {
    "a": "Alice Clark",
@@ -1225,7 +1162,7 @@
   },
   {
    "a": "Blood for Blood",
-   "tags": "Vil ha: Spit my last breath"
+   "tags": "Vil ha"
   },
   {
    "a": "Brian Eno",
@@ -1273,7 +1210,7 @@
   },
   {
    "a": "The Doors",
-   "tags": "Vil ha: Morrison hotel [år 1967–1973]"
+   "tags": "Vil ha"
   },
   {
    "a": "The Durutti Column",
@@ -1317,7 +1254,7 @@
   },
   {
    "a": "Herbie Hancock",
-   "tags": "Vil ha: Sextant"
+   "tags": "Vil ha: Head Hunters · Vil ha: Sextant"
   },
   {
    "a": "Hexis",
@@ -1468,31 +1405,15 @@
    "tags": "Vil ha"
   },
   {
+   "a": "Fllujah",
+   "tags": "Selge: The flesh prevails"
+  },
+  {
    "a": "Totalt Jävla Mörker",
    "tags": "Vil ha"
   },
   {
    "a": "Funeral Diner",
-   "tags": "Vil ha"
-  },
-  {
-   "a": "Nils Petter Molvær",
-   "tags": "Vil ha"
-  },
-  {
-   "a": "Fallujah",
-   "tags": "Selge: The Flesh Prevails"
-  },
-  {
-   "a": "Loscil",
-   "tags": "Vil ha"
-  },
-  {
-   "a": "Saluki",
-   "tags": "Vil ha"
-  },
-  {
-   "a": "Massive attack",
    "tags": "Vil ha"
   }
  ],
