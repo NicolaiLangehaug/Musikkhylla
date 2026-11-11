@@ -1176,6 +1176,10 @@
    "n": "Duke Ellington – Rockin' In Rhythm / Mood Indigo / Every Tube / Time Out",
    "t": 1794399078206
   },
+  "r1132695": {
+   "n": "Kåre & The Cavemen – ....Reverberation! (1996)",
+   "t": 1794399429505
+  },
   "r11381062": {
    "n": "Yes – Tormato (1978)",
    "t": 1794399055788
@@ -1408,6 +1412,10 @@
    "n": "The Beatles – I Want To Hold Your Hand (1963)",
    "t": 1794385013636
   },
+  "r14813270": {
+   "n": "Finn Kalvik – Barndommens Jul (1982)",
+   "t": 1794399431056
+  },
   "r1498188": {
    "n": "The Beatles – Act Naturally (1965)",
    "t": 1794399163424
@@ -1507,6 +1515,10 @@
   "r1822632": {
    "n": "Pink Floyd – Relics (1971)",
    "t": 1794349912570
+  },
+  "r1837964": {
+   "n": "Finn Kalvik – Malene (1987)",
+   "t": 1794399431691
   },
   "r18466402": {
    "n": "Ruphus – Manmade (2021)",
@@ -2016,6 +2028,10 @@
    "n": "The Beatles – Let It Be (1970)",
    "t": 1794349915026
   },
+  "r4623207": {
+   "n": "John McLaughlin – Friday Night In San Francisco (1981)",
+   "t": 1794399432270
+  },
   "r4719201": {
    "n": "Black Sabbath – Headless Cross (1989)",
    "t": 1794384305721
@@ -2112,6 +2128,10 @@
    "n": "Django Reinhardt – Nuages (1984)",
    "t": 1794396135462
   },
+  "r565321": {
+   "n": "Thomas Dybdahl – John Wayne EP (2001)",
+   "t": 1794399426338
+  },
   "r571550": {
    "n": "a-ha – Take On Me (1984)",
    "t": 1794385033601
@@ -2147,6 +2167,10 @@
   "r629381": {
    "n": "Beastie Boys – Limited Edition Interview Picture Disc (1987)",
    "t": 1794384465219
+  },
+  "r6374374": {
+   "n": "King Crimson – The Court Of The Crimson King (1969)",
+   "t": 1794399424308
   },
   "r6450255": {
    "n": "Finn Kalvik – Livets Lyse Side (1988)",
@@ -2187,6 +2211,10 @@
   "r6818561": {
    "n": "The Beatles – Please Please Me (1976)",
    "t": 1794399402765
+  },
+  "r6824636": {
+   "n": "Neil Young – War Song (1972)",
+   "t": 1794399432890
   },
   "r684630": {
    "n": "Animal Collective – Feels (2005)",
@@ -2284,9 +2312,17 @@
    "n": "Baroness – Purple (2015)",
    "t": 1794384617969
   },
+  "r7860812": {
+   "n": "Finn Kalvik – Bokseren (1976)",
+   "t": 1794399433608
+  },
   "r7864126": {
    "n": "Alton Ellis – African Descendants (1973)",
    "t": 1794384736088
+  },
+  "r787988": {
+   "n": "NOFX – Pods And Gods (2000)",
+   "t": 1794399428673
   },
   "r8008159": {
    "n": "The Grateful Dead – Shakedown Street (1978)",
@@ -2363,6 +2399,10 @@
   "r8917521": {
    "n": "Pink Floyd – Ummagumma",
    "t": 1794399399352
+  },
+  "r8922370": {
+   "n": "Pink Floyd – Money (1973)",
+   "t": 1794399425187
   },
   "r897443": {
    "n": "Animal Collective – People (2007)",
