@@ -1108,6 +1108,10 @@
    "n": "Return To Forever – Hymn Of The Seventh Galaxy (1973)",
    "t": 1794400520680
   },
+  "r10073513": {
+   "n": "Charlie Parker – The Essential Charlie Parker (1961)",
+   "t": 1794491513955
+  },
   "r10167109": {
    "n": "The Beatles – Strawberry Fields Forever / Penny Lane (2017)",
    "t": 1794384768905
@@ -1143,6 +1147,10 @@
   "r1031858": {
    "n": "Osibisa – Ojah Awake (1976)",
    "t": 1794491332779
+  },
+  "r10322505": {
+   "n": "Charlie Parker – Yardbird (1965)",
+   "t": 1794491514267
   },
   "r10333298": {
    "n": "Pink Floyd – A Saucerful Of Secrets (1968)",
@@ -1392,6 +1400,10 @@
    "n": "Black Sabbath – Sabotage (1975)",
    "t": 1794399136591
   },
+  "r11978250": {
+   "n": "Eric Burdon & War – Love Is All Around (1976)",
+   "t": 1794491515518
+  },
   "r12004382": {
    "n": "Pink Floyd – Pulse (2018)",
    "t": 1794399084518
@@ -1403,6 +1415,10 @@
   "r12069859": {
    "n": "Motorpsycho – A Boxful Of Demons (2018)",
    "t": 1794384325216
+  },
+  "r12088769": {
+   "n": "Duke Ellington – New Orleans Suite (1971)",
+   "t": 1794491512002
   },
   "r12101355": {
    "n": "Simon & Garfunkel – The Graduate (Original Sound Track Recording) (2018)",
@@ -1463,6 +1479,10 @@
   "r12383451": {
    "n": "Supertramp – Paris (1980)",
    "t": 1794399650549
+  },
+  "r12386776": {
+   "n": "Neil Young – Rust Never Sleeps",
+   "t": 1794491518313
   },
   "r12405634": {
    "n": "Simon & Garfunkel – Homeward Bound (1966)",
@@ -1555,6 +1575,10 @@
   "r1275143": {
    "n": "Justin Timberlake – Like I Love You (2002)",
    "t": 1794399150227
+  },
+  "r12782956": {
+   "n": "Duke Ellington – His Most Important Second War Concert (1974)",
+   "t": 1794491513504
   },
   "r12829122": {
    "n": "Family Four (2) – En Tulle Med Øyne Blå / En Gang I Verden (1965)",
@@ -1672,6 +1696,10 @@
    "n": "Miles Davis – Miles Plays Jazz Classics",
    "t": 1794348551682
   },
+  "r1354580": {
+   "n": "Herb Alpert & The Tijuana Brass – You Smile - The Song Begins (1974)",
+   "t": 1794491516441
+  },
   "r135692": {
    "n": "Herbie Hancock – Future Shock (1983)",
    "t": 1794491321312
@@ -1763,6 +1791,10 @@
   "r13948121": {
    "n": "The Beach Boys – Fun, Fun, Fun",
    "t": 1794400148060
+  },
+  "r13952309": {
+   "n": "Duke Ellington – Second Sacred Concert (1970)",
+   "t": 1794491512800
   },
   "r13978479": {
    "n": "Motorpsycho – Roadwork Vol.3: The Four Norsemen Of The Apocalypse Live At The Paradiso, Amsterdam, November  23, 2002 (2018)",
@@ -2032,6 +2064,10 @@
    "n": "Miles Davis – 'Round About Midnight (2020)",
    "t": 1794348557481
   },
+  "r16266249": {
+   "n": "The Dave Brubeck Quartet – Jazz: Red Hot And Cool (1956)",
+   "t": 1794491519980
+  },
   "r16369416": {
    "n": "The Beach Boys – Sloop John B / Papa-Oom-Mow-Mow (1966)",
    "t": 1794491231081
@@ -2080,9 +2116,17 @@
    "n": "Black Sabbath – Seventh Star (1986)",
    "t": 1794491038731
   },
+  "r16971348": {
+   "n": "Neil Young – American Stars 'N Bars (1984)",
+   "t": 1794491517842
+  },
   "r1702404": {
    "n": "a-ha – Headlines And Deadlines - The Hits Of A-Ha (1991)",
    "t": 1794384336217
+  },
+  "r17044200": {
+   "n": "Duke Ellington – Duke Ellington Presents... (1961)",
+   "t": 1794491512350
   },
   "r171942": {
    "n": "Talking Heads – Little Creatures (1985)",
@@ -2312,6 +2356,10 @@
    "n": "Justin Timberlake – Until The End Of Time - Remix (2007)",
    "t": 1794400305887
   },
+  "r1957407": {
+   "n": "Herb Alpert & The Tijuana Brass – Sounds Of Tijuana (1963)",
+   "t": 1794491517436
+  },
   "r1965985": {
    "n": "Can – Can-Can (1978)",
    "t": 1794382861566
@@ -2359,6 +2407,10 @@
   "r2032827": {
    "n": "Motorpsycho – Timothy's Monster (1994)",
    "t": 1794399047603
+  },
+  "r2035405": {
+   "n": "Wishbone Ash – Live Dates",
+   "t": 1794491517019
   },
   "r20400751": {
    "n": "Black Sabbath – Technical Ecstasy • Super Deluxe (2021)",
@@ -2948,6 +3000,14 @@
    "n": "The Beatles – Live! At The Star Club, Hamburg, Germany 1962 (Volume 1) (1985)",
    "t": 1794399904590
   },
+  "r3024258": {
+   "n": "Duke Ellington – Jumpin' Punkins (1968)",
+   "t": 1794491515124
+  },
+  "r3046769": {
+   "n": "Duke Ellington – Piano Reflections (1972)",
+   "t": 1794491511278
+  },
   "r3088892": {
    "n": "The Beatles – Help! (1965)",
    "t": 1794491067785
@@ -3107,6 +3167,10 @@
   "r33849456": {
    "n": "Pink Floyd – Pink Floyd At Pompeii MCMLXXII (2025)",
    "t": 1794399930017
+  },
+  "r3400428": {
+   "n": "Duke Ellington – Jumpin' Punkins (1965)",
+   "t": 1794491511623
   },
   "r3420885": {
    "n": "Frank Sinatra – Frank Sinatra (1964)",
@@ -3496,6 +3560,10 @@
    "n": "Led Zeppelin – Latter Days: The Best Of Led Zeppelin Volume Two (2000)",
    "t": 1794399086002
   },
+  "r4271759": {
+   "n": "Charlie Parker – Charlie Parker Memorial Vol. 2 (1955)",
+   "t": 1794491515853
+  },
   "r4277085": {
    "n": "The Beatles – History Of The Beatles (1985)",
    "t": 1794399899224
@@ -3704,6 +3772,10 @@
    "n": "Led Zeppelin – Over The Hills And Far Away (1973)",
    "t": 1794400058961
   },
+  "r4913041": {
+   "n": "Duke Ellington – Live Recording At The \"Cotton Club\" Vol.1 (1975)",
+   "t": 1794491514802
+  },
   "r4914586": {
    "n": "a-ha – The Sun Always Shines On T.V. (Extended Version) (1985)",
    "t": 1794400135130
@@ -3715,6 +3787,10 @@
   "r4966461": {
    "n": "Odd Børretzen – I Levende Live På Sandvika Kino En Kald  Desemberdag I 1973 (1974)",
    "t": 1794491352514
+  },
+  "r496881": {
+   "n": "Dave Brubeck – Take Five (1979)",
+   "t": 1794491519506
   },
   "r501599": {
    "n": "The Beatles – Anthology 2 (1996)",
@@ -3968,6 +4044,10 @@
    "n": "Electric Light Orchestra – Face The Music (1975)",
    "t": 1794491348750
   },
+  "r5763026": {
+   "n": "Duke Ellington – Les Solistes Du Duke (1963)",
+   "t": 1794491510280
+  },
   "r5770511": {
    "n": "Finn Kalvik – Finn Kalvik's Beste (1978)",
    "t": 1794399070626
@@ -4163,6 +4243,10 @@
   "r6677311": {
    "n": "Ruphus – Flying Dutchman Fantasy / Opening Theme (1974)",
    "t": 1794396147512
+  },
+  "r6709266": {
+   "n": "Duke Ellington – The \"C\" Jam Blues (1973)",
+   "t": 1794491510838
   },
   "r6710563": {
    "n": "Pink Floyd – Relics (1990)",
@@ -4595,6 +4679,10 @@
   "r8602672": {
    "n": "Yes – The Yes Album",
    "t": 1794400148310
+  },
+  "r8638383": {
+   "n": "Duke Ellington – Duke Ellington's 70th Birthday Concert (1970)",
+   "t": 1794491513068
   },
   "r8645754": {
    "n": "Led Zeppelin – Houses Of The Holy (1973)",
