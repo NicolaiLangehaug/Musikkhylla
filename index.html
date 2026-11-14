@@ -331,6 +331,51 @@ body.mobil:has(#spiller:not(.skjult)) [data-m="bla-knapper"]{padding-bottom:150p
 .sg-fjern{margin-left:auto;display:flex;gap:6px;flex:none}
 .sg-fj{height:28px;padding:0 10px;border-radius:14px;border:1px solid #3A322A;background:transparent;color:#BFB2A3;font:12px/1 inherit;cursor:pointer;white-space:nowrap}
 .sg-fj:hover,.sg-fj:focus-visible{border-color:#FF7A59;color:#FF7A59}
+.sg-hl{color:#F1E9DF}
+.sg-pa{align-self:center;font:12px 'IBM Plex Mono',monospace;color:#9FD4A8;white-space:nowrap}
+/* ---- handlelista ---- */
+#hl-rot{font:15px/1.4 'Archivo',system-ui,sans-serif;color:#F1E9DF}
+.hl-ny{display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px;padding:14px;border:1px solid #3A322A;border-radius:8px;background:#2A241E}
+.hl-felt{flex:1;min-width:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px 10px}
+.hl-felt label{display:flex;flex-direction:column;gap:3px;font-size:12px;color:#BFB2A3;min-width:0}
+.hl-felt .hl-bred{grid-column:1/-1}
+.hl-felt input,.hl-felt textarea{height:36px;box-sizing:border-box;padding:0 10px;border-radius:5px;border:1px solid #3A322A;background:#1C1814;color:#F1E9DF;font:inherit;font-size:14px;min-width:0}
+.hl-felt textarea{height:auto;padding:8px 10px;resize:vertical}
+.hl-felt input:focus,.hl-felt textarea:focus{outline:none;border-color:#FF7A59}
+#hl-rot button{height:34px;padding:0 12px;border-radius:5px;border:1px solid #3A322A;background:transparent;color:#F1E9DF;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap}
+#hl-rot button:hover:not(:disabled),#hl-rot button:focus-visible{border-color:#FF7A59}
+#hl-rot button:disabled{opacity:.35;cursor:default}
+#hl-rot .hl-hoved{background:#FF7A59;border-color:#FF7A59;color:#1C1814;font-weight:700}
+#hl-rot .hl-fare{border-color:#FF7A59;color:#FF9A7E}
+#hl-rot .hl-pil{width:34px;padding:0}
+.hl-under{margin:14px 0 6px;font-size:13px;color:#BFB2A3}
+.hl-h3{margin:22px 0 6px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:#8E8275}
+.hl-liste{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.hl-rad{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:10px 12px;border-radius:6px;background:#2A241E;border-left:3px solid #FF7A59}
+.hl-nr{flex:none;width:26px;font:700 15px 'IBM Plex Mono',monospace;color:#FF7A59}
+.hl-tekst{flex:1;min-width:200px;display:flex;flex-direction:column;gap:3px}
+.hl-tekst b{font-size:15px}
+.hl-meta{font:12px 'IBM Plex Mono',monospace;color:#BFB2A3}
+.hl-lenker{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:13px}
+.hl-lenker a{color:#FF9A7E}
+.hl-knapper{display:flex;flex-wrap:wrap;gap:6px}
+.hl-kjopt{border-left-color:#5C5248;opacity:.7}
+.hl-kjopt .hl-tekst b{text-decoration:line-through}
+.hl-kjopt .hl-nr{color:#9FD4A8}
+.hl-endre{border-left-color:#E6D36C}
+.hl-endre .hl-felt{flex-basis:100%}
+.mobil #hl-rot{padding:12px 14px 40px!important}
+@media (max-width:600px){.hl-tekst{min-width:0;flex:1 1 0}}
+.mobil [data-m="faner"] button{font-size:13px!important;padding:0 9px!important}
+#hl-rot .hl-apne{height:42px;padding:0 18px;font-size:15px}
+.mobil .hl-ny{display:grid;gap:12px}
+.hl-dra{flex:none;width:26px;height:34px;display:flex;align-items:center;justify-content:center;margin:0 -8px 0 -4px;font-size:20px;color:#8E8275;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+.hl-dra:hover{color:#FF7A59}
+.hl-drar{opacity:.85;outline:2px solid #FF7A59;box-shadow:0 8px 24px rgba(0,0,0,.5);cursor:grabbing}
+.hl-drar .hl-dra{cursor:grabbing}
+.mobil .hl-felt{flex:none}
+.mobil .hl-rad{flex-wrap:wrap}
+.mobil .hl-knapper{flex-basis:100%}
 
 </style>
 <script src="https://www.youtube.com/iframe_api" async></script>
@@ -850,7 +895,7 @@ body.mobil:has(#spiller:not(.skjult)) [data-m="bla-knapper"]{padding-bottom:150p
 <sc-if value="{{wi.ny.harErr}}" hint-placeholder-val="{{ false }}"><p role="alert" style="margin: 2px 0 0; font-size: 12px; {{T.accentC}}">{{wi.ny.err}}</p></sc-if>
 </div></sc-if>
 <sc-if value="{{wi.norgeÅpen}}" hint-placeholder-val="{{ false }}"><ul style="margin: 0 0 4px 68px; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; cursor: auto">
-<sc-for list="{{wi.norgeListe}}" as="nl" hint-placeholder-count="0"><li style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; padding: 6px 0; border-top: 1px solid rgba(241,233,223,0.1); font-size: 13px"><a href="{{nl.url}}" target="_blank" rel="noopener" style="color: inherit; font-weight: 600">{{nl.tittel}}</a><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; {{T.mutedC}}">{{nl.pris}} · {{nl.dato}}</span><sc-if value="{{nl.selger}}" hint-placeholder-val="{{ false }}"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; {{T.mutedC}}">{{nl.selger}}</span></sc-if><sc-if value="{{nl.gjelder}}" hint-placeholder-val="{{ false }}"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; {{T.mutedC}}">{{nl.gjelder}}</span></sc-if><sc-if value="{{nl.har}}" hint-placeholder-val="{{ false }}"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #E6D36C">har du</span></sc-if><sc-if value="{{nl.ny}}" hint-placeholder-val="{{ false }}"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; {{T.accentC}}">NY</span></sc-if></li></sc-for>
+<sc-for list="{{wi.norgeListe}}" as="nl" hint-placeholder-count="0"><li style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; padding: 6px 0; border-top: 1px solid rgba(241,233,223,0.1); font-size: 13px"><a href="{{nl.url}}" target="_blank" rel="noopener" style="color: inherit; font-weight: 600">{{nl.tittel}}</a><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; {{T.mutedC}}">{{nl.pris}} · {{nl.dato}}</span><sc-if value="{{nl.selger}}" hint-placeholder-val="{{ false }}"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; {{T.mutedC}}">{{nl.selger}}</span></sc-if><sc-if value="{{nl.gjelder}}" hint-placeholder-val="{{ false }}"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; {{T.mutedC}}">{{nl.gjelder}}</span></sc-if><sc-if value="{{nl.har}}" hint-placeholder-val="{{ false }}"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #E6D36C">har du</span></sc-if><sc-if value="{{nl.ny}}" hint-placeholder-val="{{ false }}"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; {{T.accentC}}">NY</span></sc-if><button type="button" onClick="{{nl.tilHandle}}" aria-label="{{nl.handleAria}}" style="margin-left: auto; height: 26px; padding: 0 10px; border-radius: 13px; background: transparent; cursor: pointer; font-size: 12px; white-space: nowrap; {{T.btn}}">{{nl.handleTekst}}</button></li></sc-for>
 <sc-if value="{{wi.norgeMer}}" hint-placeholder-val="{{ false }}"><li style="font-size: 12px; {{T.mutedC}}">{{wi.norgeMer}}</li></sc-if>
 </ul></sc-if>
 </li>
@@ -877,6 +922,7 @@ body.mobil:has(#spiller:not(.skjult)) [data-m="bla-knapper"]{padding-bottom:150p
 </sc-if>
 </div>
 </sc-if>
+<sc-if value="{{isHandle}}" hint-placeholder-val="{{ false }}"><div id="hl-rot" data-eget="1" style="flex: 1; min-height: 0; overflow-y: auto; box-sizing: border-box; padding: 18px 32px 40px"></div></sc-if>
 </section>
 </sc-if>
 
@@ -999,7 +1045,7 @@ body.mobil:has(#spiller:not(.skjult)) [data-m="bla-knapper"]{padding-bottom:150p
 // ---------- liten motor som tolker designets mal ({{hull}}, sc-for, sc-if, hendelser) ----------
 (function () {
   const LAGRE = 'platesamlingen.side.v1';
-  const NOKLER = ['moved', 'placed', 'gone', 'extra', 'wish', 'np', 'discogs', 'ytFix', 'spilt', 'ikkeNaa', 'utkrysset'];
+  const NOKLER = ['moved', 'placed', 'gone', 'extra', 'wish', 'np', 'discogs', 'ytFix', 'spilt', 'ikkeNaa', 'utkrysset', 'handle'];
   const STD = { moved: {}, placed: {}, gone: {}, extra: [], np: -1 };
   // kanonisk JSON (sorterte nøkler), så lokale og lagrede utgaver kan sammenlignes
   const canon = (v) => JSON.stringify(v, (k, x) => (x && typeof x === 'object' && !Array.isArray(x) ? Object.keys(x).sort().reduce((o, key) => { o[key] = x[key]; return o; }, {}) : x));
@@ -1045,7 +1091,7 @@ body.mobil:has(#spiller:not(.skjult)) [data-m="bla-knapper"]{padding-bottom:150p
     f.forEach((x) => { const k = id(x); if (!L.has(k) && !B.has(k)) ut.push(x); });  // ny der: legg til
     return ut;
   }
-  const LISTEID = { extra: (x) => x.nid, wish: (x) => x.a };
+  const LISTEID = { extra: (x) => x.nid, wish: (x) => x.a, handle: (x) => x.id };
   function flett(b, l, f) {
     b = b || {}; f = f || {}; const ut = {};
     NOKLER.forEach((k) => { const v = flettVerdi(b[k], l[k], f[k], LISTEID[k]); if (v !== undefined) ut[k] = v; });
@@ -1389,7 +1435,7 @@ body.mobil:has(#spiller:not(.skjult)) [data-m="bla-knapper"]{padding-bottom:150p
   };
   window.ATLAS = [0, 1, 2, 3, 4, 5, 6, 7].map((i) => 'covers/cover' + i + '.jpg');
   window.NORGE_BM = "(function () {\n  // Rommet: norske vinylannonser. F\u00f8rste gang: full sveip av hele lista. Senere: bare nye annonser.\n  // Oversikten lagres i repoet (data/norge.json) via rommet, s\u00e5 alle enheter deler den.\n  var LISTE = 'https://www.discogs.com/shop/list?formatName=Vinyl&shipsFrom=Norway&size=250';\n  if (!/(^|\\.)discogs\\.com$/.test(location.hostname)) { location.href = LISTE; return; }\n  // riktig liste med 250 annonser per side (ellers blir det tusenvis av sider); trykk bokmerket igjen n\u00e5r den er lastet\n  if (!/\\/shop\\/list/.test(location.pathname) || !/[?&]size=250\\b/.test(location.search) || !/shipsFrom=Norway/.test(location.search) || !/formatName=Vinyl/.test(location.search)) {\n    try { alert('Rommet: \u00e5pner lista med 250 norske vinylannonser per side. Trykk bokmerket igjen n\u00e5r den er lastet.'); } catch (e) {}\n    location.href = LISTE; return;\n  }\n  var ROMMET = '__ROMMET__';\n  var W = __W__, H = __H__;\n  var MAKS_NY = 60, MAKS_FULL = 2000;\n\n  function n(s) { return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\\s*\\(\\d+\\)\\s*$/, '').replace(/\\*/g, '').replace(/^the\\s+/, '').replace(/[^a-z0-9]+/g, ' ').trim(); }\n  function esc(s) { return String(s || '').replace(/&/g, '&amp;').replace(/<\/g, '&lt;').replace(/\"/g, '&quot;'); }\n  function vent(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }\n  function hent(url, opt, ms) {\n    var ctl = window.AbortController ? new AbortController() : null, t = setTimeout(function () { if (ctl) ctl.abort(); }, ms || 6000);\n    return fetch(url, Object.assign({ cache: 'no-store' }, opt || {}, ctl ? { signal: ctl.signal } : {})).then(function (r) { clearTimeout(t); return r; }, function (e) { clearTimeout(t); throw e; });\n  }\n\n  var gammel = document.getElementById('rommet-norge'); if (gammel) gammel.remove();\n  var p = document.createElement('div'); p.id = 'rommet-norge';\n  p.setAttribute('style', 'position:fixed;top:12px;right:12px;z-index:2147483647;width:380px;max-height:85vh;overflow:auto;background:#211C17;color:#F1E9DF;border:1px solid #FF7A59;border-radius:8px;padding:12px 14px;font:13px/1.45 system-ui,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.5)');\n  document.body.appendChild(p);\n  var KN = 'background:none;border:1px solid #4A4036;color:#F1E9DF;border-radius:4px;cursor:pointer;padding:3px 8px;font:12px system-ui';\n  function status(html) { p.innerHTML = html; }\n\n  // ---- lese annonsekortene p\u00e5 siden ----\n  var annonser = {}, rekke = [], avbrutt = false;\n  function les() {\n    document.querySelectorAll('a[href*=\"/shop/item/\"], a[href*=\"/sell/item/\"]').forEach(function (a) {\n      var id = (a.getAttribute('href').match(/item\\/(\\d+)/) || [])[1]; if (!id || annonser[id]) return;\n      var kort = a.closest('article') || a.closest('li') || a.parentElement; if (!kort) return;\n      var tittelEl = kort.querySelector('[data-tracking=\"shop-list-item\"]') || kort.querySelector('a[href*=\"/item/\"]:not(.msr-listing-card-image)');\n      var art = Array.prototype.map.call(kort.querySelectorAll('a[href*=\"/artist/\"]'), function (x) {\n        return [x.textContent.trim(), ((x.getAttribute('href') || '').match(/artist\\/(\\d+)/) || [])[1] || ''];\n      });\n      var tekst = kort.textContent.replace(/\\s+/g, ' ');\n      var tittel = (tittelEl ? tittelEl.textContent : '').trim();\n      if (!art.length && / [-\u2013] /.test(tittel)) { var d = tittel.split(/ [-\u2013] /); art = d[0].split(/\\s*(?:&|,|\\/)\\s*/).map(function (x) { return [x, '']; }); tittel = d.slice(1).join(' - '); }\n      if (!art.length || !tittel) return;  // ikke tegnet ferdig enn\u00e5; leses ved neste runde\n      if (/ships from/i.test(tekst) && !/ships from\\s*norway/i.test(tekst)) return;  // sikring: bare annonser som sendes fra Norge\n      var pris = (tekst.match(/[\u20ac$\u00a3]\\s?[\\d.,]+|(?:NOK|kr|SEK|DKK)\\s?[\\d\\s.,]*\\d|[\\d.,]+\\s?(?:kr|NOK)/) || [''])[0].trim();\n      var lagt = (tekst.match(/Listed ([^\u2022|]*?) ago/) || ['', ''])[1];\n      var rel = kort.querySelector('a[href*=\"/release/\"]'), r = rel ? +(((rel.getAttribute('href') || '').match(/release\\/(\\d+)/) || [])[1] || 0) : 0;\n      annonser[id] = { i: +id, a: art, t: tittel, p: pris, d: dato(lagt) };\n      if (r) annonser[id].r = r;  // pressingen (Discogs release-ID), s\u00e5 \u00f8nskelista kan skille p\u00e5 utgave\n      var yel = kort.querySelector('.msr-listing-card-year'), y = yel ? +((yel.textContent.match(/\\b(?:19|20)\\d\\d\\b/) || [])[0] || 0) : 0;\n      if (y) annonser[id].y = y;  // \u00e5ret pressingen kom ut\n      // selgeren, frakten og selgerens vurdering (for pakkekj\u00f8p og frakt i rommet)\n      var sl = kort.querySelector('a[href*=\"/seller/\"]'), sn = sl ? ((sl.getAttribute('href') || '').match(/seller\\/([^\\/?#]+)/) || [])[1] : '';\n      if (sn) annonser[id].s = decodeURIComponent(sn);\n      var fr = tekst.match(/\\+\\s*([\u20ac$\u00a3]\\s?[\\d.,]+|[\\d.,]+\\s?(?:kr|NOK))\\s*shipping/i); if (fr) annonser[id].f = fr[1].replace(/\\s+/g, '');\n      // vurderingen leses fra egne felt; selgernavn som slutter p\u00e5 tall (\u00abgoodtimes31\u00bb + \u00ab99%\u00bb) ga ellers feil prosent\n      var re1 = kort.querySelector('.msr-listing-card-seller-rating'), re2 = kort.querySelector('.msr-listing-card-seller-reviews');\n      var svTekst = re1 ? re1.textContent + ' ' + (re2 ? re2.textContent : '') : (sn ? tekst.split(decodeURIComponent(sn)).join(' ') : tekst);\n      var sv = svTekst.replace(/\\s+/g, ' ').match(/(\\d{1,3}(?:[.,]\\d)?)%\\s*\\((\\d[\\d,.]*)\\s*([kK]?)\\)/);\n      if (sv) annonser[id].sv = sv[1].replace(',', '.') + '%|' + (sv[3] ? Math.round(parseFloat(sv[2].replace(',', '.')) * 1000) : sv[2].replace(/[,.]/g, ''));  // \u00ab98% (1,7k)\u00bb \u2192 98%|1700\n      rekke.push(id);\n    });\n  }\n  // \u00ab20 minutes\u00bb / \u00ab3 days\u00bb / \u00ab2 weeks\u00bb \u2192 omtrentlig dato (\u00e5\u00e5\u00e5\u00e5-mm-dd)\n  function dato(lagt) {\n    var m = String(lagt).match(/(\\d+|an?|one)\\s+(minute|hour|day|week|month|year)/i), x = new Date();\n    if (m) {\n      var k = /^\\d+$/.test(m[1]) ? +m[1] : 1, e = m[2].toLowerCase();\n      x = new Date(Date.now() - k * { minute: 6e4, hour: 36e5, day: 864e5, week: 6048e5, month: 2592e6, year: 31536e6 }[e]);\n    }\n    return x.toISOString().slice(0, 10);\n  }\n  async function lesSide(nr) {\n    window.scrollTo(0, 0); await vent(200);\n    var y = 0, f\u00f8r = rekke.length;\n    for (var runde = 0; runde < 400 && !avbrutt; runde++) {\n      les();\n      var li = document.querySelector('li[aria-setsize]'), m\u00e5l = li ? +li.getAttribute('aria-setsize') : 0;\n      var liste = li ? li.parentElement : null;\n      var maks = liste ? Math.max(0, liste.getBoundingClientRect().bottom + window.scrollY - innerHeight + 50) : document.documentElement.scrollHeight - innerHeight;\n      if ((m\u00e5l && rekke.length - f\u00f8r >= m\u00e5l) || y >= maks) break;\n      y = Math.min(maks, y + Math.round(innerHeight * 0.8)); window.scrollTo(0, y);\n      await vent(180);\n    }\n    les();\n    return rekke.length - f\u00f8r;\n  }\n  function f\u00f8rsteId() { var a = document.querySelector('a[href*=\"/shop/item/\"], a[href*=\"/sell/item/\"]'); return a ? (a.getAttribute('href').match(/item\\/(\\d+)/) || [])[1] : ''; }\n\n  // ---- \u00f8nskelista (fersk fra rommet, ellers kopien) og eksisterende oversikt ----\n  var A = {}, kilde = 'kopien i bokmerket', oversikt = null, tillegg = null;\n  function byggA(liste) { A = {}; liste.forEach(function (w) { A[n(w.a)] = { a: w.a, tags: w.tags || '' }; }); }\n  byggA(W);\n  function lesJson(r) { return r && r.ok ? r.json() : null; }\n\n  // ---- kanal til rommet: rommet har n\u00f8kkelen og leser/skriver det private datarepoet ----\n  var fane = null, klar = false, venter = {};\n  function \u00e5pneRommet() {\n    if (fane && !fane.closed) return true;\n    klar = false; fane = window.open(ROMMET + '#norge-mottak', 'rommet-norge');\n    return !!fane;\n  }\n  window.addEventListener('message', function (e) {\n    if (e.origin !== new URL(ROMMET).origin || !e.data || typeof e.data !== 'object') return;\n    if (e.data.type === 'rommet-norge-klar') { klar = true; if (venter.klar) { var f = venter.klar; venter.klar = null; f(); } }\n    if (e.data.type === 'rommet-norge-data' && venter.data) { var g = venter.data; venter.data = null; g(e.data); }\n    if (e.data.type === 'rommet-norge-svar' && venter.svar) { var h = venter.svar; venter.svar = null; h(e.data); }\n  });\n  function sp\u00f8r(melding, svarType, ms) {\n    return new Promise(function (ok, feil) {\n      var t = setTimeout(function () { venter[svarType] = null; feil(new Error('Fikk ikke svar fra rommet.')); }, ms || 60000);\n      venter[svarType] = function (d) { clearTimeout(t); ok(d); };\n      var g\u00e5 = function () { try { fane.postMessage(melding, new URL(ROMMET).origin); } catch (e) { clearTimeout(t); feil(e); } };\n      if (klar) g\u00e5(); else { var t2 = setTimeout(function () { venter.klar = null; clearTimeout(t); feil(new Error('Fikk ikke kontakt med rommet. Er den nye versjonen lastet opp?')); }, 30000); venter.klar = function () { clearTimeout(t2); g\u00e5(); }; }\n    });\n  }\n\n  function forbered() {\n    status('<b>Norske vinylannonser<\/b><div style=\"color:#BFB2A3;margin:4px 0 8px\">Rommet \u00e5pnes i en egen fane for \u00e5 hente oversikten og \u00f8nskelista. La den fanen st\u00e5 \u00e5pen til du har lagret.<\/div><button id=\"rn-start\" style=\"' + KN + ';border-color:#FF7A59;background:#FF7A59;color:#1A0E06;font-weight:700\">Start<\/button> <button id=\"rn-x\" style=\"' + KN + '\">Avbryt<\/button>');\n    p.querySelector('#rn-x').onclick = function () { p.remove(); };\n    p.querySelector('#rn-start').onclick = async function () {\n      if (!\u00e5pneRommet()) { status('<span style=\"color:#FF9A7E\">Nettleseren stoppet vinduet. Tillat sprettoppvinduer for discogs.com og trykk bokmerket igjen.<\/span>'); return; }\n      status('<b>Henter oversikten fra rommet \u2026<\/b>');\n      try {\n        var d = await sp\u00f8r({ type: 'rommet-norge-hent' }, 'data', 120000);\n        if (!d.ok) { status('<span style=\"color:#FF9A7E\">' + esc(d.feil) + '<\/span>'); return; }\n        var liste = Array.isArray(d.wish) ? d.wish.filter(function (w) { return !/^\\s*selge\\b/i.test(w.tags || '') || /mer|original|vil ha/i.test(w.tags || ''); }) : null;\n        if (liste && liste.length) { byggA(liste); kilde = 'rommet'; }\n        oversikt = d.oversikt || null; tillegg = d.tillegg || null;\n      } catch (e) { status('<span style=\"color:#FF9A7E\">' + esc(e.message) + '<\/span>'); return; }\n      // tillegget gjelder bare opp\u00e5 den fulle sveipen det ble laget fra\n      if (tillegg && oversikt && tillegg.grunnlag && tillegg.grunnlag !== oversikt.fullSveip) tillegg = null;\n      if (oversikt && tillegg && +tillegg.sist > +oversikt.sist) oversikt.sist = +tillegg.sist;\n      var tvungen = false; try { tvungen = sessionStorage.getItem('rommet.norge.full') === '1'; sessionStorage.removeItem('rommet.norge.full'); } catch (e) {}\n      start(oversikt && oversikt.sist && !tvungen ? 'ny' : 'full');\n    };\n  }\n\n  async function start(modus) {\n    var sist = modus === 'ny' ? +oversikt.sist : 0, maks = modus === 'ny' ? MAKS_NY : MAKS_FULL, nr = 1, n\u00e5dd = false, tomme = 0;\n    var sort = document.querySelector('.hifi-select-value');\n    if (sort && !/date listed|dato/i.test(sort.textContent)) { status('<b>Sorter lista p\u00e5 \u00abDate Listed\u00bb (nyeste f\u00f8rst) og trykk igjen.<\/b>'); return; }\n    var t0 = Date.now();\n    while (!avbrutt) {\n      status('<b>' + (modus === 'full' ? 'Full sveip' : 'Nye annonser') + ': side ' + nr + ' \u2026<\/b> ' + rekke.length + ' annonser, ' + Math.round((Date.now() - t0) / 1000) + ' s ' +\n        '<button id=\"rn-stopp\" style=\"' + KN + ';margin-left:6px\">Stopp<\/button>');\n      p.querySelector('#rn-stopp').onclick = function () { avbrutt = true; };\n      var lest = await lesSide(nr);\n      tomme = lest ? 0 : tomme + 1;\n      if (sist && rekke.some(function (id) { return +id <= sist; })) { n\u00e5dd = true; break; }\n      if (nr >= maks || tomme >= 2) break;\n      var neste = document.querySelector('button[aria-label=\"Next page\"]:not([disabled])');\n      if (!neste) break;\n      var f\u00f8r = f\u00f8rsteId(); neste.click(); nr++;\n      for (var t = 0; t < 60 && f\u00f8rsteId() === f\u00f8r; t++) await vent(250);\n      if (f\u00f8rsteId() === f\u00f8r) break;\n      await vent(900);\n    }\n    var nye = rekke.filter(function (id) { return !sist || +id > sist; }).map(function (id) { return annonser[id]; });\n    var komplett = !avbrutt && (modus === 'full' ? !document.querySelector('button[aria-label=\"Next page\"]:not([disabled])') : n\u00e5dd);\n    ferdig({ modus: modus, nye: nye, sider: nr, sek: Math.round((Date.now() - t0) / 1000), komplett: komplett });\n  }\n\n  // ---- treff mot \u00f8nskelista (enkelt artistnavn; presentasjon og merkeregler kommer senere) ----\n  function treffI(liste) {\n    var ut = [];\n    liste.forEach(function (x) { var navn = ''; (x.a || []).forEach(function (ar) { if (!navn && A[n(ar[0])]) navn = ar[0]; }); if (navn) ut.push({ x: x, navn: navn, w: A[n(navn)] }); });\n    return ut;\n  }\n\n  function ferdig(r) {\n    var nyeIds = {}; r.nye.forEach(function (x) { nyeIds[x.i] = 1; });\n    // tidligere tillegg (siden full sveip) + det som er lest n\u00e5; hele oversikten = grunnlag + tillegg\n    var forrigeTillegg = r.modus === 'ny' && tillegg && tillegg.annonser ? tillegg.annonser.filter(function (x) { return !nyeIds[x.i]; }) : [];\n    r.tillegg = r.modus === 'ny' ? r.nye.concat(forrigeTillegg) : [];\n    var tSett = {}; r.tillegg.forEach(function (x) { tSett[x.i] = 1; });\n    var gamle = oversikt && oversikt.annonser ? oversikt.annonser.filter(function (x) { return !tSett[x.i]; }) : [];\n    var alle = r.modus === 'full' ? r.nye : r.tillegg.concat(gamle);\n    // full sveip som stoppet f\u00f8r siste side: behold de eldre annonsene fra forrige oversikt, s\u00e5 ingenting forsvinner\n    r.beholdt = 0;\n    if (r.modus === 'full' && !r.komplett && r.nye.length) {\n      // alle tidligere annonser som ikke ble lest n\u00e5 (ogs\u00e5 de som l\u00e5 mellom to leste sider), s\u00e5 det ikke blir hull\n      var sett = {}; r.nye.forEach(function (x) { sett[x.i] = 1; });\n      var eldre = ((tillegg && tillegg.annonser) || []).concat((oversikt && oversikt.annonser) || []).filter(function (x) { if (sett[x.i]) return false; sett[x.i] = 1; return true; });\n      r.beholdt = eldre.length; alle = r.nye.concat(eldre);\n    }\n    var tNye = treffI(r.nye), tAlle = treffI(alle);\n    var h = '<div style=\"display:flex;justify-content:space-between;gap:8px\"><b style=\"font-size:14px\">' + (r.modus === 'full' ? 'Full sveip' : 'Nye annonser') + (avbrutt ? ' \u2013 stoppet' : '') + '<\/b><button id=\"rn-x\" style=\"background:none;border:0;color:#BFB2A3;font-size:20px;cursor:pointer\">\u00d7<\/button><\/div>';\n    h += '<div style=\"color:#BFB2A3;margin:4px 0 8px\">' + r.nye.length + ' annonser lest p\u00e5 ' + r.sider + ' sider (' + r.sek + ' s).';\n    if (r.modus === 'ny') h += ' ' + (r.komplett ? 'N\u00e5dde forrige sjekk.' : 'N\u00e5dde <b>ikke<\/b> forrige sjekk innen ' + MAKS_NY + ' sider.');\n    if (r.modus === 'full') h += ' ' + (r.komplett ? 'Kom til siste side.' : 'Kom <b>ikke<\/b> til siste side' + (r.beholdt ? ', s\u00e5 ' + r.beholdt + ' annonser fra forrige oversikt beholdes.' : '.'));\n    h += '<br>Oversikten blir ' + alle.length + ' annonser. ' + Object.keys(A).length + ' \u00f8nskeartister fra ' + kilde + '.<\/div>';\n    h += '<div style=\"margin:6px 0\">Treff blant de nye: <b>' + tNye.length + '<\/b> \u00b7 i hele oversikten: <b>' + tAlle.length + '<\/b><\/div>';\n    tNye.slice(0, 30).forEach(function (t) { h += '<div style=\"border-top:1px solid #3A322A;padding:4px 0\"><a href=\"https://www.discogs.com/shop/item/' + t.x.i + '\" target=\"_blank\" style=\"color:#F1E9DF\">' + esc(t.navn + ' \u2013 ' + t.x.t) + '<\/a> <span style=\"color:#BFB2A3\">' + esc(t.x.p) + '<\/span><\/div>'; });\n    var kanLagre = r.nye.length && (r.modus === 'ny' ? r.komplett : true);\n    h += '<div style=\"border-top:1px solid #3A322A;margin-top:8px;padding-top:8px;display:flex;gap:6px;flex-wrap:wrap;align-items:center\">';\n    if (kanLagre) h += '<button id=\"rn-lagre\" style=\"' + KN + ';border-color:#FF7A59;background:#FF7A59;color:#1A0E06;font-weight:700\">Lagre i rommet<\/button>';\n    else if (r.modus === 'ny' && !r.komplett) h += '<span style=\"color:#FF9A7E\">Kan ikke lagre uten \u00e5 n\u00e5 forrige sjekk, da ville det blitt et hull i oversikten. Kj\u00f8r full sveip.<\/span>';\n    if (r.modus === 'ny' && !avbrutt) h += '<button id=\"rn-full\" style=\"' + KN + '\">Kj\u00f8r full sveip<\/button>';\n    h += '<\/div><div id=\"rn-lagring\" style=\"margin-top:6px;color:#BFB2A3\"><\/div>';\n    status(h);\n    p.querySelector('#rn-x').onclick = function () { p.remove(); };\n    var f = p.querySelector('#rn-full'); if (f) f.onclick = function () { try { sessionStorage.setItem('rommet.norge.full', '1'); } catch (e) {} status('<b>Laster lista p\u00e5 nytt. Trykk bokmerket igjen n\u00e5r den er lastet for \u00e5 starte full sveip.<\/b>'); setTimeout(function () { location.href = LISTE; }, 900); };\n    var l = p.querySelector('#rn-lagre'); if (l) l.onclick = function () { send(r, alle); };\n  }\n\n  function lastNed(data, navn) {\n    var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(data)], { type: 'application/json' })); a.download = navn || 'norge.json';\n    document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 2000);\n  }\n  // ---- sende til rommet, som lagrer i repoet med n\u00f8kkelen sin ----\n  function send(r, alle) {\n    var ut = p.querySelector('#rn-lagring');\n    var sist = 0; alle.forEach(function (x) { if (x.i > sist) sist = x.i; });\n    var n\u00e5 = new Date().toISOString();\n    // full sveip: hele oversikten i norge.json (og tillegget t\u00f8mmes). Ellers: bare den lille norge-nye.json\n    var last = r.modus === 'full' ? {\n      type: 'rommet-norge', versjon: 2, fil: 'full',\n      data: { versjon: 2, sist: sist, oppdatert: n\u00e5, fullSveip: n\u00e5, fullKomplett: r.komplett, antall: alle.length, annonser: alle.sort(function (a, b) { return b.i - a.i; }) },\n    } : {\n      type: 'rommet-norge', versjon: 2, fil: 'nye',\n      data: { versjon: 2, sist: sist, oppdatert: n\u00e5, grunnlag: (oversikt && oversikt.fullSveip) || null, antall: r.tillegg.length, annonser: r.tillegg.sort(function (a, b) { return b.i - a.i; }) },\n    };\n    if (!\u00e5pneRommet()) { ut.innerHTML = '<span style=\"color:#FF9A7E\">Nettleseren stoppet vinduet. Tillat sprettoppvinduer for discogs.com og trykk igjen.<\/span>'; return; }\n    ut.textContent = 'Lagrer ' + last.data.annonser.length + ' annonser via rommet \u2026';\n    sp\u00f8r(last, 'svar', 300000).then(function (d) {\n      ut.innerHTML = d.ok ? '<b style=\"color:#9FD39A\">Lagret: ' + d.antall + ' annonser i ' + esc(d.fil) + '.<\/b>' : '<span style=\"color:#FF9A7E\">Ikke lagret: ' + esc(d.feil) + '<\/span> <button id=\"rn-fil\" style=\"' + KN + '\">Last ned fila i stedet<\/button>';\n      var f = p.querySelector('#rn-fil'); if (f) f.onclick = function () { lastNed(last.data, last.fil === 'full' ? 'norge.json' : 'norge-nye.json'); };\n    }, function (e) {\n      ut.innerHTML = '<span style=\"color:#FF9A7E\">' + esc(e.message) + '<\/span> <button id=\"rn-fil\" style=\"' + KN + '\">Last ned fila i stedet<\/button>';\n      p.querySelector('#rn-fil').onclick = function () { lastNed(last.data, last.fil === 'full' ? 'norge.json' : 'norge-nye.json'); };\n    });\n  }\n\n  forbered();\n})();\n";
-  window.ROMMET_VERSJON = '1.2.34';
+  window.ROMMET_VERSJON = '1.2.36';
 
   const MAL = new DOMParser().parseFromString('<div id="m">' + document.getElementById('mal').textContent + '</div>', 'text/html').getElementById('m');
   const esc = (v) => String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -1450,11 +1496,12 @@ body.mobil:has(#spiller:not(.skjult)) [data-m="bla-knapper"]{padding-bottom:150p
     H = [];
     const html = '<div id="app">' + render(MAL, komp.renderVals()) + '</div>';
     morphdom(rot, html, {
-      onBeforeElUpdated: (from, to) => { if (from.tagName === 'IMG' && from.getAttribute('src') !== to.getAttribute('src')) { from.parentNode.replaceChild(to.cloneNode(true), from); return false; } if (from.tagName === 'INPUT') { if (from.type === 'file') return false; to.value = from.value; } return true; },
+      onBeforeElUpdated: (from, to) => { if (from.hasAttribute && from.hasAttribute('data-eget')) return false; if (from.tagName === 'IMG' && from.getAttribute('src') !== to.getAttribute('src')) { from.parentNode.replaceChild(to.cloneNode(true), from); return false; } if (from.tagName === 'INPUT') { if (from.type === 'file') return false; to.value = from.value; } return true; },
     });
     rot.querySelectorAll('select[data-value]').forEach((s) => { if (s.value !== s.getAttribute('data-value')) s.value = s.getAttribute('data-value'); });
     lagre(komp.state || {});
     if (window.etterTegning) window.etterTegning();
+    if (window.handleTegn) window.handleTegn();
     if (window.synkHistorikk) window.synkHistorikk();
   }
   // sveip på omslagene (Bla og kortet): mot venstre = neste plate, mot høyre = forrige.
@@ -2531,7 +2578,7 @@ body.mobil:has(#spiller:not(.skjult)) [data-m="bla-knapper"]{padding-bottom:150p
   const sgLinje = (x, tillegg) => { const navn = sgEsc(((x.a || [])[0] || [''])[0] + ' – ' + x.t + (x.y ? ', pressing ' + x.y : ''));
     return '<li><a href="https://www.discogs.com/shop/item/' + x.i + '" target="_blank" rel="noopener">' + sgEsc(((x.a || [])[0] || [''])[0] + ' – ' + x.t) + '</a>' +
     '<span>' + sgEsc([x.p, x.y ? 'pressing ' + x.y : '', x.f ? sgFrakt(x.f) : ''].filter(Boolean).join(' · ')) + '</span>' + (tillegg ? '<em>' + sgEsc(tillegg) + '</em>' : '') +
-    '<span class="sg-fjern"><button type="button" class="sg-fj" data-sg-x="' + x.i + '" aria-label="Fjern bare her: ' + navn + '">Bare her</button>' +
+    '<span class="sg-fjern">' + (window.handlePå && window.handlePå('https://www.discogs.com/shop/item/' + x.i) ? '<span class="sg-pa">✓ På handlelista</span>' : '<button type="button" class="sg-fj sg-hl" data-sg-hl="' + x.i + '" aria-label="Legg på handlelista: ' + navn + '">+ Handlelista</button>') + '<button type="button" class="sg-fj" data-sg-x="' + x.i + '" aria-label="Fjern bare her: ' + navn + '">Bare her</button>' +
     (x.r ? '<button type="button" class="sg-fj" data-sg-xp="' + x.i + '" aria-label="Fjern hele pressingen: ' + navn + '">Hele pressingen</button>' : '') + '</span></li>'; };
   // lista under søkefeltet (tegnes alene ved søk, så feltet og tastaturet får være i fred)
   function sgRes(d) {
@@ -2592,6 +2639,8 @@ body.mobil:has(#spiller:not(.skjult)) [data-m="bla-knapper"]{padding-bottom:150p
     const b = e.target.closest('#sg button'); if (!b) return;
     if (b.getAttribute('data-sg') === 'lukk') { SG.open = false; return tegnSG(); }
     if (b.getAttribute('data-sg') === 'visuk') { SG.visUk = !SG.visUk; return tegnSG(); }
+    const hl = b.getAttribute('data-sg-hl');
+    if (hl) { const x = (komp._norgeData.annonser || []).find((y) => String(y.i) === hl); if (x && window.handleLegg) window.handleLegg({ a: ((x.a || [])[0] || [''])[0], t: x.t, lenke: 'https://www.discogs.com/shop/item/' + x.i, pris: x.p || '', butikk: 'Discogs · ' + x.s }); return setTimeout(tegnSG, 0); }
     const xi = b.getAttribute('data-sg-x') || b.getAttribute('data-sg-xp');
     if (xi) { const x = (komp._norgeData.annonser || []).find((y) => String(y.i) === xi); if (x) ukSett(x, b.hasAttribute('data-sg-xp')); return setTimeout(tegnSG, 0); }
     const ang = b.getAttribute('data-sg-angre'); if (ang) { const u = Object.assign({}, ukListe()); delete u[ang]; komp.setState({ utkrysset: u }); return setTimeout(tegnSG, 0); }
@@ -2604,6 +2653,126 @@ body.mobil:has(#spiller:not(.skjult)) [data-m="bla-knapper"]{padding-bottom:150p
   });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && SG.open) { if (e.target.matches && e.target.matches('[data-sg-sok]') && e.target.value) return; SG.open = false; tegnSG(); } });
   window.selgereÅpne = () => { SG.open = true; SG.rekke = null; SG.sok = ''; tegnSG(); };
+  // ---------- Handlelista: samlested for plater du vil kjøpe (FINN, iMusic, Discogs …), i din rekkefølge ----------
+  const HL = { utkast: { a: '', t: '', lenke: '', pris: '', butikk: '' }, rediger: '', slett: '', ref: null, sist: '' };
+  const hlEsc = (v) => String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  const hlListe = () => (komp && komp.state && Array.isArray(komp.state.handle) ? komp.state.handle : []);
+  const hlLagre = (l) => komp.setState({ handle: l });
+  const hlId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  const hlUrl = (u) => { u = String(u || '').trim(); if (!u) return ''; if (!/^https?:\/\//i.test(u)) u = 'https://' + u; try { return new URL(u).href; } catch (e) { return ''; } };
+  // butikken ut fra lenka
+  const HL_BUTIKK = { 'finn.no': 'FINN', 'imusic.no': 'iMusic', 'imusic.dk': 'iMusic', 'imusic.se': 'iMusic', 'discogs.com': 'Discogs', 'platekompaniet.no': 'Platekompaniet', 'vinylia.no': 'Vinylia', 'platesjappa.no': 'Platesjappa', 'tiger.no': 'Tiger', 'bandcamp.com': 'Bandcamp', 'tradera.com': 'Tradera', 'ebay.com': 'eBay', 'amazon.de': 'Amazon', 'amazon.com': 'Amazon' };
+  const hlButikk = (u) => { try { const h = new URL(hlUrl(u)).hostname.replace(/^www\./, ''); const k = Object.keys(HL_BUTIKK).find((d) => h === d || h.endsWith('.' + d)); if (k) return HL_BUTIKK[k]; const n = h.split('.').slice(-2, -1)[0] || h; return n.charAt(0).toUpperCase() + n.slice(1); } catch (e) { return ''; } };
+  const hlVert = (u) => { try { return new URL(u).hostname.replace(/^www\./, ''); } catch (e) { return u; } };
+  // brukes også fra selgerpanelet og treffene i ønskelista
+  window.handlePå = (url) => !!url && hlListe().some((x) => (x.lenker || []).indexOf(url) >= 0);
+  window.handleLegg = (o) => {
+    const url = hlUrl(o.lenke);
+    if (url && window.handlePå(url)) return false;
+    hlLagre([{ id: hlId(), a: String(o.a || '').trim(), t: String(o.t || '').trim(), lenker: url ? [url] : [], pris: String(o.pris || '').trim(), butikk: String(o.butikk || (url ? hlButikk(url) : '')).trim(), kjopt: false, lagt: Date.now() }].concat(hlListe()));
+    return true;
+  };
+  const hlRad = (x, nr, n) => {
+    const navn = hlEsc([x.a, x.t].filter(Boolean).join(' – ') || '(uten navn)');
+    if (HL.rediger === x.id) {
+      return '<li class="hl-rad hl-endre" data-hl-id="' + x.id + '"><div class="hl-felt">' +
+        '<label>Artist<input data-hl-e="a" value="' + hlEsc(x.a) + '"></label><label>Tittel<input data-hl-e="t" value="' + hlEsc(x.t) + '"></label>' +
+        '<label>Pris<input data-hl-e="pris" value="' + hlEsc(x.pris) + '"></label><label>Butikk<input data-hl-e="butikk" value="' + hlEsc(x.butikk) + '"></label>' +
+        '<label class="hl-bred">Lenker (én per linje)<textarea data-hl-e="lenker" rows="3">' + hlEsc((x.lenker || []).join('\n')) + '</textarea></label></div>' +
+        '<div class="hl-knapper"><button type="button" class="hl-hoved" data-hl="lagre" data-hl-id="' + x.id + '">Lagre</button><button type="button" data-hl="avbryt">Avbryt</button></div></li>';
+    }
+    const meta = [x.pris, x.butikk].filter(Boolean).join(' · ');
+    const lenker = (x.lenker || []).map((u) => '<a href="' + hlEsc(u) + '" target="_blank" rel="noopener">' + hlEsc(hlVert(u)) + ' ↗</a>').join('');
+    const knapper = x.kjopt
+      ? '<button type="button" data-hl="ikkekjopt" data-hl-id="' + x.id + '">Angre kjøpt</button>'
+      : '<button type="button" data-hl="topp" data-hl-id="' + x.id + '"' + (nr === 0 ? ' disabled' : '') + '>Topp</button>' +
+        '<button type="button" class="hl-pil" data-hl="opp" data-hl-id="' + x.id + '" aria-label="Flytt opp: ' + navn + '"' + (nr === 0 ? ' disabled' : '') + '>↑</button>' +
+        '<button type="button" class="hl-pil" data-hl="ned" data-hl-id="' + x.id + '" aria-label="Flytt ned: ' + navn + '"' + (nr === n - 1 ? ' disabled' : '') + '>↓</button>' +
+        '<button type="button" data-hl="endre" data-hl-id="' + x.id + '">Endre</button>' +
+        '<button type="button" data-hl="kjopt" data-hl-id="' + x.id + '">Kjøpt</button>';
+    const fjern = HL.slett === x.id
+      ? '<button type="button" class="hl-fare" data-hl="fjernja" data-hl-id="' + x.id + '">Fjern for godt?</button><button type="button" data-hl="fjernnei">Nei</button>'
+      : '<button type="button" data-hl="fjern" data-hl-id="' + x.id + '">Fjern</button>';
+    return '<li class="hl-rad' + (x.kjopt ? ' hl-kjopt' : '') + '" data-hl-id="' + x.id + '">' + (x.kjopt ? '<span class="hl-nr">✓</span>' : '<span class="hl-dra" data-hl-dra aria-hidden="true" title="Dra for å flytte">≡</span><span class="hl-nr">' + (nr + 1) + '</span>') +
+      '<div class="hl-tekst"><b>' + navn + '</b>' + (meta ? '<span class="hl-meta">' + hlEsc(meta) + '</span>' : '') + (lenker ? '<span class="hl-lenker">' + lenker + '</span>' : '') + '</div>' +
+      '<div class="hl-knapper">' + knapper + fjern + '</div></li>';
+  };
+  function hlTegn(fokus) {
+    const rot = document.getElementById('hl-rot'); if (!rot) return;
+    const l = hlListe(), aktive = l.filter((x) => !x.kjopt), kjopt = l.filter((x) => x.kjopt), u = HL.utkast;
+    // på mobil er skjemaet lukket til du trykker «Legg til plate», så lista får plassen
+    const vis = HL.skjema != null ? HL.skjema : !window.erMobil;
+    let h = !vis ? '<button type="button" class="hl-hoved hl-apne" data-hl="skjema">+ Legg til plate</button>' : '<form class="hl-ny" data-hl-skjema autocomplete="off" novalidate><div class="hl-felt">' +
+      '<label class="hl-bred">Lenke<input data-hl-u="lenke" type="url" inputmode="url" placeholder="Lim inn lenke fra FINN, iMusic, Discogs …" value="' + hlEsc(u.lenke) + '"></label>' +
+      '<label>Artist<input data-hl-u="a" value="' + hlEsc(u.a) + '"></label><label>Tittel<input data-hl-u="t" value="' + hlEsc(u.t) + '"></label>' +
+      '<label>Pris<input data-hl-u="pris" placeholder="f.eks. 450 kr" value="' + hlEsc(u.pris) + '"></label><label>Butikk<input data-hl-u="butikk" value="' + hlEsc(u.butikk) + '"></label>' +
+      '</div><div class="hl-knapper"><button type="submit" class="hl-hoved">Legg til</button>' + (window.erMobil ? '<button type="button" data-hl="skjulskjema">Lukk</button>' : '') + '</div></form>';
+    h += '<p class="hl-under">' + (aktive.length ? aktive.length + (aktive.length === 1 ? ' plate' : ' plater') + ' du vil ha. Øverst er det du vil ha mest.' : 'Ingen plater ennå. Legg til en lenke, eller bruk «+ Handlelista» på treffene i ønskelista og hos selgerne.') + '</p>';
+    if (aktive.length) h += '<ol class="hl-liste">' + aktive.map((x, k) => hlRad(x, k, aktive.length)).join('') + '</ol>';
+    if (kjopt.length) h += '<h3 class="hl-h3">Kjøpt</h3><ol class="hl-liste">' + kjopt.map((x, k) => hlRad(x, k, kjopt.length)).join('') + '</ol>';
+    const rull = rot.scrollTop; rot.innerHTML = h; rot.scrollTop = rull;
+    if (fokus) { const f = rot.querySelector(fokus); if (f) f.focus({ preventScroll: true }); }
+    HL.ref = komp.state.handle; HL.sist = HL.rediger + '|' + HL.slett;
+  }
+  // tegnes etter at rommet er tegnet: når fanen nettopp er åpnet, eller lista er endret (også fra en annen enhet)
+  window.handleTegn = () => { const rot = document.getElementById('hl-rot'); if (!rot) return; if (!rot.firstChild || HL.ref !== komp.state.handle || HL.sist !== HL.rediger + '|' + HL.slett) hlTegn(); };
+  const flytt = (id, til) => { const l = hlListe().slice(), akt = l.filter((x) => !x.kjopt), rest = l.filter((x) => x.kjopt), i = akt.findIndex((x) => x.id === id); if (i < 0) return;
+    const j = til === 'topp' ? 0 : til === 'opp' ? i - 1 : i + 1; if (j < 0 || j >= akt.length) return; const [x] = akt.splice(i, 1); akt.splice(j, 0, x); hlLagre(akt.concat(rest)); };
+  const endre = (id, f) => hlLagre(hlListe().map((x) => (x.id === id ? Object.assign({}, x, f(x)) : x)));
+  document.addEventListener('input', (e) => {
+    const k = e.target.getAttribute && e.target.getAttribute('data-hl-u'); if (!k || !e.target.closest('#hl-rot')) return;
+    HL.utkast[k] = e.target.value;
+    if (k === 'lenke') { const b = hlButikk(e.target.value), bf = document.querySelector('#hl-rot [data-hl-u="butikk"]'); if (b && bf && (!bf.value || bf.dataset.auto)) { bf.value = b; bf.dataset.auto = '1'; HL.utkast.butikk = b; } }
+    if (k === 'butikk') delete e.target.dataset.auto;
+  });
+  document.addEventListener('submit', (e) => {
+    if (!e.target.matches || !e.target.matches('#hl-rot [data-hl-skjema]')) return; e.preventDefault();
+    const u = HL.utkast; if (!(u.a || u.t || u.lenke).trim()) { const f = document.querySelector('#hl-rot [data-hl-u="lenke"]'); if (f) f.focus(); return; }
+    if (!window.handleLegg(u)) { const p = document.querySelector('#hl-rot .hl-under'); if (p) p.textContent = 'Den lenka ligger allerede på handlelista.'; return; }
+    HL.utkast = { a: '', t: '', lenke: '', pris: '', butikk: '' }; setTimeout(() => hlTegn('[data-hl-u="lenke"]'), 0);
+  });
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest && e.target.closest('#hl-rot button[data-hl]'); if (!b) return;
+    const v = b.getAttribute('data-hl'), id = b.getAttribute('data-hl-id');
+    if (v === 'opp' || v === 'ned' || v === 'topp') flytt(id, v);
+    else if (v === 'kjopt' || v === 'ikkekjopt') endre(id, () => ({ kjopt: v === 'kjopt' }));
+    else if (v === 'skjema' || v === 'skjulskjema') { HL.skjema = v === 'skjema'; hlTegn(HL.skjema ? '[data-hl-u="lenke"]' : '[data-hl="skjema"]'); return; }
+    else if (v === 'endre') { HL.rediger = id; HL.slett = ''; hlTegn('[data-hl-e="a"]'); return; }
+    else if (v === 'avbryt') { HL.rediger = ''; hlTegn(); return; }
+    else if (v === 'lagre') {
+      const li = b.closest('li'), val = (k) => (li.querySelector('[data-hl-e="' + k + '"]') || {}).value || '';
+      HL.rediger = ''; endre(id, () => ({ a: val('a').trim(), t: val('t').trim(), pris: val('pris').trim(), butikk: val('butikk').trim(), lenker: val('lenker').split(/\s*\n\s*/).map(hlUrl).filter(Boolean) }));
+    }
+    else if (v === 'fjern') { HL.slett = id; hlTegn('[data-hl="fjernja"]'); return; }
+    else if (v === 'fjernnei') { HL.slett = ''; hlTegn(); return; }
+    else if (v === 'fjernja') { HL.slett = ''; hlLagre(hlListe().filter((x) => x.id !== id)); }
+    setTimeout(() => hlTegn(b.closest('li') && id ? '[data-hl-id="' + id + '"][data-hl="' + v + '"]' : ''), 0);
+  });
+  // dra og slipp med håndtaket ≡ (mus, finger og penn): raden flyttes mens du drar, rekkefølgen lagres når du slipper
+  let hlDra = null;
+  document.addEventListener('pointerdown', (e) => {
+    const h = e.target.closest && e.target.closest('#hl-rot [data-hl-dra]'); if (!h || (e.pointerType === 'mouse' && e.button !== 0)) return;
+    const li = h.closest('li'), ol = li.parentElement; e.preventDefault();
+    hlDra = { li, ol, id: li.getAttribute('data-hl-id'), rot: document.getElementById('hl-rot'), y: e.clientY, flyttet: false };
+    try { h.setPointerCapture(e.pointerId); } catch (er) {}
+    li.classList.add('hl-drar');
+  });
+  document.addEventListener('pointermove', (e) => {
+    if (!hlDra) return; e.preventDefault();
+    const { li, ol, rot } = hlDra, y = e.clientY;
+    // rull panelet når du drar nær kanten
+    const rr = rot.getBoundingClientRect(); if (y < rr.top + 50) rot.scrollTop -= 12; else if (y > rr.bottom - 50) rot.scrollTop += 12;
+    const andre = Array.from(ol.children).filter((x) => x !== li);
+    const før = andre.find((x) => { const b = x.getBoundingClientRect(); return y < b.top + b.height / 2; });
+    if (før ? li.nextElementSibling !== før : ol.lastElementChild !== li) { ol.insertBefore(li, før || null); hlDra.flyttet = true; }
+  });
+  const hlSlipp = () => {
+    if (!hlDra) return; const { li, ol, flyttet } = hlDra; hlDra = null; li.classList.remove('hl-drar');
+    if (!flyttet) return;
+    const ids = Array.from(ol.children).map((x) => x.getAttribute('data-hl-id')), l = hlListe(), akt = ids.map((id) => l.find((x) => x.id === id)).filter(Boolean);
+    hlLagre(akt.concat(l.filter((x) => x.kjopt || ids.indexOf(x.id) < 0)));
+  };
+  document.addEventListener('pointerup', hlSlipp); document.addEventListener('pointercancel', hlSlipp);
 
   function start() {
     skaler();
@@ -3274,7 +3443,8 @@ class Component extends DCLogic {
     else { list = L.lists[cont]; title = this.PL[cont].name; }
     const gsIn = [];
     (gsel >= 0 ? L.lists.slice(0, 8).filter((l) => l.some((i) => L.g(i) === gsel)).flat() : (L.lists[cont] || [])).forEach((i) => { const gi = L.g(i); if (gsIn.indexOf(gi) < 0) gsIn.push(gi); });
-    const tabs = cont === 12 && !q ? [{ name: 'Ønskelista', pick: set({}), css: T.tabOn }] : [{ name: q ? 'Søk · ' + list.length : this.PL[cont].name, pick: set({ gsel: -1, idx: 0 }), css: gsel < 0 ? T.tabOn : T.tabOff }]
+    const hFane = st.wfane === 'handle', hAnt = (Array.isArray(st.handle) ? st.handle : []).filter((x) => !x.kjopt).length;
+    const tabs = cont === 12 && !q ? [{ name: 'Ønskelista', pick: set({ wfane: '' }), css: hFane ? T.tabOff : T.tabOn }, { name: 'Handlelista' + (hAnt ? ' · ' + hAnt : ''), pick: set({ wfane: 'handle' }), css: hFane ? T.tabOn : T.tabOff }] : [{ name: q ? 'Søk · ' + list.length : this.PL[cont].name, pick: set({ gsel: -1, idx: 0 }), css: gsel < 0 ? T.tabOn : T.tabOff }]
       .concat(q || cont === 10 ? [] : (gsel >= 0 ? [gsel] : gsIn).map((gi) => ({ name: name(gi), pick: set({ gsel: gi, idx: 0 }), css: gsel === gi ? T.tabOn : T.tabOff })));
     const where = (i) => this.PL[L.where[i]].name;
 
@@ -3497,7 +3667,10 @@ class Component extends DCLogic {
         norgeAria: (åpen ? 'Skjul' : 'Vis') + ' ' + tr.length + ' norske annonser for ' + w.a, norgeÅpen: åpen && tr.length > 0,
         norgeToggle: () => this.setState({ norgeÅpen: åpen ? '' : w.a }),
         norgeListe: tr.slice(0, 40).map((t) => ({
-          tittel: t.x.t, url: 'https://www.discogs.com/shop/item/' + t.x.i, pris: t.x.p || '', selger: t.x.s ? t.x.s + (t.x.f ? (/^\D*0(?:[.,]0+)?\D*$/.test(t.x.f) ? ' · gratis frakt' : ' · frakt ' + t.x.f) : '') : '',
+          tittel: t.x.t, url: 'https://www.discogs.com/shop/item/' + t.x.i, pris: t.x.p || '',
+          handleTekst: window.handlePå && window.handlePå('https://www.discogs.com/shop/item/' + t.x.i) ? '✓ På handlelista' : '+ Handlelista',
+          handleAria: 'Legg ' + t.x.t + ' på handlelista',
+          tilHandle: () => { if (window.handleLegg && window.handleLegg({ a: ((t.x.a || []).find((y) => nn(y[0]) === nn(w.a)) || [w.a])[0], t: t.x.t, lenke: 'https://www.discogs.com/shop/item/' + t.x.i, pris: t.x.p || '', butikk: 'Discogs' + (t.x.s ? ' · ' + t.x.s : '') })) this.setState({ handleTick: Date.now() }); }, selger: t.x.s ? t.x.s + (t.x.f ? (/^\D*0(?:[.,]0+)?\D*$/.test(t.x.f) ? ' · gratis frakt' : ' · frakt ' + t.x.f) : '') : '',
           artist: ((t.x.a || []).find((y) => nn(y[0]) === nn(w.a)) || [w.a])[0], har: t.har, ny: t.ny,
           dato: [t.år ? 'pressing ' + t.år : '', fmtDato(t.x.dv || t.x.d)].filter(Boolean).join(' · '),
           gjelder: t.pressing ? 'riktig pressing' : t.gjelder && deler.filter((d) => d.type && d.type !== 'Selge').length > 1 ? '→ ' + t.gjelder : '', pressing: t.pressing,
@@ -3799,7 +3972,7 @@ class Component extends DCLogic {
       cornerFloor: (() => { const a = this.cornerGeo().pt(1366, 430); return 'clip-path:polygon(912px 430px, ' + a[0] + 'px ' + a[1] + 'px, 1366px ' + a[1] + 'px, 1366px 430px);'; })(),
       cornerCeil: (() => { const a = this.cornerGeo().pt(1366, 0); return 'clip-path:polygon(912px 0, 1366px 0, 1366px ' + a[1] + 'px, ' + a[0] + 'px ' + a[1] + 'px);'; })(),
       loading: false, loadText: '', cells, boxSpines, cdSpines: cdFolders, rackSpines, tabs, stack, front, margin, cards,
-      isBla: mode === 'bla' && !(cont === 12 && !q), isKort: mode === 'kort' && !(cont === 12 && !q), isWish: cont === 12 && !q && visOnsker, norge: this._norge || { vis: false }, notWish: !(cont === 12 && !q),
+      isBla: mode === 'bla' && !(cont === 12 && !q), isKort: mode === 'kort' && !(cont === 12 && !q), isWish: cont === 12 && !q && visOnsker && !hFane, isHandle: cont === 12 && !q && visOnsker && hFane, norge: this._norge || { vis: false }, notWish: !(cont === 12 && !q),
       norgeBryter: { vis: !!ND, css: barNorge ? T.pillOn : T.pillOff, pressed: barNorge ? 'true' : 'false', tekst: 'Til salgs', n: String(antNorge), klikk: () => this.setState({ wNorge: !st.wNorge }) },
       wishFilters, wishItems, wishAdd, wishSort, wishSok: (e) => this.setState({ wishQ: e.target.value }), wishTom: (wq || barNorge) && !wishItems.length, wishTomTekst: wq ? 'Ingen ønsker passer «' + (st.wishQ || '') + '».' : 'Ingen ønsker med annonser i Norge akkurat nå.', wishCount: String(wishes.length), modeBla: mode === 'bla' ? T.pillOn : T.pillOff, modeKort: mode === 'kort' ? T.pillOn : T.pillOff,
       prev: go(idx - 1), next: go(idx + 1),
