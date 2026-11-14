@@ -1065,6 +1065,20 @@
   "534": true,
   "626": true
  },
+ "handle": [
+  {
+   "a": "SBB",
+   "butikk": "Discogs · jj204580",
+   "id": "mwg8njyfpf5v",
+   "kjopt": false,
+   "lagt": 1794650639559,
+   "lenker": [
+    "https://www.discogs.com/shop/item/3930368824"
+   ],
+   "pris": "€15.99",
+   "t": "Welcome"
+  }
+ ],
  "ikkeNaa": {
   "r1593386": 1794257865807,
   "r1641608": 1794257835915,
