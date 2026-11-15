@@ -1067,6 +1067,19 @@
  },
  "handle": [
   {
+   "a": "Converge",
+   "butikk": "FINN",
+   "id": "mwhmhrbofsc4",
+   "kjopt": false,
+   "lagt": 1794734349972,
+   "lenker": [
+    "https://www.finn.no/recommerce/forsale/item/471337806"
+   ],
+   "pris": "2000",
+   "selger": "Ulimoen",
+   "t": "Jane Doe"
+  },
+  {
    "a": "SSB",
    "butikk": "FINN",
    "id": "mwhmdfhjmegc",
