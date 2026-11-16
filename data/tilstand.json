@@ -4,6 +4,8 @@
   "ignorert": {},
   "leggTil": {},
   "rids": [
+   "2245110",
+   "38930095",
    "24934064",
    "15953433",
    "18648064",
@@ -373,8 +375,6 @@
    "1170868",
    "2870256",
    "3026298",
-   "3102924",
-   "3331491",
    "605129",
    "1019454",
    "2173347",
@@ -772,7 +772,6 @@
    "2940876",
    "1361007",
    "2085011",
-   "30078016",
    "3773978",
    "4168622",
    "2480630",
@@ -800,7 +799,7 @@
    "3744728",
    "2285589"
   ],
-  "sist": "2026-10-31T09:56:26+00:00"
+  "sist": "2026-11-16T20:01:59+00:00"
  },
  "extra": [
   {
@@ -1054,6 +1053,68 @@
    "w": "Mer",
    "y": 2006,
    "yt": []
+  },
+  {
+   "a": "Red Sparowes",
+   "c": "Near Mint (NM or M-)",
+   "cat": "CORE088",
+   "cc": "Very Good Plus (VG+)",
+   "cv": null,
+   "fmt": "Vinyl, LP, Album, Limited Edition",
+   "g": 4,
+   "homed": false,
+   "iDiscogs": true,
+   "id": "2245110",
+   "kj": "Fra Discogs 6. november 2026",
+   "lb": "Conspiracy Records (2)",
+   "n": 1,
+   "nid": 1794859365578,
+   "ny": true,
+   "nyImg": "gh:1794859365578",
+   "oy": 2010,
+   "r": "",
+   "re": false,
+   "s": "LP",
+   "sc": "#424337",
+   "st": 0,
+   "t": "The Fear Is Excruciating, But Therein Lies The Answer",
+   "url": "https://www.discogs.com/release/2245110",
+   "w": "",
+   "y": 2010,
+   "yt": [
+    "xdz78NOLNp0",
+    "xZY_Bbat1EM",
+    "VXZi37D7OzY"
+   ]
+  },
+  {
+   "a": "Cult Of Luna",
+   "c": "Near Mint (NM or M-)",
+   "cat": "SVN020LP",
+   "cc": "Near Mint (NM or M-)",
+   "cv": null,
+   "fmt": "2 x Vinyl, LP, Album",
+   "g": 3,
+   "homed": false,
+   "iDiscogs": true,
+   "id": "38930095",
+   "kj": "Fra Discogs 6. november 2026",
+   "lb": "Red Creek",
+   "n": 2,
+   "nid": 1794859365579,
+   "ny": true,
+   "nyImg": "gh:1794859365579",
+   "oy": 2026,
+   "r": "",
+   "re": false,
+   "s": "LP",
+   "sc": "#6a7d89",
+   "st": 0,
+   "t": "In The Shadow Of Your Shadow",
+   "url": "https://www.discogs.com/release/38930095",
+   "w": "",
+   "y": 2026,
+   "yt": []
   }
  ],
  "gone": {
@@ -1063,7 +1124,9 @@
   "103": true,
   "466": true,
   "534": true,
-  "626": true
+  "626": true,
+  "771": true,
+  "772": true
  },
  "handle": [
   {
