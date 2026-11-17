@@ -1133,7 +1133,7 @@
    "a": "Dawn of midi",
    "butikk": "iMusic",
    "id": "mwjlpnopvhh1",
-   "kjopt": false,
+   "kjopt": true,
    "lagt": 1794853971241,
    "lenker": [
     "https://imusic.no/music/4050486110416/dawn-of-midi-2015-dysnomia-lp"
@@ -1146,7 +1146,7 @@
    "a": "Ronin",
    "butikk": "iMusic",
    "id": "mwjloweinjhx",
-   "kjopt": false,
+   "kjopt": true,
    "lagt": 1794853935882,
    "lenker": [
     "https://imusic.no/music/0602567358695/nik-bartsch-s-ronin-2018-awase-lp"
@@ -1159,7 +1159,7 @@
    "a": "Ronin",
    "butikk": "iMusic",
    "id": "mwjlo7gwx2ac",
-   "kjopt": false,
+   "kjopt": true,
    "lagt": 1794853903568,
    "lenker": [
     "https://imusic.no/music/0610098168584/nik-bartsch-s-ronin-2024-spin-lp"
@@ -1211,7 +1211,7 @@
    "a": "Mammal Hands",
    "butikk": "IMusic",
    "id": "mwg8oaqpnkbs",
-   "kjopt": false,
+   "kjopt": true,
    "lagt": 1794650674273,
    "lenker": [
     "https://imusic.no/page/search?query=mammal+hands"
