@@ -4,6 +4,7 @@
   "ignorert": {},
   "leggTil": {},
   "rids": [
+   "3056414",
    "2245110",
    "38930095",
    "24934064",
@@ -799,7 +800,7 @@
    "3744728",
    "2285589"
   ],
-  "sist": "2026-11-16T20:01:59+00:00"
+  "sist": "2026-11-22T11:24:12+00:00"
  },
  "extra": [
   {
@@ -1115,6 +1116,47 @@
    "w": "",
    "y": 2026,
    "yt": []
+  },
+  {
+   "a": "Iron Butterfly",
+   "c": "Very Good Plus (VG+)",
+   "cat": "SD 33-227",
+   "cc": "Very Good (VG)",
+   "cv": null,
+   "fmt": "Vinyl, LP, Album, Stereo",
+   "g": 13,
+   "homed": false,
+   "iDiscogs": true,
+   "id": "3056414",
+   "kj": "Fra Discogs 21. november 2026",
+   "lb": "ATCO Records",
+   "n": 1,
+   "nid": 1795346685587,
+   "ny": true,
+   "nyImg": "gh:1795346685587",
+   "oy": 1968,
+   "r": "",
+   "re": false,
+   "s": "LP",
+   "sc": "#807666",
+   "st": 0,
+   "t": "Heavy",
+   "url": "https://www.discogs.com/release/3056414",
+   "w": "Vil ha",
+   "y": 1968,
+   "yt": [
+    "h485QrNHSSs",
+    "1RyS751_a50",
+    "i9bLNg5EMcc",
+    "DkdobaGu1Ms",
+    "tmGNFSNCoy4",
+    "fVTxjUOHV68",
+    "tCd4Wnziiig",
+    "v5TODnrdJL4",
+    "yo9_8V9Kb9o",
+    "hBedM6y5Evc",
+    "KIRp-AzQPCg"
+   ]
   }
  ],
  "gone": {
